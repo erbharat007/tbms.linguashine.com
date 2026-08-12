@@ -1,0 +1,3 @@
+instructions
+git remote set-url origin git@github.com:erbharat007/tbms.linguashine.com.git
+git push -u origin main
