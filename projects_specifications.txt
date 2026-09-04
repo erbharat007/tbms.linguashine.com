@@ -1,0 +1,4606 @@
+# 1. Overall Application Structure
+
+### Main modules
+
+1. **Dashboard**
+2. **Quotes**
+3. **Projects**
+4. **Jobs**
+5. **To-Dos**
+6. **Clients**
+7. **Vendors**
+8. **Expenses**
+9. **Files**
+10. **Reports**
+11. **Settings**
+12. **My Profile**
+13. **Messages / Notifications**
+14. **Search & Filters**
+15. **Import / Export**
+
+The Protemos navigation itself exposes Dashboard, Quotes, Projects, Jobs, To-dos, Clients, Vendors, Expenses, Files, Reports, Settings and My Profile. ([Protemos Wiki][1])
+
+---
+
+# 2. MENU → SUB-MENU STRUCTURE
+
+## 1. Dashboard
+
+**Dashboard**
+
+* Overview
+* Revenue
+* Expenses
+* Profit
+* Active Projects
+* Pending Jobs
+* Pending Quotes
+* Outstanding Client Invoices
+* Outstanding Vendor Invoices
+* Upcoming Deadlines
+* Notifications
+* To-Dos
+
+The Enterprise version has a more advanced dashboard, while the basic application can have a simpler KPI dashboard. ([Protemos Wiki][1])
+
+---
+
+# 3. Quotes
+
+### Quotes
+
+* All Quotes
+* New Quote
+* Draft Quotes
+* Sent Quotes
+* Accepted Quotes
+* Rejected Quotes
+* Expired Quotes
+* Quote Templates
+* Quote Reports
+* Export
+
+### Quote Details
+
+A Quote can contain:
+
+* Client
+* Contact
+* Project information
+* Source language
+* Target language
+* Service
+* Specialization
+* Files
+* Receivables
+* Jobs
+* Payables
+* Notes
+* Terms
+* Quote status
+
+This is important because **a quote is not merely a PDF quotation**. It can be used to plan the potential project, including client receivables and vendor jobs/payables. Protemos can then convert an accepted quote into a project while transferring its data. ([Protemos Wiki][2])
+
+---
+
+# 4. Projects
+
+## Projects
+
+* All Projects
+* New Project
+* Active Projects
+* Completed Projects
+* Cancelled Projects
+* Completion Rejected
+* Project Templates
+* Export
+
+### Project Details
+
+Each project should have tabs:
+
+**A. Details**
+
+* Project Number
+* Client
+* Manager
+* Project Name
+* Description
+* Source Language
+* Target Language
+* Service
+* Specialization
+* Deadline
+* Status
+* Tags
+* Notes
+
+**B. Files**
+
+* Input Files
+* Output Files
+* Links
+* File history
+
+**C. Jobs**
+
+* Jobs list
+* New Job
+* Assign Vendor
+* Job Status
+* Job Deadline
+* Job Files
+* Job Payables
+
+**D. Workflow**
+
+* Workflow chain
+* Job sequence
+* Job dependencies
+* Workflow templates
+
+**E. Finances**
+
+* Client Receivables
+* Vendor Payables
+* Project Revenue
+* Project Cost
+* Project Profit
+* Invoice status
+
+This matches the actual Protemos project structure: Details, Files, Jobs, Workflow and Finances. ([Protemos Wiki][3])
+
+---
+
+# 5. Jobs
+
+## Jobs
+
+* All Jobs
+* New Job
+* Active Jobs
+* Pending Jobs
+* Completed Jobs
+* Cancelled Jobs
+* Job Tenders
+* Job Files
+* Job Payables
+* Export
+
+### Job Details
+
+* Job Number
+* Project
+* Vendor
+* Service
+* Language Pair
+* Description
+* Instructions
+* Start Date
+* Due Date
+* Status
+* Input Files
+* Output Files
+* Payable
+* Messages
+* Notes
+
+### Job Status
+
+For example:
+
+**New → Assigned → In Progress → Submitted → Accepted → Completed**
+
+The exact workflow can be customized.
+
+---
+
+# 6. Clients
+
+## Clients
+
+* All Clients
+* New Client
+* Active Clients
+* Inactive Clients
+* Contacts
+* Receivables
+* Invoices
+* Payments
+* Prices
+* Documents
+* To-Dos
+* Messages
+* Client Portal
+
+### Client Profile
+
+**General**
+
+* Company Name
+* Address
+* Country
+* Currency
+* Tax information
+* Payment terms
+* Status
+* Tags
+
+**Contacts**
+
+* Primary Contact
+* Additional Contacts
+* Email
+* Phone
+* Login Access
+
+**Commercial**
+
+* Client Prices
+* Services
+* Language Pairs
+* Payment Methods
+
+**Financial**
+
+* Receivables
+* Invoices
+* Payments
+* Outstanding Amount
+
+**Projects**
+
+* Client Projects
+
+**Quotes**
+
+* Client Quotes
+
+Protemos supports client creation/import, contacts, prices, receivables, invoices and payments as separate client-related areas. ([Protemos Wiki][3])
+
+---
+
+# 7. Vendors
+
+## Vendors
+
+* All Vendors
+* New Vendor
+* Active Vendors
+* Inactive Vendors
+* Applications
+* Contacts
+* Prices
+* Payables
+* Invoices
+* Payments
+* Documents
+* Vendor Rating
+* Messages
+* Vendor Portal
+
+### Vendor Profile
+
+**General**
+
+* Company/Person Name
+* Address
+* Contact
+* Languages
+* Specializations
+* Status
+
+**Commercial**
+
+* Vendor Prices
+* Payment Methods
+* Currency
+
+**Work**
+
+* Assigned Jobs
+* Completed Jobs
+* Active Jobs
+
+**Financial**
+
+* Payables
+* Vendor Invoices
+* Vendor Payments
+
+Vendor access can also be enabled so vendors can work through the system. ([Protemos Wiki][3])
+
+---
+
+# 8. Finance
+
+I recommend making Finance a **major module**, even though Protemos organizes some financial functions under Clients/Vendors.
+
+## Finance
+
+### Client Finance
+
+* Receivables
+* Client Invoices
+* Client Payments
+* Outstanding Invoices
+* Payment History
+
+### Vendor Finance
+
+* Payables
+* Vendor Invoices
+* Vendor Payments
+* Outstanding Vendor Invoices
+* Payment History
+
+### Expenses
+
+* Expenses
+* Expense Categories
+* New Expense
+* Expense Reports
+
+### Taxes
+
+* Tax Rates
+* Client Taxes
+* Vendor Taxes
+
+### Payment Methods
+
+* Bank
+* Cash
+* Online
+* Other
+
+---
+
+# 9. Files
+
+## Files
+
+* All Files
+* Project Files
+* Job Files
+* Client Files
+* Vendor Files
+* Quote Files
+* Documents
+* File Links
+* Search
+* Download
+* Upload
+* Export
+
+The file relationship should be hierarchical:
+
+```text
+Client
+   │
+   ├── Quote Files
+   │
+   └── Projects
+          │
+          ├── Project Input Files
+          ├── Project Output Files
+          │
+          └── Jobs
+                 ├── Job Input Files
+                 └── Job Output Files
+```
+
+---
+
+# 10. Reports
+
+## Reports
+
+### General Finance
+
+* Monthly Revenue
+* Monthly Expenses
+* Monthly Profit
+* Receivables vs Payables
+* Invoices
+* Payments
+
+### Client Reports
+
+* Revenue by Client
+* Payments by Client
+* Outstanding Clients
+* Client Projects
+* Client Profitability
+
+### Vendor Reports
+
+* Expenses by Vendor
+* Payments by Vendor
+* Vendor Jobs
+* Vendor Profitability
+
+### Project Reports
+
+* Projects by Status
+* Project Revenue
+* Project Cost
+* Project Profit
+* Project Completion
+
+### Language Reports
+
+* Language Pair
+* Service
+* Specialization
+
+### Quote Reports
+
+* Quote Count
+* Accepted Quotes
+* Rejected Quotes
+* Conversion Rate
+* Quote Value
+
+Protemos has dedicated finance, client, vendor and language/service reporting, including reporting based on receivables/payables, invoices and payments. ([Protemos Wiki][3])
+
+---
+
+# 11. Settings
+
+## Settings
+
+### Company
+
+* Company Information
+* Logo
+* Address
+* Tax Details
+* Default Currency
+* Date Format
+
+### Users & Access
+
+* Users
+* Roles
+* Permissions
+* Managers
+* Access Rights
+
+### Master Data
+
+* Languages
+* Language Pairs
+* Services
+* Specializations
+* Units
+* Currencies
+* Taxes
+* Payment Methods
+
+### Templates
+
+* Quote Templates
+* Client Invoice Templates
+* Vendor Invoice Templates
+* PDF Templates
+* Email Templates
+
+### Notifications
+
+* Email Notifications
+* Project Reminders
+* Job Reminders
+* Invoice Reminders
+* Payment Notifications
+
+### Integrations
+
+* SMTP
+* API
+* Smartcat
+* memoQ
+* TQ Auditor
+* QuickBooks
+* Other APIs
+
+### System
+
+* General Settings
+* File Storage
+* Email Server
+* Audit Logs
+
+Protemos specifically supports customization, taxes, project templates, PDF templates, email templates, SMTP, notifications and integrations. ([Protemos Wiki][1])
+
+---
+
+# 12. User / Access Management
+
+This should be designed as RBAC.
+
+### Roles
+
+* Super Admin
+* Administrator
+* Project Manager
+* Sales Manager
+* Finance Manager
+* Accountant
+* Client Manager
+* Vendor Manager
+* Project & Finance Manager
+* Project & Vendor Finance Manager
+* Client User
+* Vendor User
+
+Protemos has differentiated access rights such as Project Manager, Sales Manager, Accountant, Client Manager and Vendor Manager. ([Protemos Wiki][4])
+
+---
+
+# 13. MOST IMPORTANT — Working Structure
+
+This is the core of the application.
+
+The relationship should be:
+
+```text
+                    ┌─────────────┐
+                    │    CLIENT   │
+                    └──────┬──────┘
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │    QUOTE    │
+                    └──────┬──────┘
+                           │
+                    Quote Accepted
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │   PROJECT   │
+                    └──────┬──────┘
+                           │
+             ┌─────────────┼─────────────┐
+             ▼             ▼             ▼
+          FILES          JOBS        RECEIVABLES
+                           │             │
+                           ▼             ▼
+                        VENDOR       CLIENT
+                           │           INVOICE
+                           ▼             │
+                       PAYABLE          ▼
+                           │          PAYMENT
+                           ▼
+                       VENDOR
+                       INVOICE
+                           │
+                           ▼
+                        PAYMENT
+```
+
+This is essentially the heart of Protemos. The official documentation explicitly describes **Project as the central object**, with files, jobs and client/vendor finances attached to it. ([Protemos Wiki][2])
+
+---
+
+# 14. Client → Quote → Project Relationship
+
+### Step 1 — Client
+
+Create:
+
+```text
+Client
+ ├── Contacts
+ ├── Prices
+ ├── Documents
+ └── Payment Terms
+```
+
+↓
+
+### Step 2 — Quote
+
+Create:
+
+```text
+Quote
+ ├── Client
+ ├── Services
+ ├── Language
+ ├── Files
+ ├── Receivables
+ ├── Jobs
+ └── Payables
+```
+
+↓
+
+### Step 3 — Accept Quote
+
+```text
+Quote
+   │
+   │ Accept
+   ▼
+Project
+```
+
+Client and quote information is transferred into the project.
+
+---
+
+# 15. Project → Jobs → Vendor
+
+Example:
+
+Client requests:
+
+**English → Hindi Translation**
+
+Project:
+
+```text
+Project #P-1001
+        │
+        ├── Source File
+        │
+        ├── Job #J-1001
+        │       │
+        │       ├── Vendor: Translator A
+        │       ├── English → Hindi
+        │       ├── 10,000 words
+        │       └── ₹5,000 Payable
+        │
+        └── Job #J-1002
+                │
+                ├── Vendor: Reviewer B
+                ├── Hindi Proofreading
+                └── ₹2,000 Payable
+```
+
+This is where the **Workflow** becomes useful.
+
+```text
+Translation
+     ↓
+Review
+     ↓
+Proofreading
+     ↓
+QA
+     ↓
+Delivery
+```
+
+Protemos supports building consecutive job chains through the Workflow tab and predefined job-chain templates. ([Protemos Wiki][3])
+
+---
+
+# 16. Project → Client Finance
+
+Suppose:
+
+```text
+Project Value = ₹15,000
+```
+
+Create:
+
+```text
+Project
+   │
+   └── Receivable
+          │
+          ▼
+     ₹15,000
+```
+
+Then:
+
+```text
+Receivable
+     ↓
+Client Invoice
+     ↓
+Client Payment
+```
+
+Important: **Project and Invoice should NOT have a simple one-to-one relationship.**
+
+One project can contribute receivables to multiple invoices, and one invoice can contain receivables from multiple projects. The Protemos documentation specifically describes this relationship. ([Protemos Wiki][2])
+
+So database-wise:
+
+```text
+PROJECT
+   │
+   └──< RECEIVABLE >──┐
+                      │
+                      ▼
+                   INVOICE
+                      ▲
+                      │
+   ┌──< RECEIVABLE >──┘
+   │
+PROJECT 2
+```
+
+---
+
+# 17. Project → Vendor Finance
+
+Similarly:
+
+```text
+Project
+   │
+   └── Jobs
+         │
+         └── Payables
+                │
+                ▼
+          Vendor Invoice
+                │
+                ▼
+          Vendor Payment
+```
+
+Example:
+
+```text
+Project ₹15,000
+
+Client Receivable       ₹15,000
+                       ─────────
+Revenue                 ₹15,000
+
+Translator Payable       ₹5,000
+Reviewer Payable         ₹2,000
+                       ─────────
+Total Cost               ₹7,000
+
+Estimated Profit         ₹8,000
+```
+
+---
+
+# 18. Complete Business Flow
+
+This should be the primary workflow in the quotation.
+
+```text
+                    CLIENT
+                       │
+                       ▼
+                 CLIENT PROFILE
+                       │
+                       ▼
+                     QUOTE
+                       │
+             ┌─────────┴─────────┐
+             │                   │
+          Reject              Accept
+             │                   │
+             ▼                   ▼
+          CLOSED              PROJECT
+                                 │
+              ┌──────────────────┼──────────────────┐
+              │                  │                  │
+              ▼                  ▼                  ▼
+            FILES              JOBS            RECEIVABLES
+                                 │                  │
+                                 ▼                  ▼
+                              VENDOR          CLIENT INVOICE
+                                 │                  │
+                                 ▼                  ▼
+                              PAYABLE          CLIENT PAYMENT
+                                 │
+                                 ▼
+                           VENDOR INVOICE
+                                 │
+                                 ▼
+                           VENDOR PAYMENT
+                                 │
+                                 ▼
+                           PROJECT COMPLETE
+                                 │
+                                 ▼
+                              REPORTS
+```
+
+---
+
+# 19. Page Relationship
+
+For development, I would define the page relationships like this:
+
+| Page            | Can Create                     | Connected To                        |
+| --------------- | ------------------------------ | ----------------------------------- |
+| Client List     | Client                         | Contacts, Quotes, Projects, Finance |
+| Client Details  | Contacts, Prices               | Projects, Quotes, Invoices          |
+| Quote List      | Quote                          | Client                              |
+| Quote Details   | Files, Receivables, Jobs       | Client, Project                     |
+| Project List    | Project                        | Client                              |
+| Project Details | Files, Jobs, Workflow, Finance | Client, Vendor                      |
+| Job List        | Job                            | Project, Vendor                     |
+| Job Details     | Files, Payables                | Project, Vendor                     |
+| Vendor List     | Vendor                         | Jobs, Payables                      |
+| Vendor Details  | Prices, Contacts               | Jobs, Invoices                      |
+| Receivables     | Receivable                     | Project, Client                     |
+| Client Invoice  | Invoice                        | Receivables, Client                 |
+| Client Payment  | Payment                        | Invoice, Client                     |
+| Payables        | Payable                        | Job, Vendor                         |
+| Vendor Invoice  | Invoice                        | Payables, Vendor                    |
+| Vendor Payment  | Payment                        | Invoice, Vendor                     |
+| Reports         | —                              | All financial/project data          |
+
+---
+
+# 20. Recommended Database Core
+
+For your Laravel development, I would **not** start by creating tables based only on menu names.
+
+The core entities should be:
+
+```text
+users
+roles
+permissions
+
+clients
+client_contacts
+client_prices
+
+vendors
+vendor_contacts
+vendor_prices
+
+quotes
+quote_items
+quote_files
+quote_receivables
+quote_jobs
+quote_payables
+
+projects
+project_files
+project_receivables
+project_jobs
+project_workflows
+
+jobs
+job_files
+job_payables
+
+receivables
+client_invoices
+client_invoice_items
+client_payments
+
+payables
+vendor_invoices
+vendor_invoice_items
+vendor_payments
+
+expenses
+
+languages
+language_pairs
+services
+specializations
+currencies
+taxes
+payment_methods
+
+messages
+notifications
+todos
+
+files
+file_versions
+
+project_templates
+workflow_templates
+
+email_templates
+pdf_templates
+
+audit_logs
+```
+
+---
+
+# 21. What I Recommend for Your Quotation
+
+Instead of quoting **"Protemos Clone – ₹6 lakh"**, I would now divide the quotation into **development phases based on the actual dependency structure**.
+
+### Phase 1 — Foundation
+
+* Login
+* Users
+* Roles
+* Permissions
+* Company settings
+* Master data
+* Dashboard
+
+### Phase 2 — CRM
+
+* Clients
+* Contacts
+* Client prices
+* Vendors
+* Vendor contacts
+* Vendor prices
+
+### Phase 3 — Sales
+
+* Quotes
+* Quote items
+* Quote files
+* Quote receivables
+* Quote jobs
+* Quote payables
+* Quote → Project conversion
+
+### Phase 4 — Project Management
+
+* Projects
+* Files
+* Jobs
+* Vendor assignment
+* Workflow
+* Job status
+* Project completion
+
+### Phase 5 — Finance
+
+* Receivables
+* Client invoices
+* Client payments
+* Payables
+* Vendor invoices
+* Vendor payments
+* Expenses
+* Taxes
+
+### Phase 6 — Communication
+
+* Email
+* Messages
+* Notifications
+* Reminders
+* To-Dos
+
+### Phase 7 — Reports
+
+* Finance
+* Clients
+* Vendors
+* Projects
+* Quotes
+* Language pairs
+* Services
+
+### Phase 8 — Advanced / Enterprise
+
+* Client portal
+* Vendor portal
+* Project templates
+* Workflow templates
+* PDF templates
+* Email templates
+* Vendor rating
+* Tenders
+* Smartcat
+* memoQ
+* TQ Auditor
+* API
+* Advanced dashboard
+
+This separation is important because several of the advanced items are explicitly marked as **Enterprise features** in Protemos documentation. ([Protemos Wiki][1])
+
+---
+
+## The key architecture
+
+If we're going to prepare a **proper quotation/SOW**, I would use this as the foundation:
+
+**CRM → Quote → Project → Job → Vendor**
+
+and
+
+**Project → Receivable → Client Invoice → Client Payment**
+
+and
+
+**Job → Payable → Vendor Invoice → Vendor Payment**
+
+with:
+
+**Project → Files + Workflow + Communication + Reporting**
+
+That gives us a much more accurate basis for estimating the Laravel development effort than simply counting menu screens. ([Protemos Wiki][2])
+
+I can next turn this into a **complete module → menu → submenu → page → buttons/actions → database relation matrix**, which would be the best document to use before calculating the final quotation.
+
+
+
+
+
+
+
+
+Yes. I checked the **full Protemos Enterprise user manual**, not just the quick-start page. The official documentation confirms the major objects and their sections: **Clients, Vendors, Quotes, Projects, Jobs, Receivables, Payables, Client/Vendor Invoices, Payments, Reports, Settings, Portals, Templates and Integrations**. ([Protemos Wiki][1])
+
+Below is the **master functional matrix** I would use as the basis for your Laravel quotation/SOW.
+
+# Protemos-like TMS — Complete Functional Matrix
+
+## 1. System Architecture
+
+The application should be understood around these core objects:
+
+```text
+                    ┌─────────────┐
+                    │    CLIENT   │
+                    └──────┬──────┘
+                           │
+             ┌─────────────┴─────────────┐
+             ▼                           ▼
+          QUOTES                      PROJECTS
+             │                           │
+             │                           ├──────── FILES
+             │                           │
+             │                           ├──────── JOBS
+             │                           │             │
+             │                           │             ▼
+             │                           │           VENDOR
+             │                           │             │
+             │                           │             ▼
+             │                           │          PAYABLE
+             │                           │
+             │                           └──────── RECEIVABLE
+             │                                         │
+             ▼                                         ▼
+       QUOTE ACCEPTED                              CLIENT
+             │                                    INVOICE
+             ▼                                         │
+          PROJECT                                      ▼
+                                                CLIENT PAYMENT
+
+
+VENDOR
+   │
+   └── PAYABLE
+          │
+          ▼
+    VENDOR INVOICE
+          │
+          ▼
+    VENDOR PAYMENT
+```
+
+The **Project** is the central operational object. It connects files, jobs/workflow and project finances. Protemos itself describes a quote as a potential project that can be converted into a project. ([Protemos Wiki][1])
+
+---
+
+# 2. Module → Menu → Submenu → Page → Actions
+
+## MODULE 01 — Dashboard
+
+| Menu      | Submenu       | Page            | Main Actions    |
+| --------- | ------------- | --------------- | --------------- |
+| Dashboard | Overview      | Dashboard       | View            |
+| Dashboard | Projects      | Project Summary | Filter, View    |
+| Dashboard | Quotes        | Quote Summary   | Filter, View    |
+| Dashboard | Jobs          | Job Summary     | Filter, View    |
+| Dashboard | Finance       | Finance Summary | Filter, View    |
+| Dashboard | Notifications | Notifications   | View, Mark Read |
+| Dashboard | To-Dos        | To-Do Summary   | View, Complete  |
+
+### Dashboard widgets
+
+* Total Projects
+* Active Projects
+* Completed Projects
+* Pending Jobs
+* Pending Quotes
+* Quote Conversion
+* Receivables
+* Payables
+* Client Invoices
+* Vendor Invoices
+* Payments Received
+* Payments Due
+* Revenue
+* Expenses
+* Profit
+* Upcoming Deadlines
+
+---
+
+# MODULE 02 — Quotes
+
+Protemos treats a **Quote as a potential Project**. Quotes can contain files, CAT logs and receivables and can subsequently become projects. ([Protemos Wiki][1])
+
+## Menu
+
+**Quotes**
+
+### Submenus
+
+* All Quotes
+* New Quote
+* Quote Requests
+* Multi-Quotes
+* Quote Templates
+* Filters
+* Export
+
+### Quote List Page
+
+**Columns**
+
+* Quote #
+* Client
+* Quote Date
+* Valid Until
+* Manager
+* Currency
+* Amount
+* Status
+* Created Date
+
+### Buttons
+
+* `+ New Quote`
+* View
+* Edit
+* Clone
+* Send
+* Download PDF
+* Convert to Project
+* Cancel
+* Delete
+* Export Excel
+
+---
+
+## Quote Details Page
+
+### Tabs
+
+1. Details
+2. Files
+3. CAT Logs
+4. Receivables
+5. Jobs
+6. Messages
+7. History
+
+### Quote → Details
+
+Buttons:
+
+* Edit
+* Save
+* Send
+* Clone
+* Convert to Project
+* Cancel
+
+### Quote → Files
+
+Buttons:
+
+* Upload File
+* Add URL
+* Download
+* Delete
+
+### Quote → CAT Logs
+
+Buttons:
+
+* Upload CAT Log
+* Add Manually
+* Calculate
+* Edit
+* Delete
+
+### Quote → Receivables
+
+Buttons:
+
+* Add Receivable
+* Edit
+* Delete
+
+### Quote → Jobs
+
+Buttons:
+
+* Add Job
+* Assign Vendor
+* Edit
+* Delete
+
+### Quote → Messages
+
+Buttons:
+
+* New Message
+* Reply
+* Attach File
+
+---
+
+# MODULE 03 — Multi-Quotes
+
+A Multi-Quote represents multiple quote options for the same potential project. The official manual confirms that single quotes are created first and then grouped into a multi-quote. ([Protemos Wiki][1])
+
+## Menu
+
+**Quotes → Multi-Quotes**
+
+### Pages
+
+* Multi-Quote List
+* New Multi-Quote
+* Multi-Quote Details
+
+### Actions
+
+* Create
+* Add Option Quote
+* Remove Option
+* Send
+* Download PDF
+* Accept Option
+* Reject
+* Cancel
+
+### Relationship
+
+```text
+Client
+  │
+  ▼
+Multi Quote
+  │
+  ├── Quote Option A
+  ├── Quote Option B
+  └── Quote Option C
+```
+
+---
+
+# MODULE 04 — Projects
+
+## Menu
+
+**Projects**
+
+### Submenus
+
+* All Projects
+* New Project
+* Active Projects
+* Completed Projects
+* Cancelled Projects
+* Project Templates
+* Filters
+* Export
+
+### Project List
+
+Columns:
+
+* Project #
+* Client
+* Project Name
+* Manager
+* Service
+* Language
+* Deadline
+* Status
+* Revenue
+* Cost
+* Profit
+
+### Buttons
+
+* New Project
+* View
+* Edit
+* Clone
+* Complete
+* Cancel
+* Delete
+* Export
+
+---
+
+# Project Details
+
+This is one of the most important pages.
+
+### Tabs
+
+```text
+Project
+ ├── Details
+ ├── Files
+ ├── Jobs
+ ├── Workflow
+ ├── Finances
+ ├── Messages
+ ├── To-Dos
+ └── History
+```
+
+The official Protemos project sections are **Details, Files, Jobs, Workflow and Finances**. ([Protemos Wiki][1])
+
+---
+
+## Project → Details
+
+Fields:
+
+* Project #
+* Client
+* Contact
+* Manager
+* Project Name
+* Description
+* Service
+* Specialization
+* Source Language
+* Target Language
+* Start Date
+* Due Date
+* Currency
+* Status
+* Tags
+
+Buttons:
+
+* Edit
+* Save
+* Clone
+* Complete
+* Cancel
+* Delete
+* Add Tag
+
+---
+
+## Project → Files
+
+Actions:
+
+* Upload
+* Add URL
+* Download
+* Delete
+* Rename
+* File History
+
+Relationship:
+
+```text
+Project
+   │
+   ├── Source Files
+   ├── Reference Files
+   └── Final Files
+```
+
+---
+
+# MODULE 05 — Jobs
+
+## Menu
+
+**Jobs**
+
+### Submenus
+
+* All Jobs
+* New Job
+* Active Jobs
+* Pending Jobs
+* Completed Jobs
+* Cancelled Jobs
+* Job Tenders
+* Filters
+* Export
+
+### Job List
+
+Columns:
+
+* Job #
+* Project #
+* Vendor
+* Service
+* Language Pair
+* Start Date
+* Deadline
+* Status
+* Payable
+* Manager
+
+### Actions
+
+* New Job
+* View
+* Edit
+* Assign Vendor
+* Change Vendor
+* Send PO
+* Upload File
+* Complete
+* Cancel
+* Clone
+* Export
+
+---
+
+# Job Details
+
+### Tabs
+
+* Details
+* Files
+* Payables
+* Messages
+* History
+
+### Job Details Fields
+
+* Job #
+* Project
+* Vendor
+* Service
+* Language Pair
+* Description
+* Instructions
+* Start Date
+* Deadline
+* Status
+* Quantity
+* Unit
+* Rate
+* Amount
+
+---
+
+# MODULE 06 — Workflow
+
+Workflow is connected to Jobs.
+
+```text
+Project
+   │
+   ▼
+Job 1 — Translation
+   │
+   ▼
+Job 2 — Editing
+   │
+   ▼
+Job 3 — Proofreading
+   │
+   ▼
+Job 4 — QA
+```
+
+The official system supports chains of consecutive jobs and predefined job-chain templates. ([Protemos Wiki][1])
+
+## Menu
+
+**Projects → Workflow**
+
+### Pages
+
+* Workflow
+* Workflow Templates
+* Job Chain Templates
+
+### Actions
+
+* Add Job
+* Link Job
+* Reorder
+* Add Template
+* Remove Job
+* Save Workflow
+
+---
+
+# MODULE 07 — Clients
+
+## Menu
+
+**Clients**
+
+### Submenus
+
+* All Clients
+* New Client
+* Contacts
+* Prices
+* Receivables
+* Invoices
+* Payments
+* Documents
+* Filters
+* Import
+* Export
+
+The official client profile includes general information, contacts, prices, taxes and documents. ([Protemos Wiki][1])
+
+---
+
+# Client List
+
+Columns:
+
+* Client #
+* Company
+* Primary Contact
+* Email
+* Country
+* Currency
+* Status
+* Outstanding
+* Projects
+
+Buttons:
+
+* New Client
+* View
+* Edit
+* Disable
+* Delete
+* Import
+* Export
+
+---
+
+# Client Details
+
+### Tabs
+
+```text
+Client
+ ├── General
+ ├── Contacts
+ ├── Prices
+ ├── Taxes
+ ├── Documents
+ ├── Quotes
+ ├── Projects
+ ├── Receivables
+ ├── Invoices
+ ├── Payments
+ ├── Messages
+ └── History
+```
+
+### General Actions
+
+* Edit
+* Save
+* Disable
+* Enable
+* Add Tag
+* Send Invitation
+
+### Contacts
+
+* Add Contact
+* Edit
+* Delete
+* Set Primary
+
+### Prices
+
+* Add Price
+* Edit
+* Delete
+* Import
+* Export
+
+### Taxes
+
+* Add Tax
+* Edit
+* Delete
+
+### Documents
+
+* Upload
+* Add URL
+* Download
+* Delete
+
+---
+
+# MODULE 08 — Vendors
+
+## Menu
+
+**Vendors**
+
+### Submenus
+
+* All Vendors
+* New Vendor
+* Applications
+* Contacts
+* Prices
+* Payables
+* Invoices
+* Payments
+* Documents
+* Availability
+* Filters
+* Import
+* Export
+
+Protemos supports vendor profiles, contacts, payment methods, prices, taxes, documents and vendor availability. ([Protemos Wiki][1])
+
+---
+
+# Vendor Details
+
+### Tabs
+
+```text
+Vendor
+ ├── General
+ ├── Contacts
+ ├── Payment Methods
+ ├── Prices
+ ├── Taxes
+ ├── Documents
+ ├── Jobs
+ ├── Payables
+ ├── Invoices
+ ├── Payments
+ ├── Availability
+ ├── Messages
+ └── History
+```
+
+### Actions
+
+* Edit
+* Disable
+* Enable
+* Send Invitation
+* Add Contact
+* Add Price
+* Add Payment Method
+* Upload Document
+* View Jobs
+* View Payables
+
+---
+
+# MODULE 09 — Receivables
+
+This is the **money the client owes the company**.
+
+## Menu
+
+**Clients → Receivables**
+
+### Pages
+
+* All Receivables
+* Outstanding
+* Paid
+* Overdue
+* Filters
+* Export
+
+### Actions
+
+* View
+* Edit
+* Link to Invoice
+* Unlink
+* Write Off
+
+### Relationship
+
+```text
+Client
+  │
+  ▼
+Project
+  │
+  ▼
+Receivable
+  │
+  ▼
+Client Invoice
+  │
+  ▼
+Client Payment
+```
+
+---
+
+# MODULE 10 — Client Invoices
+
+## Menu
+
+**Clients → Invoices**
+
+### Submenus
+
+* All Invoices
+* Draft
+* Sent
+* Paid
+* Partially Paid
+* Overdue
+* Written Off
+
+### Invoice Actions
+
+* New Invoice
+* Add Receivable
+* Edit
+* Send
+* Download PDF
+* Add Discount
+* Add Extra Charge
+* Add Tax
+* Record Payment
+* Write Off
+* Delete
+
+### Invoice Tabs
+
+```text
+Invoice
+ ├── Details
+ ├── Taxes
+ ├── Receivables
+ └── Payments
+```
+
+---
+
+# MODULE 11 — Client Payments
+
+## Menu
+
+**Clients → Payments**
+
+### Pages
+
+* All Payments
+* New Payment
+* Filters
+* Export
+
+### Actions
+
+* New Payment
+* Edit
+* Link Invoice
+* Unlink Invoice
+* Delete
+* Export
+
+Protemos records a client payment and then links it to the invoices being paid. It restricts invoice linking based on matching currency and legal entity. ([Protemos Wiki][1])
+
+### Relationship
+
+```text
+Client
+  │
+  ├── Invoice A ──┐
+  ├── Invoice B ──┼── Payment
+  └── Invoice C ──┘
+```
+
+This should therefore be a **many-to-many relationship**, not a simple `payment.invoice_id`.
+
+---
+
+# MODULE 12 — Payables
+
+Payables represent **money owed to vendors**.
+
+## Menu
+
+**Vendors → Payables**
+
+### Pages
+
+* All Payables
+* Outstanding
+* Invoiced
+* Paid
+* Filters
+* Export
+
+### Actions
+
+* View
+* Add to Invoice
+* Remove from Invoice
+* Write Off
+
+### Relationship
+
+```text
+Project
+   │
+   ▼
+Job
+   │
+   ▼
+Payable
+   │
+   ▼
+Vendor Invoice
+   │
+   ▼
+Vendor Payment
+```
+
+---
+
+# MODULE 13 — Vendor Invoices
+
+## Menu
+
+**Vendors → Invoices**
+
+### Submenus
+
+* All
+* Draft
+* Sent
+* Paid
+* Overdue
+* Written Off
+
+### Actions
+
+* Create Invoice
+* Add Payables
+* Edit
+* Send
+* Download PDF
+* Add Tax
+* Add Discount
+* Add Extra Charge
+* Record Payment
+* Write Off
+
+The official workflow allows selected vendor payables to be converted into a vendor invoice. ([Protemos Wiki][1])
+
+---
+
+# MODULE 14 — Vendor Payments
+
+## Menu
+
+**Vendors → Payments**
+
+### Pages
+
+* All Payments
+* New Payment
+* Filters
+* Export
+
+### Actions
+
+* New Payment
+* Link Invoice
+* Unlink Invoice
+* Edit
+* Delete
+* Export
+
+---
+
+# MODULE 15 — Expenses
+
+## Menu
+
+**Expenses**
+
+### Submenus
+
+* All Expenses
+* New Expense
+* Expense Categories
+* Filters
+* Reports
+* Export
+
+### Expense
+
+Fields:
+
+* Date
+* Category
+* Description
+* Amount
+* Currency
+* Tax
+* Payment Method
+* Project
+* Client
+* Attachment
+
+### Actions
+
+* Create
+* Edit
+* Delete
+* Approve
+* Export
+
+---
+
+# MODULE 16 — Files
+
+## Menu
+
+**Files**
+
+### Submenus
+
+* All Files
+* Project Files
+* Job Files
+* Client Files
+* Vendor Files
+* Quote Files
+* Filters
+* Export
+
+### Actions
+
+* Upload
+* Download
+* Preview
+* Rename
+* Delete
+* Add URL
+* Version
+
+The official documentation confirms file filtering/export and file attachments at client, vendor, quote and project/job levels. ([Protemos Wiki][1])
+
+---
+
+# MODULE 17 — Messages
+
+## Menu
+
+**Messages**
+
+### Pages
+
+* Inbox
+* Sent
+* Object Messages
+
+### Object Messages
+
+Messages can be attached to:
+
+* Client
+* Vendor
+* Quote
+* Project
+* Job
+* Invoice
+
+### Actions
+
+* New Message
+* Reply
+* Forward
+* Attach File
+* Mark Read
+* Delete
+
+Protemos explicitly provides communication around specific objects with clients and vendors. ([Protemos Wiki][1])
+
+---
+
+# MODULE 18 — To-Dos
+
+## Menu
+
+**To-Dos**
+
+### Submenus
+
+* My To-Dos
+* All To-Dos
+* Completed
+* Overdue
+* New To-Do
+
+### Fields
+
+* Title
+* Description
+* Assigned User
+* Due Date
+* Priority
+* Status
+* Related Object
+
+### Related Object
+
+```text
+To-Do
+ ├── Client
+ ├── Quote
+ ├── Project
+ ├── Job
+ ├── Vendor
+ └── Invoice
+```
+
+---
+
+# MODULE 19 — Reports
+
+The official Enterprise manual has dedicated reports for general finances, quotes, managers, clients, vendors, language pairs and services. ([Protemos Wiki][1])
+
+## Reports
+
+### General Finance
+
+* Monthly Finance — Receivables/Payables
+* Monthly Finance — Invoices
+* Monthly Finance — Payments
+
+### Quotes
+
+* Quote Conversion Rate
+* Quote Counts
+* Quote Totals
+* Quote Report Data
+
+### Managers
+
+* Income by Manager
+* Expenses by Manager
+* Profit by Manager
+* Income Share
+* Expense Share
+* Profit Share
+
+### Clients
+
+* Finance by Receivables/Payables
+* Income by Invoices
+* Income by Payments
+
+### Vendors
+
+* Expenses by Invoices
+* Expenses by Payments
+
+### Language Pairs
+
+* Income
+* Expenses
+* Profit
+* Profit Margin
+
+### Services
+
+* Income
+* Expenses
+* Profit
+* Profit Margin
+
+---
+
+# MODULE 20 — Settings
+
+## Settings → Account
+
+* Company Information
+* Account Owner
+* Default Currency
+* Default Legal Entity
+* Time Zone
+* Default Templates
+
+## Settings → Access Control
+
+* Roles
+* Managers
+* Permissions
+* Client Pools
+
+## Settings → System Values
+
+* Languages
+* Language Pairs
+* Services
+* Specializations
+* Units
+* Currencies
+
+## Settings → Object Codes
+
+* Quote Number
+* Project Number
+* Job Number
+* Invoice Number
+* Vendor Invoice Number
+* Payment Number
+
+## Settings → Payment Methods
+
+* Add
+* Edit
+* Disable
+* Delete
+* Set Default
+
+## Settings → Taxes
+
+* Tax List
+* Client Tax Sets
+* Vendor Tax Sets
+* Default Tax Sets
+
+## Settings → Reminders
+
+* Project Deadline
+* Job Deadline
+* Invoice Due
+* Overdue Notification
+
+## Settings → SMTP
+
+* SMTP Host
+* Port
+* Username
+* Password
+* Encryption
+* From Email
+* Test Email
+
+## Settings → Client Portal
+
+* Enable/Disable
+* Notification Settings
+* Default Managers
+* Client Permissions
+
+## Settings → Vendor Portal
+
+* Enable/Disable
+* Notification Settings
+* Vendor Permissions
+* Vendor Agreement
+* Vendor Application URL
+
+## Settings → Email Templates
+
+* Quote Email
+* Multi-Quote Email
+* Client Invoice Email
+
+## Settings → PDF Templates
+
+* Quote PDF
+* Client Invoice PDF
+* Vendor Invoice PDF
+* Job PO PDF
+
+## Settings → Integrations
+
+* Smartcat
+* memoQ
+* TQAuditor
+* QuickBooks
+
+These settings and integrations are explicitly documented in the Enterprise manual. ([Protemos Wiki][1])
+
+---
+
+# 21. My Profile
+
+## Menu
+
+**My Profile**
+
+### Pages
+
+* Personal Information
+* Username
+* Password
+* Time Zone
+* Notification Settings
+
+### Actions
+
+* Edit
+* Change Password
+* Save
+
+---
+
+# 22. Client Portal
+
+This should be treated as a **separate application area**, not simply another admin menu.
+
+The official client manual confirms client users can work with Quotes, Quote Requests, Projects, Payables, Invoices, Payments, Filters, Messages and Excel exports. ([Protemos Wiki][2])
+
+### Client Portal Menu
+
+```text
+Dashboard
+
+Quotes
+ ├── Quotes
+ └── Quote Requests
+
+Projects
+ ├── Projects
+ └── Project Details
+
+Payables
+
+Invoices
+
+Payments
+
+Messages
+
+My Profile
+```
+
+### Client capabilities
+
+* Request Quote
+* View Quote
+* Accept Quote
+* Reject Quote
+* Create Project
+* Upload Files
+* View Project
+* View Invoice
+* View Payment
+* Send Message
+* Export Data
+
+---
+
+# 23. Vendor Portal
+
+```text
+Dashboard
+
+Jobs
+ ├── Available Jobs
+ ├── My Jobs
+ └── Completed Jobs
+
+Files
+
+Payables
+
+Invoices
+
+Payments
+
+Messages
+
+Profile
+```
+
+### Vendor capabilities
+
+* Receive Job
+* Accept/Reject Job
+* Upload Work
+* Download Files
+* Submit Job
+* View Payable
+* View Invoice
+* View Payment
+* Communicate with Manager
+
+---
+
+# 24. Complete Database Relation Matrix
+
+This is the **most important part for Laravel development**.
+
+| Parent          | Relation | Child             | Purpose                              |
+| --------------- | -------- | ----------------- | ------------------------------------ |
+| users           | 1:N      | projects          | Manager owns projects                |
+| users           | 1:N      | quotes            | Manager handles quotes               |
+| users           | 1:N      | jobs              | Manager handles jobs                 |
+| clients         | 1:N      | client_contacts   | Client contacts                      |
+| clients         | 1:N      | client_prices     | Client pricing                       |
+| clients         | 1:N      | client_documents  | Client documents                     |
+| clients         | 1:N      | quotes            | Client requests quotes               |
+| clients         | 1:N      | projects          | Client projects                      |
+| clients         | 1:N      | receivables       | Money client owes                    |
+| clients         | 1:N      | client_invoices   | Client invoices                      |
+| clients         | 1:N      | client_payments   | Payments received                    |
+| vendors         | 1:N      | vendor_contacts   | Vendor contacts                      |
+| vendors         | 1:N      | vendor_prices     | Vendor pricing                       |
+| vendors         | 1:N      | vendor_documents  | Vendor documents                     |
+| vendors         | 1:N      | jobs              | Vendor receives jobs                 |
+| vendors         | 1:N      | payables          | Money owed to vendor                 |
+| vendors         | 1:N      | vendor_invoices   | Vendor invoices                      |
+| vendors         | 1:N      | vendor_payments   | Vendor payments                      |
+| quotes          | 1:N      | quote_files       | Quote documents                      |
+| quotes          | 1:N      | quote_receivables | Proposed client charges              |
+| quotes          | 1:N      | quote_jobs        | Proposed work                        |
+| quotes          | 1:1/N    | projects          | Accepted quote → project             |
+| projects        | 1:N      | project_files     | Project files                        |
+| projects        | 1:N      | jobs              | Project jobs                         |
+| projects        | 1:N      | receivables       | Client charges                       |
+| projects        | 1:N      | payables          | Vendor costs                         |
+| jobs            | 1:N      | job_files         | Job files                            |
+| jobs            | 1:N      | payables          | Vendor cost                          |
+| receivables     | N:M      | client_invoices   | Receivables can be invoiced together |
+| client_invoices | N:M      | client_payments   | One payment can cover invoices       |
+| payables        | N:M      | vendor_invoices   | Vendor invoice can contain payables  |
+| vendor_invoices | N:M      | vendor_payments   | Payment can cover invoices           |
+| projects        | 1:N      | workflows         | Project workflow                     |
+| workflows       | 1:N      | jobs              | Workflow jobs                        |
+| clients         | 1:N      | messages          | Client communication                 |
+| vendors         | 1:N      | messages          | Vendor communication                 |
+| projects        | 1:N      | messages          | Project communication                |
+| jobs            | 1:N      | messages          | Job communication                    |
+| projects        | 1:N      | todos             | Project tasks                        |
+| jobs            | 1:N      | todos             | Job tasks                            |
+
+---
+
+# 25. Recommended Core Database ER Structure
+
+For the Laravel application, I would structure the core database approximately like this:
+
+```text
+users
+ │
+ ├────────────── projects
+ │                    │
+ │                    ├──────── project_files
+ │                    │
+ │                    ├──────── jobs
+ │                    │             │
+ │                    │             ├── job_files
+ │                    │             └── payables
+ │                    │                    │
+ │                    │                    ▼
+ │                    │              vendor_invoices
+ │                    │                    │
+ │                    │                    ▼
+ │                    │              vendor_payments
+ │                    │
+ │                    └──────── receivables
+ │                                  │
+ │                                  ▼
+ │                            client_invoices
+ │                                  │
+ │                                  ▼
+ │                            client_payments
+ │
+ └──────────── quotes
+                   │
+                   ├── quote_files
+                   ├── quote_receivables
+                   └── quote_jobs
+
+
+clients
+ │
+ ├── client_contacts
+ ├── client_prices
+ ├── client_taxes
+ ├── quotes
+ ├── projects
+ ├── receivables
+ ├── client_invoices
+ └── client_payments
+
+
+vendors
+ │
+ ├── vendor_contacts
+ ├── vendor_prices
+ ├── vendor_taxes
+ ├── jobs
+ ├── payables
+ ├── vendor_invoices
+ └── vendor_payments
+```
+
+---
+
+# 26. Critical Many-to-Many Tables
+
+These are easy to miss during quotation preparation.
+
+### Client Invoice ↔ Receivable
+
+```text
+client_invoices
+        │
+        │ N:M
+        ▼
+invoice_receivables
+        ▲
+        │
+receivables
+```
+
+### Client Payment ↔ Invoice
+
+```text
+client_payments
+        │
+        ▼
+payment_invoice
+        ▲
+        │
+client_invoices
+```
+
+### Vendor Invoice ↔ Payable
+
+```text
+vendor_invoices
+        │
+        ▼
+invoice_payables
+        ▲
+        │
+payables
+```
+
+### Vendor Payment ↔ Invoice
+
+```text
+vendor_payments
+        │
+        ▼
+payment_invoice
+        ▲
+        │
+vendor_invoices
+```
+
+This is important because the official Protemos workflow allows a payment to cover multiple invoices and invoices to contain selected receivables/payables. ([Protemos Wiki][1])
+
+---
+
+# 27. Master Data Relationships
+
+```text
+LANGUAGE
+    │
+    └── LANGUAGE PAIR
+             │
+             ├── CLIENT PRICE
+             │
+             ├── VENDOR PRICE
+             │
+             ├── QUOTE
+             │
+             ├── PROJECT
+             │
+             └── JOB
+
+
+SERVICE
+   │
+   ├── CLIENT PRICE
+   ├── VENDOR PRICE
+   ├── QUOTE
+   ├── PROJECT
+   └── JOB
+
+
+SPECIALIZATION
+   │
+   ├── CLIENT PRICE
+   ├── VENDOR PRICE
+   ├── QUOTE
+   └── PROJECT
+```
+
+---
+
+# 28. Page-Level Action Matrix
+
+This is useful for the developer and quotation.
+
+| Page            | Create | View | Edit |  Delete | Clone | Send | Approve | Export | PDF |
+| --------------- | :----: | :--: | :--: | :-----: | :---: | :--: | :-----: | :----: | :-: |
+| Clients         |    ✓   |   ✓  |   ✓  | Limited |   —   |   ✓  |    —    |    ✓   |  —  |
+| Vendors         |    ✓   |   ✓  |   ✓  | Limited |   —   |   ✓  |    —    |    ✓   |  —  |
+| Quotes          |    ✓   |   ✓  |   ✓  |    ✓    |   ✓   |   ✓  |    ✓    |    ✓   |  ✓  |
+| Multi-Quotes    |    ✓   |   ✓  |   ✓  |    ✓    |   —   |   ✓  |    ✓    |    ✓   |  ✓  |
+| Projects        |    ✓   |   ✓  |   ✓  | Limited |   ✓   |   ✓  |    ✓    |    ✓   |  —  |
+| Jobs            |    ✓   |   ✓  |   ✓  |    ✓    |   ✓   |   ✓  |    ✓    |    ✓   |  ✓  |
+| Workflows       |    ✓   |   ✓  |   ✓  |    ✓    |   —   |   —  |    —    |    —   |  —  |
+| Receivables     |    ✓   |   ✓  |   ✓  | Limited |   —   |   —  |    —    |    ✓   |  —  |
+| Client Invoices |    ✓   |   ✓  |   ✓  | Limited |   ✓   |   ✓  |    ✓    |    ✓   |  ✓  |
+| Client Payments |    ✓   |   ✓  |   ✓  |    ✓    |   —   |   —  |    —    |    ✓   |  —  |
+| Payables        |    ✓   |   ✓  |   ✓  | Limited |   —   |   —  |    —    |    ✓   |  —  |
+| Vendor Invoices |    ✓   |   ✓  |   ✓  | Limited |   ✓   |   ✓  |    ✓    |    ✓   |  ✓  |
+| Vendor Payments |    ✓   |   ✓  |   ✓  |    ✓    |   —   |   —  |    —    |    ✓   |  —  |
+| Expenses        |    ✓   |   ✓  |   ✓  |    ✓    |   —   |   —  |    ✓    |    ✓   |  —  |
+| Files           |    ✓   |   ✓  |   ✓  |    ✓    |   —   |   —  |    —    |    ✓   |  —  |
+| Messages        |    ✓   |   ✓  |   ✓  |    ✓    |   —   |   ✓  |    —    |    —   |  —  |
+| To-Dos          |    ✓   |   ✓  |   ✓  |    ✓    |   —   |   —  |    ✓    |    ✓   |  —  |
+
+**Note:** "Limited" deletion means the record should generally become **inactive/disabled** once it is referenced by projects, invoices, payments or jobs. Protemos itself prevents deletion of certain clients/vendors that are already used in transactional records. ([Protemos Wiki][1])
+
+---
+
+# 29. Most Important Status Relationships
+
+## Quote
+
+```text
+Draft
+ ↓
+Sent
+ ↓
+Accepted ─────→ Project
+ │
+ └→ Rejected
+```
+
+## Project
+
+```text
+New
+ ↓
+In Progress
+ ↓
+Completed
+
+or
+
+New → Cancelled
+```
+
+## Job
+
+```text
+New
+ ↓
+Assigned
+ ↓
+In Progress
+ ↓
+Submitted
+ ↓
+Accepted
+ ↓
+Completed
+```
+
+## Client Invoice
+
+```text
+Draft
+ ↓
+Sent
+ ↓
+Partially Paid
+ ↓
+Paid
+
+or
+
+Overdue
+ ↓
+Paid
+```
+
+## Vendor Invoice
+
+```text
+Draft
+ ↓
+Sent
+ ↓
+Partially Paid
+ ↓
+Paid
+
+or
+
+Written Off
+```
+
+---
+
+# 30. The Complete Business Flow
+
+This is the workflow I would put directly into the SOW:
+
+```text
+                         ┌──────────┐
+                         │  CLIENT  │
+                         └────┬─────┘
+                              │
+                    Quote Request
+                              │
+                              ▼
+                         ┌─────────┐
+                         │  QUOTE  │
+                         └────┬────┘
+                              │
+                    ┌─────────┴─────────┐
+                    │                   │
+                 Rejected            Accepted
+                    │                   │
+                    ▼                   ▼
+                  CLOSED             PROJECT
+                                        │
+                  ┌─────────────────────┼─────────────────────┐
+                  │                     │                     │
+                  ▼                     ▼                     ▼
+                FILES                 JOBS               RECEIVABLES
+                                        │                     │
+                                        ▼                     ▼
+                                     VENDOR              CLIENT INVOICE
+                                        │                     │
+                                        ▼                     ▼
+                                     PAYABLE             CLIENT PAYMENT
+                                        │
+                                        ▼
+                                  VENDOR INVOICE
+                                        │
+                                        ▼
+                                  VENDOR PAYMENT
+                                        │
+                                        ▼
+                                  PROJECT COMPLETE
+                                        │
+                                        ▼
+                                    REPORTS
+```
+
+---
+
+# 31. Recommended Laravel Model Structure
+
+For the actual development quotation, these should be treated as the **core models**:
+
+```text
+User
+Role
+Permission
+
+Client
+ClientContact
+ClientPrice
+ClientTax
+ClientDocument
+
+Vendor
+VendorContact
+VendorPrice
+VendorTax
+VendorDocument
+
+Quote
+QuoteItem
+QuoteFile
+QuoteReceivable
+QuoteJob
+MultiQuote
+MultiQuoteOption
+
+Project
+ProjectFile
+ProjectJob
+ProjectWorkflow
+ProjectReceivable
+ProjectPayable
+ProjectTemplate
+
+Job
+JobFile
+JobPayable
+JobWorkflow
+
+Receivable
+ClientInvoice
+ClientInvoiceItem
+ClientPayment
+ClientPaymentInvoice
+
+Payable
+VendorInvoice
+VendorInvoiceItem
+VendorPayment
+VendorPaymentInvoice
+
+Expense
+
+Language
+LanguagePair
+Service
+Specialization
+Currency
+Tax
+PaymentMethod
+
+Message
+Notification
+Todo
+
+File
+FileVersion
+
+EmailTemplate
+PdfTemplate
+AuditLog
+```
+
+---
+
+# 32. What Should Be Included in the Quotation
+
+I would now divide the development quotation into these **functional packages**, rather than quoting every screen independently:
+
+| Package                   | Main Modules                                                     |
+| ------------------------- | ---------------------------------------------------------------- |
+| **1. Core System**        | Login, Users, Roles, Permissions, Dashboard                      |
+| **2. Master Data**        | Languages, Services, Specializations, Currency, Taxes            |
+| **3. CRM**                | Clients, Contacts, Prices, Documents                             |
+| **4. Vendor Management**  | Vendors, Contacts, Prices, Availability, Applications            |
+| **5. Quotation**          | Quotes, Multi-Quotes, Quote Files, CAT Logs, Receivables         |
+| **6. Project Management** | Projects, Files, Jobs, Workflow, Templates                       |
+| **7. Client Finance**     | Receivables, Client Invoices, Client Payments                    |
+| **8. Vendor Finance**     | Payables, Vendor Invoices, Vendor Payments                       |
+| **9. Communication**      | Messages, Notifications, Email                                   |
+| **10. Task Management**   | To-Dos, Reminders                                                |
+| **11. Reports**           | Finance, Clients, Vendors, Projects, Quotes, Services, Languages |
+| **12. Templates**         | PDF, Email, Quote, Invoice, PO                                   |
+| **13. Portals**           | Client Portal, Vendor Portal                                     |
+| **14. Integrations**      | Smartcat, memoQ, TQAuditor, QuickBooks                           |
+| **15. Import/Export**     | Excel/CSV                                                        |
+| **16. Audit & System**    | Logs, Object Codes, Settings, SMTP                               |
+
+This gives us a **much more defensible basis for pricing**. The official Enterprise manual confirms these functional areas, including client/vendor management, quote/project creation, project workflows, invoices/payments, reports, portals, templates and integrations. ([Protemos Wiki][1])
+
+### One important distinction for the quotation
+
+I would **not** call this simply a "Protemos clone." In the SOW, I'd describe it as:
+
+> **Web-Based Translation Management System (TMS) with CRM, Project Management, Vendor Management, Workflow, Financial Management, Client/Vendor Portals, Reporting and Third-Party Integrations.**
+
+That gives you room to implement the same **business functionality and relationships** without making the quotation dependent on copying Protemos's UI.
+
+Yes. For this system, I recommend designing the MySQL database around the **business relationships**, not around the menu structure.
+
+The most important relationship is:
+
+**Client → Quote → Project → Job → Vendor**
+
+and the financial flows are:
+
+**Project → Receivable → Client Invoice → Client Payment**
+
+**Job → Payable → Vendor Invoice → Vendor Payment**
+
+Below is a practical **Laravel + MySQL database structure** for the Protemos-like TMS.
+
+---
+
+# 1. Database Architecture
+
+```text
+                    ┌──────────────┐
+                    │    users     │
+                    └──────┬───────┘
+                           │
+        ┌──────────────────┼──────────────────┐
+        ▼                  ▼                  ▼
+     quotes            projects              jobs
+        │                  │                  │
+        │                  │                  ▼
+        │                  │               vendors
+        │                  │                  │
+        │                  ▼                  ▼
+        │              receivables         payables
+        │                  │                  │
+        │                  ▼                  ▼
+        │          client_invoices      vendor_invoices
+        │                  │                  │
+        │                  ▼                  ▼
+        │          client_payments      vendor_payments
+        │
+        ▼
+     projects
+```
+
+---
+
+# 2. Core Database Tables
+
+I would divide the database into these groups:
+
+### A. Authentication
+
+* users
+* roles
+* permissions
+* role_user
+* permission_role
+
+### B. Master Data
+
+* languages
+* language_pairs
+* services
+* specializations
+* currencies
+* taxes
+* payment_methods
+* units
+
+### C. CRM
+
+* clients
+* client_contacts
+* client_prices
+* client_documents
+* vendors
+* vendor_contacts
+* vendor_prices
+* vendor_documents
+
+### D. Sales / Quotes
+
+* quotes
+* quote_items
+* quote_files
+* quote_receivables
+* quote_jobs
+* multi_quotes
+* multi_quote_quotes
+
+### E. Projects
+
+* projects
+* project_files
+* project_jobs
+* project_workflows
+* workflow_templates
+* workflow_template_steps
+* project_templates
+
+### F. Jobs
+
+* jobs
+* job_files
+* job_payables
+* job_status_history
+
+### G. Client Finance
+
+* receivables
+* client_invoices
+* client_invoice_items
+* client_payments
+* client_payment_invoices
+
+### H. Vendor Finance
+
+* payables
+* vendor_invoices
+* vendor_invoice_items
+* vendor_payments
+* vendor_payment_invoices
+
+### I. Other
+
+* expenses
+* expense_categories
+* todos
+* messages
+* notifications
+* files
+* file_versions
+* audit_logs
+
+### J. Templates / Settings
+
+* email_templates
+* pdf_templates
+* company_settings
+* system_settings
+
+---
+
+# 3. USERS & ACCESS CONTROL
+
+## `users`
+
+```sql
+CREATE TABLE users (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(191) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(30) NULL,
+    timezone VARCHAR(100) NULL,
+    status ENUM('active','inactive','blocked') DEFAULT 'active',
+    email_verified_at TIMESTAMP NULL,
+    remember_token VARCHAR(100) NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL
+);
+```
+
+---
+
+## `roles`
+
+```text
+1  Super Admin
+2  Administrator
+3  Project Manager
+4  Sales Manager
+5  Accountant
+6  Client Manager
+7  Vendor Manager
+8  Staff
+```
+
+```sql
+CREATE TABLE roles (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL
+);
+```
+
+---
+
+## `permissions`
+
+```sql
+CREATE TABLE permissions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL UNIQUE,
+    module VARCHAR(100) NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL
+);
+```
+
+---
+
+## `role_user`
+
+```sql
+CREATE TABLE role_user (
+    role_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+
+    PRIMARY KEY (role_id, user_id),
+
+    FOREIGN KEY (role_id)
+        REFERENCES roles(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+```
+
+---
+
+# 4. MASTER DATA
+
+## `languages`
+
+```sql
+CREATE TABLE languages (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(20) NOT NULL UNIQUE,
+    status ENUM('active','inactive') DEFAULT 'active',
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL
+);
+```
+
+Example:
+
+```text
+1 English     en
+2 Hindi       hi
+3 French      fr
+4 German      de
+```
+
+---
+
+# 5. LANGUAGE PAIRS
+
+## `language_pairs`
+
+```sql
+CREATE TABLE language_pairs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    source_language_id BIGINT UNSIGNED NOT NULL,
+    target_language_id BIGINT UNSIGNED NOT NULL,
+    status ENUM('active','inactive') DEFAULT 'active',
+
+    UNIQUE(source_language_id, target_language_id),
+
+    FOREIGN KEY (source_language_id)
+        REFERENCES languages(id),
+
+    FOREIGN KEY (target_language_id)
+        REFERENCES languages(id)
+);
+```
+
+Relationship:
+
+```text
+languages
+   │
+   ├── source_language
+   │
+   └── target_language
+```
+
+---
+
+# 6. SERVICES
+
+## `services`
+
+```sql
+CREATE TABLE services (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    code VARCHAR(50) NULL UNIQUE,
+    description TEXT NULL,
+    status ENUM('active','inactive') DEFAULT 'active',
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL
+);
+```
+
+Examples:
+
+```text
+Translation
+Editing
+Proofreading
+Interpretation
+Localization
+Transcription
+Subtitling
+DTP
+```
+
+---
+
+# 7. SPECIALIZATIONS
+
+```sql
+CREATE TABLE specializations (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    description TEXT NULL,
+    status ENUM('active','inactive') DEFAULT 'active',
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL
+);
+```
+
+Examples:
+
+```text
+Legal
+Medical
+Technical
+Financial
+Marketing
+IT
+Engineering
+```
+
+---
+
+# 8. CLIENTS
+
+## `clients`
+
+```sql
+CREATE TABLE clients (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    client_code VARCHAR(50) NOT NULL UNIQUE,
+
+    company_name VARCHAR(200) NOT NULL,
+
+    email VARCHAR(191) NULL,
+    phone VARCHAR(30) NULL,
+
+    address TEXT NULL,
+    city VARCHAR(100) NULL,
+    state VARCHAR(100) NULL,
+    country VARCHAR(100) NULL,
+    postal_code VARCHAR(30) NULL,
+
+    currency_id BIGINT UNSIGNED NULL,
+
+    payment_terms INT DEFAULT 0,
+
+    tax_number VARCHAR(100) NULL,
+
+    status ENUM('active','inactive') DEFAULT 'active',
+
+    manager_id BIGINT UNSIGNED NULL,
+
+    notes TEXT NULL,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id),
+
+    FOREIGN KEY (manager_id)
+        REFERENCES users(id)
+);
+```
+
+---
+
+# 9. CLIENT CONTACTS
+
+```sql
+CREATE TABLE client_contacts (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    client_id BIGINT UNSIGNED NOT NULL,
+
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(191) NULL,
+    phone VARCHAR(30) NULL,
+    designation VARCHAR(100) NULL,
+
+    is_primary BOOLEAN DEFAULT FALSE,
+
+    status ENUM('active','inactive') DEFAULT 'active',
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (client_id)
+        REFERENCES clients(id)
+        ON DELETE CASCADE
+);
+```
+
+Relationship:
+
+```text
+Client
+  │
+  └── 1:N Client Contacts
+```
+
+---
+
+# 10. VENDORS
+
+```sql
+CREATE TABLE vendors (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    vendor_code VARCHAR(50) NOT NULL UNIQUE,
+
+    name VARCHAR(200) NOT NULL,
+
+    vendor_type ENUM(
+        'individual',
+        'company'
+    ) DEFAULT 'individual',
+
+    email VARCHAR(191) NULL,
+    phone VARCHAR(30) NULL,
+
+    address TEXT NULL,
+    city VARCHAR(100) NULL,
+    state VARCHAR(100) NULL,
+    country VARCHAR(100) NULL,
+    postal_code VARCHAR(30) NULL,
+
+    currency_id BIGINT UNSIGNED NULL,
+
+    tax_number VARCHAR(100) NULL,
+
+    payment_terms INT DEFAULT 0,
+
+    status ENUM('active','inactive') DEFAULT 'active',
+
+    manager_id BIGINT UNSIGNED NULL,
+
+    notes TEXT NULL,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id),
+
+    FOREIGN KEY (manager_id)
+        REFERENCES users(id)
+);
+```
+
+---
+
+# 11. CLIENT / VENDOR PRICES
+
+Instead of putting pricing directly into clients/vendors, keep separate tables.
+
+## `client_prices`
+
+```sql
+CREATE TABLE client_prices (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    client_id BIGINT UNSIGNED NOT NULL,
+    service_id BIGINT UNSIGNED NOT NULL,
+    language_pair_id BIGINT UNSIGNED NULL,
+    specialization_id BIGINT UNSIGNED NULL,
+
+    unit_id BIGINT UNSIGNED NULL,
+
+    rate DECIMAL(15,4) NOT NULL,
+
+    currency_id BIGINT UNSIGNED NOT NULL,
+
+    effective_from DATE NULL,
+    effective_to DATE NULL,
+
+    status ENUM('active','inactive') DEFAULT 'active',
+
+    FOREIGN KEY (client_id) REFERENCES clients(id),
+    FOREIGN KEY (service_id) REFERENCES services(id),
+    FOREIGN KEY (language_pair_id) REFERENCES language_pairs(id),
+    FOREIGN KEY (specialization_id) REFERENCES specializations(id),
+    FOREIGN KEY (currency_id) REFERENCES currencies(id)
+);
+```
+
+Same concept for:
+
+```text
+vendor_prices
+```
+
+---
+
+# 12. QUOTES
+
+## `quotes`
+
+```sql
+CREATE TABLE quotes (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    quote_number VARCHAR(50) NOT NULL UNIQUE,
+
+    client_id BIGINT UNSIGNED NOT NULL,
+    contact_id BIGINT UNSIGNED NULL,
+
+    manager_id BIGINT UNSIGNED NULL,
+
+    quote_date DATE NOT NULL,
+    valid_until DATE NULL,
+
+    currency_id BIGINT UNSIGNED NOT NULL,
+
+    subtotal DECIMAL(18,2) DEFAULT 0,
+    discount DECIMAL(18,2) DEFAULT 0,
+    tax DECIMAL(18,2) DEFAULT 0,
+    total DECIMAL(18,2) DEFAULT 0,
+
+    status ENUM(
+        'draft',
+        'sent',
+        'accepted',
+        'rejected',
+        'expired',
+        'cancelled'
+    ) DEFAULT 'draft',
+
+    notes TEXT NULL,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (client_id)
+        REFERENCES clients(id),
+
+    FOREIGN KEY (contact_id)
+        REFERENCES client_contacts(id),
+
+    FOREIGN KEY (manager_id)
+        REFERENCES users(id),
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id)
+);
+```
+
+---
+
+# 13. QUOTE ITEMS
+
+```sql
+CREATE TABLE quote_items (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    quote_id BIGINT UNSIGNED NOT NULL,
+
+    service_id BIGINT UNSIGNED NULL,
+    language_pair_id BIGINT UNSIGNED NULL,
+    specialization_id BIGINT UNSIGNED NULL,
+
+    description TEXT NULL,
+
+    quantity DECIMAL(15,4) DEFAULT 1,
+
+    unit_id BIGINT UNSIGNED NULL,
+
+    rate DECIMAL(15,4) DEFAULT 0,
+
+    amount DECIMAL(18,2) DEFAULT 0,
+
+    FOREIGN KEY (quote_id)
+        REFERENCES quotes(id)
+        ON DELETE CASCADE
+);
+```
+
+---
+
+# 14. PROJECTS
+
+This is the **central table**.
+
+```sql
+CREATE TABLE projects (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    project_number VARCHAR(50) NOT NULL UNIQUE,
+
+    client_id BIGINT UNSIGNED NOT NULL,
+    quote_id BIGINT UNSIGNED NULL,
+
+    manager_id BIGINT UNSIGNED NULL,
+
+    name VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+
+    service_id BIGINT UNSIGNED NULL,
+    language_pair_id BIGINT UNSIGNED NULL,
+    specialization_id BIGINT UNSIGNED NULL,
+
+    start_date DATE NULL,
+    due_date DATE NULL,
+    completed_at DATETIME NULL,
+
+    currency_id BIGINT UNSIGNED NULL,
+
+    status ENUM(
+        'draft',
+        'active',
+        'completed',
+        'cancelled'
+    ) DEFAULT 'draft',
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (client_id)
+        REFERENCES clients(id),
+
+    FOREIGN KEY (quote_id)
+        REFERENCES quotes(id),
+
+    FOREIGN KEY (manager_id)
+        REFERENCES users(id),
+
+    FOREIGN KEY (service_id)
+        REFERENCES services(id),
+
+    FOREIGN KEY (language_pair_id)
+        REFERENCES language_pairs(id),
+
+    FOREIGN KEY (specialization_id)
+        REFERENCES specializations(id),
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id)
+);
+```
+
+Relationship:
+
+```text
+Client 1 ───── N Projects
+Quote  1 ───── 0/1 Project
+User   1 ───── N Projects
+```
+
+---
+
+# 15. JOBS
+
+```sql
+CREATE TABLE jobs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    job_number VARCHAR(50) NOT NULL UNIQUE,
+
+    project_id BIGINT UNSIGNED NOT NULL,
+
+    vendor_id BIGINT UNSIGNED NULL,
+
+    manager_id BIGINT UNSIGNED NULL,
+
+    parent_job_id BIGINT UNSIGNED NULL,
+
+    service_id BIGINT UNSIGNED NULL,
+    language_pair_id BIGINT UNSIGNED NULL,
+    specialization_id BIGINT UNSIGNED NULL,
+
+    description TEXT NULL,
+    instructions TEXT NULL,
+
+    start_date DATE NULL,
+    due_date DATE NULL,
+
+    quantity DECIMAL(15,4) DEFAULT 0,
+
+    unit_id BIGINT UNSIGNED NULL,
+
+    rate DECIMAL(15,4) DEFAULT 0,
+    total DECIMAL(18,2) DEFAULT 0,
+
+    status ENUM(
+        'new',
+        'assigned',
+        'in_progress',
+        'submitted',
+        'accepted',
+        'completed',
+        'cancelled'
+    ) DEFAULT 'new',
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (project_id)
+        REFERENCES projects(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (vendor_id)
+        REFERENCES vendors(id),
+
+    FOREIGN KEY (manager_id)
+        REFERENCES users(id),
+
+    FOREIGN KEY (parent_job_id)
+        REFERENCES jobs(id),
+
+    FOREIGN KEY (service_id)
+        REFERENCES services(id),
+
+    FOREIGN KEY (language_pair_id)
+        REFERENCES language_pairs(id)
+);
+```
+
+### Why `parent_job_id`?
+
+For:
+
+```text
+Translation
+     ↓
+Editing
+     ↓
+Proofreading
+     ↓
+QA
+```
+
+---
+
+# 16. WORKFLOW
+
+## `workflow_templates`
+
+```sql
+CREATE TABLE workflow_templates (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    name VARCHAR(150) NOT NULL,
+    description TEXT NULL,
+
+    status ENUM('active','inactive') DEFAULT 'active',
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL
+);
+```
+
+## `workflow_template_steps`
+
+```sql
+CREATE TABLE workflow_template_steps (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    workflow_template_id BIGINT UNSIGNED NOT NULL,
+
+    sequence_no INT NOT NULL,
+
+    service_id BIGINT UNSIGNED NULL,
+
+    name VARCHAR(150) NOT NULL,
+
+    FOREIGN KEY (workflow_template_id)
+        REFERENCES workflow_templates(id)
+        ON DELETE CASCADE
+);
+```
+
+---
+
+# 17. PROJECT WORKFLOW
+
+```sql
+CREATE TABLE project_workflows (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    project_id BIGINT UNSIGNED NOT NULL,
+
+    workflow_template_id BIGINT UNSIGNED NULL,
+
+    status ENUM(
+        'pending',
+        'in_progress',
+        'completed',
+        'cancelled'
+    ) DEFAULT 'pending',
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (project_id)
+        REFERENCES projects(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (workflow_template_id)
+        REFERENCES workflow_templates(id)
+);
+```
+
+---
+
+# 18. RECEIVABLES
+
+**Receivable = money the client owes you.**
+
+```sql
+CREATE TABLE receivables (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    client_id BIGINT UNSIGNED NOT NULL,
+    project_id BIGINT UNSIGNED NULL,
+
+    description TEXT NULL,
+
+    quantity DECIMAL(15,4) DEFAULT 1,
+    rate DECIMAL(15,4) DEFAULT 0,
+
+    amount DECIMAL(18,2) NOT NULL,
+
+    currency_id BIGINT UNSIGNED NOT NULL,
+
+    due_date DATE NULL,
+
+    status ENUM(
+        'open',
+        'partially_invoiced',
+        'invoiced',
+        'paid',
+        'written_off'
+    ) DEFAULT 'open',
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (client_id)
+        REFERENCES clients(id),
+
+    FOREIGN KEY (project_id)
+        REFERENCES projects(id),
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id)
+);
+```
+
+---
+
+# 19. CLIENT INVOICES
+
+```sql
+CREATE TABLE client_invoices (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    invoice_number VARCHAR(50) NOT NULL UNIQUE,
+
+    client_id BIGINT UNSIGNED NOT NULL,
+
+    invoice_date DATE NOT NULL,
+    due_date DATE NULL,
+
+    currency_id BIGINT UNSIGNED NOT NULL,
+
+    subtotal DECIMAL(18,2) DEFAULT 0,
+    discount DECIMAL(18,2) DEFAULT 0,
+    tax DECIMAL(18,2) DEFAULT 0,
+    total DECIMAL(18,2) DEFAULT 0,
+
+    paid_amount DECIMAL(18,2) DEFAULT 0,
+
+    status ENUM(
+        'draft',
+        'sent',
+        'partially_paid',
+        'paid',
+        'overdue',
+        'cancelled',
+        'written_off'
+    ) DEFAULT 'draft',
+
+    notes TEXT NULL,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (client_id)
+        REFERENCES clients(id),
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id)
+);
+```
+
+---
+
+# 20. INVOICE ↔ RECEIVABLE
+
+Do **not** simply add `invoice_id` to `receivables`.
+
+Use a pivot table.
+
+```sql
+CREATE TABLE client_invoice_receivables (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    invoice_id BIGINT UNSIGNED NOT NULL,
+    receivable_id BIGINT UNSIGNED NOT NULL,
+
+    amount DECIMAL(18,2) NOT NULL,
+
+    UNIQUE(invoice_id, receivable_id),
+
+    FOREIGN KEY (invoice_id)
+        REFERENCES client_invoices(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (receivable_id)
+        REFERENCES receivables(id)
+);
+```
+
+This allows:
+
+```text
+Project A → Receivable 1 ─┐
+                          ├── Invoice #1001
+Project B → Receivable 2 ─┘
+```
+
+---
+
+# 21. CLIENT PAYMENTS
+
+```sql
+CREATE TABLE client_payments (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    payment_number VARCHAR(50) NOT NULL UNIQUE,
+
+    client_id BIGINT UNSIGNED NOT NULL,
+
+    payment_date DATE NOT NULL,
+
+    amount DECIMAL(18,2) NOT NULL,
+
+    currency_id BIGINT UNSIGNED NOT NULL,
+
+    payment_method_id BIGINT UNSIGNED NULL,
+
+    reference_number VARCHAR(150) NULL,
+
+    notes TEXT NULL,
+
+    status ENUM(
+        'received',
+        'cancelled'
+    ) DEFAULT 'received',
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (client_id)
+        REFERENCES clients(id),
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id),
+
+    FOREIGN KEY (payment_method_id)
+        REFERENCES payment_methods(id)
+);
+```
+
+---
+
+# 22. PAYMENT ↔ INVOICE
+
+```sql
+CREATE TABLE client_payment_invoices (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    payment_id BIGINT UNSIGNED NOT NULL,
+    invoice_id BIGINT UNSIGNED NOT NULL,
+
+    amount DECIMAL(18,2) NOT NULL,
+
+    UNIQUE(payment_id, invoice_id),
+
+    FOREIGN KEY (payment_id)
+        REFERENCES client_payments(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (invoice_id)
+        REFERENCES client_invoices(id)
+);
+```
+
+Example:
+
+```text
+Payment ₹50,000
+
+       │
+       ├── Invoice #101 → ₹20,000
+       ├── Invoice #102 → ₹15,000
+       └── Invoice #103 → ₹15,000
+```
+
+---
+
+# 23. PAYABLES
+
+**Payable = money you owe the vendor.**
+
+```sql
+CREATE TABLE payables (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    vendor_id BIGINT UNSIGNED NOT NULL,
+    project_id BIGINT UNSIGNED NULL,
+    job_id BIGINT UNSIGNED NULL,
+
+    description TEXT NULL,
+
+    quantity DECIMAL(15,4) DEFAULT 1,
+    rate DECIMAL(15,4) DEFAULT 0,
+
+    amount DECIMAL(18,2) NOT NULL,
+
+    currency_id BIGINT UNSIGNED NOT NULL,
+
+    due_date DATE NULL,
+
+    status ENUM(
+        'open',
+        'invoiced',
+        'paid',
+        'written_off'
+    ) DEFAULT 'open',
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (vendor_id)
+        REFERENCES vendors(id),
+
+    FOREIGN KEY (project_id)
+        REFERENCES projects(id),
+
+    FOREIGN KEY (job_id)
+        REFERENCES jobs(id),
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id)
+);
+```
+
+---
+
+# 24. VENDOR INVOICES
+
+```sql
+CREATE TABLE vendor_invoices (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    invoice_number VARCHAR(50) NOT NULL UNIQUE,
+
+    vendor_id BIGINT UNSIGNED NOT NULL,
+
+    invoice_date DATE NOT NULL,
+    due_date DATE NULL,
+
+    currency_id BIGINT UNSIGNED NOT NULL,
+
+    subtotal DECIMAL(18,2) DEFAULT 0,
+    tax DECIMAL(18,2) DEFAULT 0,
+    discount DECIMAL(18,2) DEFAULT 0,
+    total DECIMAL(18,2) DEFAULT 0,
+
+    paid_amount DECIMAL(18,2) DEFAULT 0,
+
+    status ENUM(
+        'draft',
+        'received',
+        'partially_paid',
+        'paid',
+        'overdue',
+        'cancelled',
+        'written_off'
+    ) DEFAULT 'draft',
+
+    notes TEXT NULL,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (vendor_id)
+        REFERENCES vendors(id),
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id)
+);
+```
+
+---
+
+# 25. VENDOR INVOICE ↔ PAYABLE
+
+```sql
+CREATE TABLE vendor_invoice_payables (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    invoice_id BIGINT UNSIGNED NOT NULL,
+    payable_id BIGINT UNSIGNED NOT NULL,
+
+    amount DECIMAL(18,2) NOT NULL,
+
+    UNIQUE(invoice_id, payable_id),
+
+    FOREIGN KEY (invoice_id)
+        REFERENCES vendor_invoices(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (payable_id)
+        REFERENCES payables(id)
+);
+```
+
+---
+
+# 26. VENDOR PAYMENTS
+
+```sql
+CREATE TABLE vendor_payments (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    payment_number VARCHAR(50) NOT NULL UNIQUE,
+
+    vendor_id BIGINT UNSIGNED NOT NULL,
+
+    payment_date DATE NOT NULL,
+
+    amount DECIMAL(18,2) NOT NULL,
+
+    currency_id BIGINT UNSIGNED NOT NULL,
+
+    payment_method_id BIGINT UNSIGNED NULL,
+
+    reference_number VARCHAR(150) NULL,
+
+    notes TEXT NULL,
+
+    status ENUM(
+        'paid',
+        'cancelled'
+    ) DEFAULT 'paid',
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (vendor_id)
+        REFERENCES vendors(id),
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id),
+
+    FOREIGN KEY (payment_method_id)
+        REFERENCES payment_methods(id)
+);
+```
+
+---
+
+# 27. VENDOR PAYMENT ↔ INVOICE
+
+```sql
+CREATE TABLE vendor_payment_invoices (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    payment_id BIGINT UNSIGNED NOT NULL,
+    invoice_id BIGINT UNSIGNED NOT NULL,
+
+    amount DECIMAL(18,2) NOT NULL,
+
+    UNIQUE(payment_id, invoice_id),
+
+    FOREIGN KEY (payment_id)
+        REFERENCES vendor_payments(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (invoice_id)
+        REFERENCES vendor_invoices(id)
+);
+```
+
+---
+
+# 28. FILE MANAGEMENT
+
+Instead of creating separate physical tables for every type of file, use a polymorphic structure.
+
+## `files`
+
+```sql
+CREATE TABLE files (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    uploaded_by BIGINT UNSIGNED NULL,
+
+    fileable_type VARCHAR(100) NOT NULL,
+    fileable_id BIGINT UNSIGNED NOT NULL,
+
+    original_name VARCHAR(255) NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path TEXT NOT NULL,
+
+    mime_type VARCHAR(150) NULL,
+    file_size BIGINT UNSIGNED NULL,
+
+    version INT DEFAULT 1,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    INDEX(fileable_type, fileable_id),
+
+    FOREIGN KEY (uploaded_by)
+        REFERENCES users(id)
+);
+```
+
+This allows:
+
+```text
+files
+ ├── Client
+ ├── Vendor
+ ├── Quote
+ ├── Project
+ ├── Job
+ ├── Invoice
+ └── Message
+```
+
+without creating seven separate file tables.
+
+---
+
+# 29. MESSAGES
+
+Use polymorphic relation:
+
+```sql
+CREATE TABLE messages (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    sender_id BIGINT UNSIGNED NOT NULL,
+
+    messageable_type VARCHAR(100) NULL,
+    messageable_id BIGINT UNSIGNED NULL,
+
+    subject VARCHAR(255) NULL,
+    message LONGTEXT NOT NULL,
+
+    parent_id BIGINT UNSIGNED NULL,
+
+    is_read BOOLEAN DEFAULT FALSE,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    INDEX(messageable_type, messageable_id),
+
+    FOREIGN KEY (sender_id)
+        REFERENCES users(id),
+
+    FOREIGN KEY (parent_id)
+        REFERENCES messages(id)
+);
+```
+
+---
+
+# 30. TO-DOS
+
+```sql
+CREATE TABLE todos (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    user_id BIGINT UNSIGNED NOT NULL,
+    assigned_to BIGINT UNSIGNED NULL,
+
+    todoable_type VARCHAR(100) NULL,
+    todoable_id BIGINT UNSIGNED NULL,
+
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+
+    priority ENUM(
+        'low',
+        'medium',
+        'high',
+        'urgent'
+    ) DEFAULT 'medium',
+
+    due_date DATETIME NULL,
+
+    status ENUM(
+        'pending',
+        'in_progress',
+        'completed',
+        'cancelled'
+    ) DEFAULT 'pending',
+
+    completed_at DATETIME NULL,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    INDEX(todoable_type, todoable_id),
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id),
+
+    FOREIGN KEY (assigned_to)
+        REFERENCES users(id)
+);
+```
+
+---
+
+# 31. EXPENSES
+
+```sql
+CREATE TABLE expense_categories (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    name VARCHAR(150) NOT NULL,
+
+    status ENUM('active','inactive') DEFAULT 'active'
+);
+```
+
+```sql
+CREATE TABLE expenses (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    category_id BIGINT UNSIGNED NULL,
+
+    project_id BIGINT UNSIGNED NULL,
+    client_id BIGINT UNSIGNED NULL,
+
+    expense_date DATE NOT NULL,
+
+    description TEXT NULL,
+
+    amount DECIMAL(18,2) NOT NULL,
+
+    currency_id BIGINT UNSIGNED NOT NULL,
+
+    tax_amount DECIMAL(18,2) DEFAULT 0,
+
+    payment_method_id BIGINT UNSIGNED NULL,
+
+    status ENUM(
+        'draft',
+        'approved',
+        'cancelled'
+    ) DEFAULT 'draft',
+
+    created_by BIGINT UNSIGNED NULL,
+
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+
+    FOREIGN KEY (category_id)
+        REFERENCES expense_categories(id),
+
+    FOREIGN KEY (project_id)
+        REFERENCES projects(id),
+
+    FOREIGN KEY (client_id)
+        REFERENCES clients(id),
+
+    FOREIGN KEY (currency_id)
+        REFERENCES currencies(id),
+
+    FOREIGN KEY (payment_method_id)
+        REFERENCES payment_methods(id),
+
+    FOREIGN KEY (created_by)
+        REFERENCES users(id)
+);
+```
+
+---
+
+# 32. CURRENCIES
+
+```sql
+CREATE TABLE currencies (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    code VARCHAR(10) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    symbol VARCHAR(10) NULL,
+
+    decimal_places TINYINT DEFAULT 2,
+
+    status ENUM('active','inactive') DEFAULT 'active'
+);
+```
+
+---
+
+# 33. TAXES
+
+```sql
+CREATE TABLE taxes (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    name VARCHAR(100) NOT NULL,
+
+    rate DECIMAL(8,4) NOT NULL,
+
+    type ENUM(
+        'percentage',
+        'fixed'
+    ) DEFAULT 'percentage',
+
+    status ENUM('active','inactive') DEFAULT 'active'
+);
+```
+
+---
+
+# 34. PAYMENT METHODS
+
+```sql
+CREATE TABLE payment_methods (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    name VARCHAR(100) NOT NULL,
+
+    status ENUM('active','inactive') DEFAULT 'active'
+);
+```
+
+Examples:
+
+```text
+Bank Transfer
+Cash
+PayPal
+Stripe
+Wise
+UPI
+Credit Card
+Other
+```
+
+---
+
+# 35. NOTIFICATIONS
+
+```sql
+CREATE TABLE notifications (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    user_id BIGINT UNSIGNED NOT NULL,
+
+    type VARCHAR(100) NOT NULL,
+
+    title VARCHAR(255) NOT NULL,
+
+    message TEXT NULL,
+
+    related_type VARCHAR(100) NULL,
+    related_id BIGINT UNSIGNED NULL,
+
+    read_at DATETIME NULL,
+
+    created_at TIMESTAMP NULL,
+
+    INDEX(related_type, related_id),
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+);
+```
+
+---
+
+# 36. AUDIT LOG
+
+This is important for an accounting/project-management system.
+
+```sql
+CREATE TABLE audit_logs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    user_id BIGINT UNSIGNED NULL,
+
+    auditable_type VARCHAR(100) NOT NULL,
+    auditable_id BIGINT UNSIGNED NOT NULL,
+
+    action VARCHAR(50) NOT NULL,
+
+    old_values JSON NULL,
+    new_values JSON NULL,
+
+    ip_address VARCHAR(45) NULL,
+    user_agent TEXT NULL,
+
+    created_at TIMESTAMP NULL,
+
+    INDEX(auditable_type, auditable_id),
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+);
+```
+
+Example:
+
+```text
+User: Admin
+Object: Invoice #INV-1001
+Action: Updated
+
+Old:
+{
+    "amount": 10000,
+    "status": "draft"
+}
+
+New:
+{
+    "amount": 12000,
+    "status": "sent"
+}
+```
+
+---
+
+# 37. MOST IMPORTANT ER RELATIONSHIP
+
+The database should ultimately behave like this:
+
+```text
+CLIENT
+ │
+ ├──────────── CONTACTS
+ │
+ ├──────────── PRICES
+ │
+ ├──────────── QUOTES
+ │                │
+ │                ├── ITEMS
+ │                ├── FILES
+ │                ├── RECEIVABLES
+ │                └── JOBS
+ │
+ └──────────── PROJECTS
+                  │
+                  ├── FILES
+                  │
+                  ├── WORKFLOW
+                  │
+                  ├── JOBS
+                  │     │
+                  │     ├── FILES
+                  │     │
+                  │     └── PAYABLES
+                  │             │
+                  │             ▼
+                  │       VENDOR INVOICE
+                  │             │
+                  │             ▼
+                  │       VENDOR PAYMENT
+                  │
+                  └── RECEIVABLES
+                         │
+                         ▼
+                    CLIENT INVOICE
+                         │
+                         ▼
+                    CLIENT PAYMENT
+```
+
+---
+
+# 38. Financial Calculation
+
+The database allows us to calculate project profitability without storing a manually entered "profit".
+
+Example:
+
+```text
+PROJECT #P-1001
+
+Client Revenue
+─────────────────────
+Receivable 1     ₹10,000
+Receivable 2     ₹ 5,000
+                 ───────
+Revenue          ₹15,000
+
+
+Vendor Cost
+─────────────────────
+Job 1 Payable    ₹5,000
+Job 2 Payable    ₹2,000
+                 ───────
+Vendor Cost      ₹7,000
+
+
+Other Expenses
+─────────────────────
+Expenses         ₹1,000
+
+
+PROJECT PROFIT
+─────────────────────
+₹15,000
+- ₹7,000
+- ₹1,000
+────────
+₹7,000
+```
+
+So:
+
+**Project Profit = Receivables − Payables − Project Expenses**
+
+This should preferably be calculated through queries/services rather than stored as a permanent value.
+
+---
+
+# 39. Recommended Laravel Model Relationships
+
+For Laravel Eloquent:
+
+```php
+Client
+    hasMany(ClientContact)
+    hasMany(ClientPrice)
+    hasMany(Quote)
+    hasMany(Project)
+    hasMany(Receivable)
+    hasMany(ClientInvoice)
+    hasMany(ClientPayment)
+```
+
+```php
+Quote
+    belongsTo(Client)
+    belongsTo(User, 'manager_id')
+    hasMany(QuoteItem)
+    hasMany(QuoteFile)
+    hasMany(QuoteReceivable)
+    hasMany(QuoteJob)
+    hasOne(Project)
+```
+
+```php
+Project
+    belongsTo(Client)
+    belongsTo(Quote)
+    belongsTo(User, 'manager_id')
+
+    hasMany(ProjectFile)
+    hasMany(Job)
+    hasMany(Receivable)
+    hasMany(Payable)
+    hasMany(ProjectWorkflow)
+```
+
+```php
+Job
+    belongsTo(Project)
+    belongsTo(Vendor)
+    belongsTo(User, 'manager_id')
+
+    hasMany(JobFile)
+    hasMany(Payable)
+
+    belongsTo(Job, 'parent_job_id')
+```
+
+```php
+Receivable
+    belongsTo(Client)
+    belongsTo(Project)
+
+    belongsToMany(
+        ClientInvoice::class,
+        'client_invoice_receivables'
+    );
+```
+
+```php
+ClientInvoice
+    belongsTo(Client)
+
+    belongsToMany(
+        Receivable::class,
+        'client_invoice_receivables'
+    );
+
+    belongsToMany(
+        ClientPayment::class,
+        'client_payment_invoices'
+    );
+```
+
+And the equivalent structure for Vendor → Payable → Vendor Invoice → Vendor Payment.
+
+---
+
+# 40. Final Recommended Table Count
+
+For the **core MVP**, I would target approximately:
+
+| Category              |            Tables |
+| --------------------- | ----------------: |
+| Authentication & RBAC |                 5 |
+| Master Data           |                 8 |
+| Clients               |               4–5 |
+| Vendors               |               4–5 |
+| Quotes                |               5–7 |
+| Projects              |               5–7 |
+| Jobs                  |               4–5 |
+| Client Finance        |                 5 |
+| Vendor Finance        |                 5 |
+| Files/Communication   |               4–5 |
+| Expenses              |                 2 |
+| Templates/Settings    |               4–6 |
+| Audit/Notifications   |               2–3 |
+| **Total**             | **~60–70 tables** |
+
+That is a reasonable size for a **serious Laravel/MySQL TMS**, rather than trying to squeeze the entire application into 15–20 tables.
+
+### One architectural recommendation
+
+I would **not copy the Protemos database 1:1**. Use Protemos as the **functional reference**, but build your own normalized schema around these three financial chains:
+
+```text
+CLIENT
+   ↓
+QUOTE
+   ↓
+PROJECT
+   ↓
+JOB
+   ↓
+VENDOR
+```
+
+```text
+PROJECT
+   ↓
+RECEIVABLE
+   ↓
+CLIENT INVOICE
+   ↓
+CLIENT PAYMENT
+```
+
+```text
+JOB
+   ↓
+PAYABLE
+   ↓
+VENDOR INVOICE
+   ↓
+VENDOR PAYMENT
+```
+
+
