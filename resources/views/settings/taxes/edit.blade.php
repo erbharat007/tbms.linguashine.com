@@ -3,13 +3,11 @@
         <x-page-header title="Edit tax" subtitle="Tax configuration." />
     </x-slot>
 
-    <div class="max-w-xl">
-        <x-card>
-            <form method="POST" action="{{ route('taxes.update', $tax) }}">
-                @csrf
-                @method('PUT')
-                @include('settings.taxes._form', ['isEdit' => true])
-            </form>
-        </x-card>
-    </div>
+    <x-card>
+        <form method="POST" action="{{ route('taxes.update', $tax) }}">
+            @csrf
+            @method('PUT')
+            @include('settings.taxes._form', ['isEdit' => true])
+        </form>
+    </x-card>
 </x-app-layout>

@@ -1,43 +1,37 @@
-<header class="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:px-6 lg:px-8">
-    <!-- Hamburger (mobile) -->
-    <button @click="sidebarOpen = ! sidebarOpen"
-            class="text-gray-500 hover:text-gray-700 focus:outline-none lg:hidden">
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
-    </button>
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+    </ul>
 
-    <div class="flex flex-1 items-center justify-end">
-        <!-- User Dropdown -->
-        <x-dropdown align="right" width="48">
-            <x-slot name="trigger">
-                <button class="inline-flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-gray-600 transition hover:bg-gray-50 focus:outline-none">
-                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                    </span>
-                    <span class="hidden text-left sm:block">
-                        <span class="block font-medium leading-tight text-gray-800">{{ Auth::user()->name }}</span>
-                        <span class="block text-xs leading-tight text-gray-400">{{ Auth::user()->role?->name }}</span>
-                    </span>
-                    <svg class="h-4 w-4 fill-current text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-            </x-slot>
-
-            <x-slot name="content">
-                <x-dropdown-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-dropdown-link>
-
-                <form method="POST" action="{{ route('logout') }}">
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <span class="d-inline-flex align-items-center">
+                    <span class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                    <span class="d-none d-sm-inline ml-2 text-dark">{{ Auth::user()->name }}</span>
+                    <i class="fas fa-angle-down ml-1 text-muted"></i>
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right user-menu">
+                <div class="px-3 py-2 border-bottom">
+                    <div class="font-weight-bold text-dark">{{ Auth::user()->name }}</div>
+                    <div class="small text-muted">{{ Auth::user()->role?->name ?? 'User' }}</div>
+                </div>
+                <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                    <i class="fas fa-user fa-fw mr-2 text-muted"></i> Profile
+                </a>
+                <form method="POST" action="{{ route('logout') }}" class="mb-0">
                     @csrf
-                    <x-dropdown-link :href="route('logout')"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-dropdown-link>
+                    <a href="{{ route('logout') }}" class="dropdown-item"
+                       onclick="event.preventDefault(); this.closest('form').submit();">
+                        <i class="fas fa-sign-out-alt fa-fw mr-2 text-muted"></i> Log Out
+                    </a>
                 </form>
-            </x-slot>
-        </x-dropdown>
-    </div>
-</header>
+            </div>
+        </li>
+    </ul>
+</nav>

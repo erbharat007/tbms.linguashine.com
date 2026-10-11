@@ -1,7 +1,6 @@
 {{--
     Client view tab navigation, mirroring Protemos.
     Expects: $client, $active (tab key).
-    Only "General info" is built; the rest are placeholders for later steps.
 --}}
 @php
     $tabs = [
@@ -15,22 +14,20 @@
     ];
 @endphp
 
-<div class="border-b border-gray-200">
-    <nav class="-mb-px flex flex-wrap gap-x-6 gap-y-2 text-sm">
+<div class="tabs-scroll">
+    <ul class="nav nav-tabs">
         @foreach ($tabs as $tab)
             @php($isActive = $tab['key'] === $active)
-            @if ($tab['enabled'])
-                <a href="{{ $tab['route'] }}"
-                   class="border-b-2 px-1 py-3 font-medium transition {{ $isActive ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">
-                    {{ $tab['label'] }}
-                </a>
-            @else
-                <span class="flex items-center gap-1.5 border-b-2 border-transparent px-1 py-3 font-medium text-gray-300"
-                      title="Coming soon">
-                    {{ $tab['label'] }}
-                    <span class="rounded bg-gray-100 px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wide text-gray-400">Soon</span>
-                </span>
-            @endif
+            <li class="nav-item">
+                @if ($tab['enabled'])
+                    <a href="{{ $tab['route'] }}" class="nav-link {{ $isActive ? 'active' : '' }}">{{ $tab['label'] }}</a>
+                @else
+                    <span class="nav-link disabled text-muted">
+                        {{ $tab['label'] }}
+                        <span class="badge badge-secondary ml-1">Soon</span>
+                    </span>
+                @endif
+            </li>
         @endforeach
-    </nav>
+    </ul>
 </div>

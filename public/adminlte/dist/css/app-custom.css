@@ -1,0 +1,502 @@
+/* TBMS custom tweaks on top of AdminLTE */
+
+/* Brand logo in the sidebar header (no white chip; sits on the dark bar) */
+.brand-link {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.brand-image-custom {
+    max-height: 40px;
+    width: auto;
+}
+
+/* Round avatar initial in the top navbar */
+.user-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: #337ab7;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* "Soon" placeholder links in the sidebar */
+.nav-sidebar .nav-link.disabled-link {
+    opacity: 0.55;
+    cursor: default;
+}
+.nav-sidebar .nav-link.disabled-link:hover {
+    background-color: transparent;
+}
+
+/* Slightly tighter page content top spacing */
+.content {
+    padding-top: 1rem;
+}
+
+/* ---- Protemos-matching button colors (Bootstrap 3 palette) ---- */
+.btn-primary {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #286090;
+    border-color: #204d74;
+    color: #fff;
+}
+.btn-danger {
+    background-color: #d9534f;
+    border-color: #d43f3a;
+    color: #fff;
+}
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active {
+    background-color: #c9302c;
+    border-color: #ac2925;
+    color: #fff;
+}
+.btn-outline-secondary {
+    background-color: #fff;
+    border-color: #ccc;
+    color: #333;
+}
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+    color: #333;
+}
+
+/* Table action icon buttons */
+.table .action-icon {
+    color: #6c757d;
+    padding: 0 .35rem;
+    font-size: .95rem;
+    line-height: 1;
+    background: none;
+    border: 0;
+}
+.table .action-icon:hover { color: #337ab7; }
+.table .action-icon.action-danger:hover { color: #d9534f; }
+
+/* Table headings: normal weight, subtle */
+.table thead th {
+    font-weight: 400;
+    color: #6c757d;
+    border-bottom-width: 1px;
+}
+/* Compact listing text */
+.table th,
+.table td {
+    font-size: 0.875rem;
+    vertical-align: middle;
+}
+
+/* Detail rows (client show, etc.) — label + value on one line, no awkward mid-word wrap */
+.detail-row {
+    display: flex;
+    align-items: flex-start;
+    font-size: 0.875rem;
+}
+.detail-row-label {
+    flex: 0 0 140px;
+    max-width: 140px;
+    padding-right: 12px;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+.detail-row-value {
+    flex: 1 1 auto;
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+/* Narrower label column inside compact right-hand cards */
+.col-lg-4 .detail-row-label,
+.col-md-4 .detail-row-label {
+    flex-basis: 110px;
+    max-width: 110px;
+}
+/* Wide labels for settings-style detail cards (long labels on one line) */
+.detail-rows-wide .detail-row-label {
+    flex-basis: 320px;
+    max-width: 320px;
+    white-space: nowrap;
+}
+/* Compact card headers on the client view */
+.card-title {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* ---- Sidebar: slightly narrower than AdminLTE default (250px) ---- */
+.main-sidebar,
+.main-sidebar::before {
+    width: 220px;
+}
+/* Prevent nav links from overflowing past the narrower sidebar (was causing the
+   expand/collapse angle to be pushed outside the 220px edge and clipped). */
+.nav-sidebar,
+.nav-sidebar .nav-item,
+.nav-sidebar .nav-treeview {
+    max-width: 100%;
+}
+.nav-sidebar .nav-link {
+    max-width: 100%;
+}
+/* Smaller, cleaner sidebar text */
+.nav-sidebar .nav-link p {
+    font-size: 0.9rem;
+}
+.nav-sidebar .nav-treeview .nav-link p {
+    font-size: 0.85rem;
+}
+/* Keep the expand/collapse angle visible within the narrower sidebar.
+   The parent link is the positioning context; pin the angle a bit further in and
+   let the label truncate so it never pushes the angle past the sidebar edge. */
+.nav-sidebar .nav-item > .nav-link {
+    position: relative;
+    overflow: hidden;
+}
+.nav-sidebar .nav-link > p {
+    margin-right: 1rem;              /* reserve room for the angle */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.nav-sidebar .nav-link > p > .right {
+    right: 0.5rem;
+}
+/* AdminLTE hardcodes 250px margins on these; override to match the 220px sidebar */
+.content-wrapper,
+.main-header,
+.main-footer {
+    margin-left: 220px !important;
+}
+/* When the sidebar is collapsed AdminLTE sets its own smaller margin — respect it */
+.sidebar-collapse .content-wrapper,
+.sidebar-collapse .main-header,
+.sidebar-collapse .main-footer {
+    margin-left: 4.6rem !important;
+}
+.brand-link {
+    width: 220px;
+}
+/* When collapsed, AdminLTE handles the rest via its own rules */
+
+/* ---- Sidebar active nav: keep Protemos blue, white text ---- */
+.nav-sidebar > .nav-item > .nav-link.active,
+.nav-sidebar > .nav-item > .nav-link.active:focus,
+.nav-sidebar > .nav-item > .nav-link.active:hover {
+    background-color: #337ab7;
+    color: #fff;
+}
+/* Child (treeview) active link: darker highlight, white text — not the washed-out default.
+   AdminLTE ships a high-specificity rule (white bg / dark text), so we override with matching
+   specificity + !important scoped to the dark sidebar. */
+.sidebar-dark-primary .nav-sidebar .nav-treeview > .nav-item > .nav-link.active,
+.sidebar-dark-primary .nav-sidebar .nav-treeview > .nav-item > .nav-link.active:focus,
+.sidebar-dark-primary .nav-sidebar .nav-treeview > .nav-item > .nav-link.active:hover {
+    background-color: #2b6396 !important;
+    color: #fff !important;
+}
+.sidebar-dark-primary .nav-sidebar .nav-treeview > .nav-item > .nav-link {
+    color: #c2c7d0;
+}
+.sidebar-dark-primary .nav-sidebar .nav-treeview > .nav-item > .nav-link:hover {
+    background-color: rgba(255,255,255,.08);
+    color: #fff;
+}
+/* Differentiate the expanded submenu area from the main menu: darker inset panel.
+   (No inset box-shadow — it rendered as a stray blue line at the sidebar's left edge.) */
+.sidebar-dark-primary .nav-sidebar .nav-item.menu-open > .nav-treeview {
+    background-color: rgba(0, 0, 0, 0.22);
+}
+/* Give submenu links a touch more left indent so hierarchy reads clearly */
+.nav-sidebar .nav-treeview > .nav-item > .nav-link {
+    padding-left: 1.4rem;
+}
+/* Submenu bullet icons: scale down to match the smaller submenu font.
+   AdminLTE sets an explicit icon font-size, so we override with higher specificity. */
+.sidebar-dark-primary .nav-sidebar .nav-treeview .nav-link .nav-icon,
+.nav-sidebar .nav-treeview > .nav-item > .nav-link > .nav-icon {
+    font-size: 0.65rem !important;
+    width: 1rem;
+    margin-top: 0;
+    margin-right: 0.5rem;
+    line-height: inherit;
+    align-self: center;
+    vertical-align: middle;
+}
+/* Center the submenu icon with its label vertically */
+.nav-sidebar .nav-treeview > .nav-item > .nav-link {
+    display: flex;
+    align-items: center;
+}
+
+/* ---- Rounded corners on all buttons ---- */
+.btn {
+    border-radius: 0.375rem;
+}
+.btn-sm {
+    border-radius: 0.3rem;
+}
+
+/* ---- Client view tabs: connected, active tab uses button blue, rounded top ---- */
+/* Horizontal scroll lives on the wrapper so the nav-tabs itself can render the
+   connector pointer below the active tab without being clipped. */
+.tabs-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: thin;          /* Firefox: slim scrollbar */
+    padding-bottom: 10px;           /* room for the connector + scrollbar */
+    margin-bottom: -1px;            /* pull the panel up flush to the tabs */
+}
+.tabs-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+.tabs-scroll::-webkit-scrollbar-thumb {
+    background: #c7ccd1;
+    border-radius: 3px;
+}
+.tabs-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+.nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 0 !important;
+    flex-wrap: nowrap;
+}
+.nav-tabs .nav-item {
+    white-space: nowrap;
+}
+.nav-tabs .nav-link {
+    color: #337ab7;
+    border: 1px solid transparent;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+    margin-bottom: -1px;
+    font-size: 0.825rem;      /* smaller tab label */
+    padding: 0.35rem 0.7rem;  /* shorter + narrower tabs */
+    line-height: 1.4;
+}
+/* Hover only on non-active, non-disabled tabs (fixes the active tab going white on hover) */
+.nav-tabs .nav-link:hover:not(.active):not(.disabled) {
+    border-color: #e9ecef #e9ecef #dee2e6;
+    background-color: #f1f3f5;
+    color: #286090;
+}
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:hover,
+.nav-tabs .nav-link.active:focus {
+    background-color: #337ab7;
+    border-color: #337ab7;
+    border-bottom-color: transparent;   /* no line under the active tab; the arrow bridges it */
+    color: #fff;
+}
+.nav-tabs .nav-link.disabled {
+    color: #adb5bd;
+    background: transparent;
+    border-color: transparent;
+}
+
+/* Panel that sits directly under the tabs so the active tab reads as connected.
+   A small pointer/notch under the active tab visually ties it to the panel. */
+.tab-panel {
+    position: relative;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-top: 0;                       /* no top line — lets the arrow stand out */
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+    padding: 1rem;
+    margin-top: 0;
+}
+.nav-tabs .nav-item {
+    position: relative;
+}
+/* Connector that ties the active tab to the panel below — an UP-pointing arrow
+   whose tip meets the active tab, sitting on the panel's top edge. Follows whichever
+   tab is active. */
+.nav-tabs .nav-link.active {
+    position: relative;
+}
+.nav-tabs .nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -7px;
+    margin-left: -7px;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #337ab7;   /* points UP toward the active tab */
+    z-index: 3;
+}
+/* Cards inside the tab panel: flatten so the panel is the single container */
+.tab-panel .card {
+    box-shadow: none;
+    border: 1px solid #e9ecef;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+}
+.tab-panel .row > [class^="col-"]:last-child .card:last-child,
+.tab-panel > .row:last-child .card:last-child {
+    margin-bottom: 0;
+}
+
+/* ---- Consistent form sizing across the admin panel ----
+   Match the compact font used on the client view (0.875rem) and shrink inputs a touch. */
+/* AdminLTE forces `label:not(...)` to 700; override with equal-or-higher specificity */
+label.form-label:not(.form-check-label):not(.custom-file-label),
+label.col-form-label:not(.form-check-label):not(.custom-file-label),
+.col-form-label {
+    font-size: 0.875rem;
+    font-weight: 400;           /* labels normal weight, not bold */
+    margin-bottom: 0.25rem;
+}
+.form-control,
+.custom-select {
+    font-size: 0.875rem;
+    height: calc(1.5em + 0.5rem + 2px);   /* a bit shorter than default */
+    padding: 0.25rem 0.6rem;
+}
+textarea.form-control {
+    height: auto;               /* let textareas grow by rows */
+}
+/* Join input-group members seamlessly (our rounded .form-control was leaving a gap) */
+.input-group > .form-control:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.input-group > .input-group-append > .input-group-text {
+    font-size: 0.875rem;
+}
+/* Two-column form grid with a comfortable gutter between the left/right columns.
+   Each column gets equal horizontal padding, so paired half-width fields have a
+   clear "imaginary divider" gap and the inputs sit a little in from the edges. */
+.form-grid {
+    margin-left: -1rem;
+    margin-right: -1rem;
+}
+.form-grid > [class^="col-"],
+.form-grid > [class*=" col-"] {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.form-text {
+    font-size: 0.8125rem;
+}
+/* Checkbox/radio labels: normal weight + consistent size.
+   AdminLTE's `label:not(.form-check-label):not(.custom-file-label)` (specificity 0,2,1)
+   bolds .custom-control-label, so match that specificity to win. */
+label.custom-control-label:not(.form-check-label):not(.custom-file-label) {
+    font-weight: 400;
+    font-size: 0.875rem;
+}
+/* Section headings inside forms: normal weight to match the rest */
+.card-body h3.h5 {
+    font-weight: 400;
+    font-size: 1rem;
+}
+/* Keep Select2 single-line box the same height/font as other inputs */
+.select2-container--bootstrap4 .select2-selection--single {
+    height: calc(1.5em + 0.5rem + 2px) !important;
+    font-size: 0.875rem;
+}
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
+    line-height: calc(1.5em + 0.5rem) !important;
+    padding-left: 0.6rem;
+}
+/* Match the arrow container to the full box height and vertically center the caret */
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow {
+    height: calc(1.5em + 0.5rem) !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+    right: 0.3rem;
+}
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b {
+    top: 50% !important;
+    margin-top: 0 !important;
+    transform: translateY(-50%);
+}
+
+/* Compact, softer flash alerts */
+.content .alert {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.875rem;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+}
+.content .alert .close {
+    padding: 0.5rem 0.9rem;
+    font-size: 1.1rem;
+}
+.content .alert-success {
+    background-color: #e6f4ea;
+    border-color: #c3e6cb;
+    color: #1e7e34;
+}
+.content .alert-danger {
+    background-color: #fdecea;
+    border-color: #f5c6cb;
+    color: #a71d2a;
+}
+.content .alert-info,
+.alert.alert-info {
+    background-color: #e7f3f6;
+    border-color: #bee1e8;
+    color: #15707f;
+}
+/* Readable code tokens inside info alerts (variable help panels) */
+.content .alert-info code {
+    background-color: #fff;
+    color: #c7254e;
+    padding: 0 0.25rem;
+    border-radius: 0.2rem;
+}
+
+/* Role permission checkboxes: 3 columns with a small, even gap */
+.perm-cols {
+    column-count: 3;
+    column-gap: 1rem;
+}
+.perm-cols .custom-control {
+    break-inside: avoid;
+}
+@media (max-width: 767.98px) {
+    .perm-cols { column-count: 2; }
+}
+@media (max-width: 575.98px) {
+    .perm-cols { column-count: 1; }
+}
+
+/* Card title should be block so an accompanying subtitle drops to its own line */
+.card-header .card-title {
+    display: block;
+    float: none;
+}
+
+/* Top-right user dropdown: compact, clean */
+.user-menu {
+    min-width: 220px;
+    padding: 0;
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+.user-menu .dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}

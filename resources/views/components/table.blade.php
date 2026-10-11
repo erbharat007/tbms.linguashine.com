@@ -1,20 +1,18 @@
 @props(['heads' => []])
 
-<div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200 text-sm">
+<div class="table-responsive">
+    <table {{ $attributes->merge(['class' => 'table table-hover table-striped mb-0']) }}>
         @if (count($heads))
-            <thead class="bg-gray-50">
+            <thead>
                 <tr>
                     @foreach ($heads as $head)
-                        @php($align = str_contains(strtolower($head), 'action') ? 'text-right' : 'text-left')
-                        <th class="whitespace-nowrap px-4 py-3 {{ $align }} text-xs font-semibold uppercase tracking-wider text-gray-500">
-                            {{ $head }}
-                        </th>
+                        @php($align = str_contains(strtolower($head), 'action') ? 'text-right' : '')
+                        <th class="{{ $align }}">{{ $head }}</th>
                     @endforeach
                 </tr>
             </thead>
         @endif
-        <tbody class="divide-y divide-gray-100 bg-white">
+        <tbody>
             {{ $slot }}
         </tbody>
     </table>

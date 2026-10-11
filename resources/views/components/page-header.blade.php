@@ -1,13 +1,15 @@
 @props(['title', 'subtitle' => null])
 
-<div class="flex flex-wrap items-center justify-between gap-3">
-    <div>
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ $title }}</h2>
+<div class="row mb-2 align-items-center">
+    <div class="col-sm">
+        <h1 class="m-0 h3">{{ $title }}</h1>
         @isset($subtitle)
-            <p class="mt-1 text-sm text-gray-500">{{ $subtitle }}</p>
+            <small class="text-muted">{{ $subtitle }}</small>
         @endisset
     </div>
     @isset($actions)
-        <div class="flex items-center gap-2">{{ $actions }}</div>
+        <div class="col-sm-auto mt-2 mt-sm-0 text-sm-right">
+            {{ $actions }}
+        </div>
     @endisset
 </div>

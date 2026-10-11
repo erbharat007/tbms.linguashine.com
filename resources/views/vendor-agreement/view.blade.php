@@ -1,14 +1,14 @@
-<x-guest-layout>
-    <div class="text-center">
-        <h1 class="text-lg font-semibold text-gray-900">Vendor agreement</h1>
-        <p class="mt-1 text-sm text-gray-500">{{ config('app.name') }}</p>
+<x-public-layout>
+    <div class="text-center mb-4">
+        <h1 class="h4 mb-1">Vendor agreement</h1>
+        <p class="text-muted small mb-0">{{ config('app.name') }}</p>
     </div>
 
-    <div class="mt-6 whitespace-pre-line rounded-md border border-gray-200 bg-gray-50 px-4 py-4 text-sm leading-relaxed text-gray-700">{{ $settings->agreement_text }}</div>
+    <div class="border rounded bg-light p-3 small" style="white-space: pre-line; line-height: 1.6;">{{ $settings->agreement_text }}</div>
 
     @if ($settings->agreement_updated_at)
-        <p class="mt-4 text-center text-xs text-gray-400">
+        <p class="text-center text-muted small mt-3 mb-0">
             Last updated {{ $settings->agreement_updated_at->format('Y-m-d H:i') }}
         </p>
     @endif
-</x-guest-layout>
+</x-public-layout>

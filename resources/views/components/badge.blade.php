@@ -1,17 +1,16 @@
 @props(['color' => 'gray'])
 
 @php
-    $colors = [
-        'gray' => 'bg-gray-100 text-gray-700',
-        'green' => 'bg-green-100 text-green-700',
-        'red' => 'bg-red-100 text-red-700',
-        'blue' => 'bg-blue-100 text-blue-700',
-        'indigo' => 'bg-indigo-100 text-indigo-700',
-        'yellow' => 'bg-yellow-100 text-yellow-700',
+    // Map our color names to Bootstrap/AdminLTE badge classes.
+    $map = [
+        'gray' => 'badge-secondary',
+        'green' => 'badge-success',
+        'red' => 'badge-danger',
+        'blue' => 'badge-info',
+        'indigo' => 'badge-primary',
+        'yellow' => 'badge-warning',
     ];
-    $classes = $colors[$color] ?? $colors['gray'];
+    $class = $map[$color] ?? 'badge-secondary';
 @endphp
 
-<span {{ $attributes->merge(['class' => "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {$classes}"]) }}>
-    {{ $slot }}
-</span>
+<span {{ $attributes->merge(['class' => "badge {$class}"]) }}>{{ $slot }}</span>

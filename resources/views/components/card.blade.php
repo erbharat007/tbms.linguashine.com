@@ -1,21 +1,21 @@
 @props(['title' => null, 'subtitle' => null, 'noPadding' => false])
 
-<div {{ $attributes->merge(['class' => 'overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm']) }}>
+<div {{ $attributes->merge(['class' => 'card']) }}>
     @isset($title)
-        <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+        <div class="card-header d-flex align-items-center justify-content-between">
             <div>
-                <h3 class="text-base font-semibold text-gray-900">{{ $title }}</h3>
+                <h3 class="card-title mb-0">{{ $title }}</h3>
                 @isset($subtitle)
-                    <p class="mt-0.5 text-sm text-gray-500">{{ $subtitle }}</p>
+                    <small class="text-muted d-block mt-1">{{ $subtitle }}</small>
                 @endisset
             </div>
             @isset($actions)
-                <div class="flex items-center gap-2">{{ $actions }}</div>
+                <div class="card-tools d-flex align-items-center" style="float:none;">{{ $actions }}</div>
             @endisset
         </div>
     @endisset
 
-    <div class="{{ $noPadding ? '' : 'p-6' }}">
+    <div class="{{ $noPadding ? 'card-body p-0' : 'card-body' }}">
         {{ $slot }}
     </div>
 </div>

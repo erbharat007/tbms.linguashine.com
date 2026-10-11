@@ -1,29 +1,43 @@
 @props(['name', 'options' => [], 'selected' => [], 'placeholder' => 'Search...'])
 
 {{--
-    A searchable multi-select rendered as a scrollable checkbox list.
+    A searchable multi-select rendered as a scrollable checkbox list (jQuery).
     Posts an array of selected ids as {name}[].
     $options: [id => label]. $selected: array of pre-checked ids.
 --}}
-<div x-data="{
-        search: '',
-        matches(label) { return this.search === '' || label.toLowerCase().includes(this.search.toLowerCase()); }
-     }"
-     class="rounded-lg border border-gray-300">
-    <div class="border-b border-gray-100 p-2">
-        <input type="text" x-model="search" placeholder="{{ $placeholder }}"
-               class="block w-full rounded-md border-gray-200 text-sm focus:border-indigo-500 focus:ring-indigo-500">
+@php($mcId = $name . '_mc')
+
+<div class="border rounded multi-checkbox" id="{{ $mcId }}">
+    <div class="border-bottom p-2">
+        <input type="text" class="form-control form-control-sm mc-search" placeholder="{{ $placeholder }}">
     </div>
-    <div class="max-h-56 overflow-auto p-2">
+    <div class="p-2 mc-list" style="max-height: 14rem; overflow-y: auto;">
         @forelse ($options as $id => $label)
-            <label x-show="matches(@js($label))" class="flex items-center gap-2 rounded px-2 py-1.5 hover:bg-gray-50">
-                <input type="checkbox" name="{{ $name }}[]" value="{{ $id }}"
-                       class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+            <div class="custom-control custom-checkbox mc-item py-1" data-label="{{ \Illuminate\Support\Str::lower($label) }}">
+                <input type="checkbox" class="custom-control-input" id="{{ $mcId }}_{{ $id }}" name="{{ $name }}[]" value="{{ $id }}"
                        @checked(in_array($id, old($name, $selected)))>
-                <span class="text-sm text-gray-700">{{ $label }}</span>
-            </label>
+                <label class="custom-control-label" for="{{ $mcId }}_{{ $id }}">{{ $label }}</label>
+            </div>
         @empty
-            <p class="px-2 py-1.5 text-sm text-gray-400">No options available.</p>
+            <p class="text-muted small px-2 py-1 mb-0">No options available.</p>
         @endforelse
     </div>
 </div>
+
+@once
+    @push('scripts')
+    <script>
+        $(function () {
+            $('.multi-checkbox').each(function () {
+                var $box = $(this);
+                $box.find('.mc-search').on('input', function () {
+                    var q = $(this).val().toLowerCase();
+                    $box.find('.mc-item').each(function () {
+                        $(this).toggle($(this).data('label').indexOf(q) !== -1);
+                    });
+                });
+            });
+        });
+    </script>
+    @endpush
+@endonce

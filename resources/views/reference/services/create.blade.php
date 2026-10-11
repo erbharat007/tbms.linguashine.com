@@ -3,12 +3,10 @@
         <x-page-header title="Add Service" />
     </x-slot>
 
-    <div class="max-w-xl">
-        <x-card>
-            <form method="POST" action="{{ route('services.store') }}">
-                @csrf
-                @include('reference.services._form', ['isEdit' => false])
-            </form>
-        </x-card>
-    </div>
+    <x-card>
+        <form method="POST" action="{{ route('services.store') }}">
+            @csrf
+            @include('reference.services._form', ['isEdit' => false])
+        </form>
+    </x-card>
 </x-app-layout>

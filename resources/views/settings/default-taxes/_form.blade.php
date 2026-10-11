@@ -1,99 +1,108 @@
 @php
     $defaultTax = $defaultTax ?? null;
-    // Initial tax type: from old input, else the edited row's tax type, else percentage.
     $initialTaxType = old('tax_type', $defaultTax?->tax?->type ?? 'percentage');
     $initialObject = old('object_type', $defaultTax?->object_type ?? 'client');
-    $initialTaxId = old('tax_id', $defaultTax?->tax_id);
-    $initialCurrency = old('currency_id', $defaultTax?->currency_id);
+    $initialTaxId = (string) old('tax_id', $defaultTax?->tax_id);
+    $initialCurrency = (string) old('currency_id', $defaultTax?->currency_id);
 @endphp
 
-<div
-    x-data="{
-        object: @js($initialObject),
-        taxType: @js($initialTaxType),
-        taxId: @js((string) $initialTaxId),
-        taxesByType: @js($taxesByType),
-        get availableTaxes() { return this.taxesByType[this.taxType] ?? []; },
-        onTaxTypeChange() {
-            // Reset tax selection when switching type so a stale id isn't submitted.
-            const ids = this.availableTaxes.map(t => String(t.id));
-            if (! ids.includes(String(this.taxId))) { this.taxId = ids[0] ?? ''; }
-        },
-    }"
-    x-init="onTaxTypeChange()"
-    class="space-y-6"
->
-    {{-- Object toggle: Client / Vendor --}}
-    <div>
+<div class="row form-grid">
+    {{-- Object: Client / Vendor --}}
+    <div class="form-group col-md-6">
         <x-input-label :value="__('Object')" />
-        <input type="hidden" name="object_type" :value="object">
-        <div class="mt-1.5 inline-flex rounded-lg border border-gray-300 p-0.5">
+        <x-select-input id="object_type" name="object_type">
             @foreach ($objectTypes as $value => $label)
-                <button type="button"
-                        x-on:click="object = @js($value)"
-                        :class="object === @js($value) ? 'bg-indigo-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-800'"
-                        class="rounded-md px-4 py-1.5 text-sm font-medium transition">
-                    {{ $label }}
-                </button>
+                <option value="{{ $value }}" @selected($initialObject === $value)>{{ $label }}</option>
             @endforeach
-        </div>
-        <x-input-error :messages="$errors->get('object_type')" class="mt-2" />
+        </x-select-input>
+        <x-input-error :messages="$errors->get('object_type')" class="mt-1" />
     </div>
 
-    {{-- Tax type radio: Percentage / Absolute --}}
-    <div>
+    {{-- Tax type: Percentage / Absolute --}}
+    <div class="form-group col-md-6">
         <x-input-label :value="__('Tax type')" />
-        <div class="mt-1.5 flex items-center gap-6">
+        <div class="d-flex align-items-center" style="gap: 1.5rem; height: calc(1.5em + 0.5rem + 2px);">
             @foreach ($taxTypes as $value => $label)
-                <label class="flex items-center gap-2">
-                    <input type="radio" name="tax_type" value="{{ $value }}"
-                           x-model="taxType" x-on:change="onTaxTypeChange()"
-                           class="border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" />
-                    <span class="text-sm text-gray-700">{{ $label }}</span>
-                </label>
+                <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input tax-type-radio" id="tax_type_{{ $value }}" name="tax_type" value="{{ $value }}"
+                           @checked($initialTaxType === $value) />
+                    <label class="custom-control-label" for="tax_type_{{ $value }}">{{ $label }}</label>
+                </div>
             @endforeach
         </div>
-        <p class="mt-1 text-xs text-gray-400">Filters the Tax list and, for absolute taxes, shows a currency.</p>
+        <small class="form-text text-muted">Filters the Tax list and, for absolute taxes, shows a currency.</small>
     </div>
 
     {{-- Tax dropdown (filtered by tax type) --}}
-    <div>
+    <div class="form-group col-md-6">
         <x-input-label for="tax_id" :value="__('Tax')" />
-        <select id="tax_id" name="tax_id" x-model="taxId" required
-                class="mt-1.5 block w-full rounded-lg border-gray-300 text-sm shadow-sm transition focus:border-indigo-500 focus:ring-indigo-500">
-            <template x-for="tax in availableTaxes" :key="tax.id">
-                <option :value="String(tax.id)" x-text="tax.name" :selected="String(tax.id) === String(taxId)"></option>
-            </template>
-        </select>
-        <p x-show="availableTaxes.length === 0" x-cloak class="mt-1 text-xs text-amber-600">
+        <select id="tax_id" name="tax_id" class="form-control" required></select>
+        <small id="tax_empty_hint" class="form-text text-warning d-none">
             No taxes of this type exist yet. Add one under Tax Configuration first.
-        </p>
-        <x-input-error :messages="$errors->get('tax_id')" class="mt-2" />
+        </small>
+        <x-input-error :messages="$errors->get('tax_id')" class="mt-1" />
     </div>
 
-    {{-- Currency (absolute taxes only) --}}
-    <div x-show="taxType === 'absolute'" x-cloak>
+    {{-- Currency (absolute only) --}}
+    <div class="form-group col-md-6" id="currency_wrapper">
         <x-input-label for="currency_id" :value="__('Currency')" />
-        <select id="currency_id" name="currency_id"
-                class="mt-1.5 block w-full rounded-lg border-gray-300 text-sm shadow-sm transition focus:border-indigo-500 focus:ring-indigo-500">
+        <x-select-input id="currency_id" name="currency_id">
             <option value="">— Select —</option>
             @foreach ($currencies as $currency)
-                <option value="{{ $currency['id'] }}" @selected((string) $initialCurrency === (string) $currency['id'])>{{ $currency['label'] }}</option>
+                <option value="{{ $currency['id'] }}" @selected($initialCurrency === (string) $currency['id'])>{{ $currency['label'] }}</option>
             @endforeach
-        </select>
-        <x-input-error :messages="$errors->get('currency_id')" class="mt-2" />
+        </x-select-input>
+        <x-input-error :messages="$errors->get('currency_id')" class="mt-1" />
     </div>
 
     {{-- Default value --}}
-    <div>
+    <div class="form-group col-md-6">
         <x-input-label for="amount" :value="__('Default value')" />
-        <x-text-input id="amount" name="amount" type="number" step="0.01" min="0" class="mt-1.5 w-40"
+        <x-text-input id="amount" name="amount" type="number" step="0.01" min="0"
                       :value="old('amount', $defaultTax?->amount)" required />
-        <x-input-error :messages="$errors->get('amount')" class="mt-2" />
-    </div>
-
-    <div class="flex items-center gap-3 border-t border-gray-100 pt-6">
-        <x-primary-button>{{ $isEdit ? __('Update default tax') : __('Add default tax') }}</x-primary-button>
-        <a href="{{ route('default-taxes.index') }}" class="text-sm font-medium text-gray-500 transition hover:text-gray-700">Cancel</a>
+        <x-input-error :messages="$errors->get('amount')" class="mt-1" />
     </div>
 </div>
+
+<hr class="my-4">
+<div class="d-flex align-items-center">
+    <button type="submit" class="btn btn-primary btn-sm">{{ $isEdit ? __('Update default tax') : __('Add default tax') }}</button>
+    <a href="{{ route('default-taxes.index') }}" class="btn btn-link btn-sm text-muted ml-2">Cancel</a>
+</div>
+
+@push('scripts')
+<script>
+    (function () {
+        var taxesByType = @json($taxesByType);
+        var selectedTaxId = @json($initialTaxId);
+        var $taxSelect = $('#tax_id');
+        var $hint = $('#tax_empty_hint');
+        var $currencyWrapper = $('#currency_wrapper');
+
+        function currentType() {
+            return $('.tax-type-radio:checked').val() || 'percentage';
+        }
+
+        function rebuildTaxOptions() {
+            var type = currentType();
+            var list = taxesByType[type] || [];
+            $taxSelect.empty();
+            list.forEach(function (tax) {
+                var opt = $('<option>').val(String(tax.id)).text(tax.name);
+                if (String(tax.id) === String(selectedTaxId)) opt.prop('selected', true);
+                $taxSelect.append(opt);
+            });
+            $hint.toggleClass('d-none', list.length !== 0);
+            // Keep selection valid; if the stored id isn't in this type, take the first.
+            if (list.length && !list.some(function (t) { return String(t.id) === String($taxSelect.val()); })) {
+                $taxSelect.val(String(list[0].id));
+            }
+            selectedTaxId = $taxSelect.val();
+            $currencyWrapper.toggle(type === 'absolute');
+        }
+
+        $('.tax-type-radio').on('change', rebuildTaxOptions);
+        rebuildTaxOptions();
+    })();
+</script>
+@endpush

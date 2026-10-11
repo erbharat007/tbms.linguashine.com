@@ -3,68 +3,83 @@
         <x-page-header title="Vendor portal settings" subtitle="Defaults applied to vendor invoices and the public vendor application form." />
     </x-slot>
 
-    <div class="max-w-2xl">
-        <x-card>
-            <form method="POST" action="{{ route('vendor-portal.update') }}">
-                @csrf
-                @method('PUT')
+    <x-card>
+        <form method="POST" action="{{ route('vendor-portal.update') }}" class="form-horizontal-tbms" style="max-width: 760px;">
+            @csrf
+            @method('PUT')
 
-                <div class="space-y-6">
-                    <div>
-                        <x-input-label for="default_payment_terms" :value="__('Default payment terms for vendor invoices')" />
-                        <div class="mt-1.5 flex items-center gap-2">
-                            <x-text-input id="default_payment_terms" name="default_payment_terms" type="number" min="0" max="365" class="w-28"
-                                          :value="old('default_payment_terms', $settings->default_payment_terms)" required />
-                            <span class="text-sm text-gray-500">days</span>
+            <div class="form-group row">
+                <label for="default_payment_terms" class="col-sm-5 col-form-label">Default payment terms for vendor invoices</label>
+                <div class="col-sm-7">
+                    <div class="input-group input-group-sm" style="max-width: 180px;">
+                        <input id="default_payment_terms" name="default_payment_terms" type="number" min="0" max="365"
+                               class="form-control" value="{{ old('default_payment_terms', $settings->default_payment_terms) }}" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">days</span>
                         </div>
-                        <x-input-error :messages="$errors->get('default_payment_terms')" class="mt-2" />
                     </div>
+                    <x-input-error :messages="$errors->get('default_payment_terms')" class="mt-1" />
+                </div>
+            </div>
 
-                    <label class="flex items-center gap-2">
-                        <input type="hidden" name="allow_vendors_create_invoices" value="0">
-                        <input type="checkbox" name="allow_vendors_create_invoices" value="1"
-                               class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+            <div class="form-group row">
+                <label for="invoice_notification_recipient_id" class="col-sm-5 col-form-label">Recipient of vendor invoice related notifications</label>
+                <div class="col-sm-7">
+                    <x-select-input id="invoice_notification_recipient_id" name="invoice_notification_recipient_id" required>
+                        <option value="">— Select —</option>
+                        @foreach ($managers as $id => $name)
+                            <option value="{{ $id }}" @selected(old('invoice_notification_recipient_id', $settings->invoice_notification_recipient_id) == $id)>{{ $name }}</option>
+                        @endforeach
+                    </x-select-input>
+                    <x-input-error :messages="$errors->get('invoice_notification_recipient_id')" class="mt-1" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="application_notification_recipient_id" class="col-sm-5 col-form-label">Recipient of notifications about new vendor applications</label>
+                <div class="col-sm-7">
+                    <x-select-input id="application_notification_recipient_id" name="application_notification_recipient_id" required>
+                        <option value="">— Select —</option>
+                        @foreach ($managers as $id => $name)
+                            <option value="{{ $id }}" @selected(old('application_notification_recipient_id', $settings->application_notification_recipient_id) == $id)>{{ $name }}</option>
+                        @endforeach
+                    </x-select-input>
+                    <x-input-error :messages="$errors->get('application_notification_recipient_id')" class="mt-1" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <span class="col-sm-5 col-form-label">Allow vendors to create invoices</span>
+                <div class="col-sm-7 d-flex align-items-center">
+                    <input type="hidden" name="allow_vendors_create_invoices" value="0">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="allow_vendors_create_invoices"
+                               name="allow_vendors_create_invoices" value="1"
                                @checked(old('allow_vendors_create_invoices', $settings->allow_vendors_create_invoices)) />
-                        <span class="text-sm text-gray-700">Allow vendors to create invoices</span>
-                    </label>
-
-                    <div>
-                        <x-input-label for="invoice_notification_recipient_id" :value="__('Recipient of vendor invoice related notifications')" />
-                        <x-select-input id="invoice_notification_recipient_id" name="invoice_notification_recipient_id" class="mt-1.5" required>
-                            <option value="">— Select —</option>
-                            @foreach ($managers as $id => $name)
-                                <option value="{{ $id }}" @selected(old('invoice_notification_recipient_id', $settings->invoice_notification_recipient_id) == $id)>{{ $name }}</option>
-                            @endforeach
-                        </x-select-input>
-                        <x-input-error :messages="$errors->get('invoice_notification_recipient_id')" class="mt-2" />
-                    </div>
-
-                    <label class="flex items-center gap-2">
-                        <input type="hidden" name="application_form_enabled" value="0">
-                        <input type="checkbox" name="application_form_enabled" value="1"
-                               class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                               @checked(old('application_form_enabled', $settings->application_form_enabled)) />
-                        <span class="text-sm text-gray-700">Vendor application form is enabled</span>
-                    </label>
-                    <p class="-mt-4 ml-6 text-xs text-gray-400">When disabled, the public application URL returns "not found".</p>
-
-                    <div>
-                        <x-input-label for="application_notification_recipient_id" :value="__('Recipient of notifications about new vendor applications')" />
-                        <x-select-input id="application_notification_recipient_id" name="application_notification_recipient_id" class="mt-1.5" required>
-                            <option value="">— Select —</option>
-                            @foreach ($managers as $id => $name)
-                                <option value="{{ $id }}" @selected(old('application_notification_recipient_id', $settings->application_notification_recipient_id) == $id)>{{ $name }}</option>
-                            @endforeach
-                        </x-select-input>
-                        <x-input-error :messages="$errors->get('application_notification_recipient_id')" class="mt-2" />
-                    </div>
-
-                    <div class="flex items-center gap-3 border-t border-gray-100 pt-6">
-                        <x-primary-button>{{ __('Save') }}</x-primary-button>
-                        <a href="{{ route('vendor-portal.show') }}" class="text-sm font-medium text-gray-500 transition hover:text-gray-700">Cancel</a>
+                        <label class="custom-control-label" for="allow_vendors_create_invoices"></label>
                     </div>
                 </div>
-            </form>
-        </x-card>
-    </div>
+            </div>
+
+            <div class="form-group row">
+                <span class="col-sm-5 col-form-label">Vendor application form is enabled</span>
+                <div class="col-sm-7">
+                    <input type="hidden" name="application_form_enabled" value="0">
+                    <div class="custom-control custom-checkbox mt-2">
+                        <input type="checkbox" class="custom-control-input" id="application_form_enabled"
+                               name="application_form_enabled" value="1"
+                               @checked(old('application_form_enabled', $settings->application_form_enabled)) />
+                        <label class="custom-control-label" for="application_form_enabled"></label>
+                    </div>
+                    <small class="form-text text-muted">When disabled, the public application URL returns "not found".</small>
+                </div>
+            </div>
+
+            <hr class="my-4">
+            <div class="d-flex align-items-center">
+                <button type="submit" class="btn btn-primary btn-sm">{{ __('Save') }}</button>
+                <a href="{{ route('vendor-portal.show') }}" class="btn btn-link btn-sm text-muted ml-2">Cancel</a>
+            </div>
+        </form>
+    </x-card>
 </x-app-layout>

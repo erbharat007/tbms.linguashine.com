@@ -1,23 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-        <nav class="mb-1 text-sm text-gray-500">
-            <a href="{{ route('clients.index') }}" class="hover:text-indigo-600">Clients</a>
-            <span class="mx-1">/</span>
-            <a href="{{ route('clients.show', $client) }}" class="hover:text-indigo-600">{{ $client->name }}</a>
-            <span class="mx-1">/</span>
-            <a href="{{ route('clients.contacts.index', $client) }}" class="hover:text-indigo-600">Contact persons</a>
-            <span class="mx-1">/</span>
-            <span class="text-gray-700">New</span>
-        </nav>
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">New contact person</h2>
+        <ol class="breadcrumb bg-transparent p-0 mb-1 small">
+            <li class="breadcrumb-item"><a href="{{ route('clients.index') }}">Clients</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('clients.show', $client) }}">{{ $client->name }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('clients.contacts.index', $client) }}">Contact persons</a></li>
+            <li class="breadcrumb-item active">New</li>
+        </ol>
+        <h1 class="m-0 h3">New contact person</h1>
     </x-slot>
 
-    <div class="max-w-3xl">
-        <x-card>
-            <form method="POST" action="{{ route('clients.contacts.store', $client) }}">
-                @csrf
-                @include('clients.contacts._form', ['isEdit' => false])
-            </form>
-        </x-card>
-    </div>
+    <x-card>
+        <form method="POST" action="{{ route('clients.contacts.store', $client) }}">
+            @csrf
+            @include('clients.contacts._form', ['isEdit' => false])
+        </form>
+    </x-card>
 </x-app-layout>

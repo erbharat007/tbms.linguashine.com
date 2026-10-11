@@ -1,48 +1,83 @@
-@php($user = auth()->user())
-@use('App\Support\Navigation')
+@php
+    $user = auth()->user();
 
-<aside
-    class="fixed inset-y-0 left-0 z-30 w-56 transform overflow-y-auto bg-gray-900 text-gray-300 transition-transform duration-200 ease-in-out lg:translate-x-0"
-    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
->
-    <!-- Brand -->
-    <div class="flex h-16 items-center border-b border-gray-800 px-5">
-        <a href="{{ route('dashboard') }}" class="flex items-center">
-            <img src="{{ asset('images/logo.webp') }}" alt="{{ config('app.name') }}" class="h-9 w-auto" />
-        </a>
+    // Map our navigation icon keys to Font Awesome classes.
+    $iconMap = [
+        'dashboard' => 'fas fa-tachometer-alt',
+        'access-control' => 'fas fa-user-shield',
+        'settings' => 'fas fa-cog',
+        'system-values' => 'fas fa-sliders-h',
+        'email-templates' => 'fas fa-envelope',
+        'clients' => 'fas fa-user-tie',
+        'vendors' => 'fas fa-truck',
+        'projects' => 'fas fa-project-diagram',
+        'jobs' => 'fas fa-tasks',
+        'todos' => 'fas fa-check-circle',
+        'expenses' => 'fas fa-receipt',
+        'files' => 'fas fa-folder',
+        'quotes' => 'fas fa-file-invoice-dollar',
+        'reports' => 'fas fa-chart-bar',
+    ];
+    $faIcon = fn ($key) => $iconMap[$key] ?? 'far fa-circle';
+@endphp
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ route('dashboard') }}" class="brand-link d-flex align-items-center justify-content-center">
+        <img src="{{ asset('images/logo.webp') }}" alt="{{ config('app.name') }}" class="brand-image-custom">
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @foreach (config('navigation') as $item)
+                    @continue(! \App\Support\Navigation::itemVisible($user, $item))
+
+                    @if (empty($item['children']))
+                        {{-- Single top-level link --}}
+                        @php($disabled = empty($item['route']))
+                        <li class="nav-item">
+                            <a href="{{ $disabled ? '#' : route($item['route']) }}"
+                               class="nav-link {{ \App\Support\Navigation::isActive($item) ? 'active' : '' }} {{ $disabled ? 'disabled-link' : '' }}">
+                                <i class="nav-icon {{ $faIcon($item['icon'] ?? 'dashboard') }}"></i>
+                                <p>
+                                    {{ $item['label'] }}
+                                    @if ($disabled)<span class="badge badge-secondary right">Soon</span>@endif
+                                </p>
+                            </a>
+                        </li>
+                    @else
+                        {{-- Group with children (treeview) --}}
+                        @php($groupActive = \App\Support\Navigation::groupActive($item))
+                        <li class="nav-item {{ $groupActive ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ $groupActive ? 'active' : '' }}">
+                                <i class="nav-icon {{ $faIcon($item['icon'] ?? 'dashboard') }}"></i>
+                                <p>
+                                    {{ $item['label'] }}
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                @foreach ($item['children'] as $child)
+                                    @continue(! \App\Support\Navigation::canSee($user, $child))
+                                    @php($childDisabled = empty($child['route']))
+                                    <li class="nav-item">
+                                        <a href="{{ $childDisabled ? '#' : route($child['route']) }}"
+                                           class="nav-link {{ \App\Support\Navigation::isActive($child) ? 'active' : '' }} {{ $childDisabled ? 'disabled-link' : '' }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                {{ $child['label'] }}
+                                                @if ($childDisabled)<span class="badge badge-secondary right">Soon</span>@endif
+                                            </p>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endif
+                @endforeach
+            </ul>
+        </nav>
     </div>
-
-    <!-- Navigation -->
-    <nav class="space-y-1 px-3 py-5 text-sm">
-        @foreach (config('navigation') as $item)
-            @continue(! Navigation::itemVisible($user, $item))
-
-            @if (empty($item['children']))
-                {{-- Top-level single link --}}
-                <x-sidebar-link
-                    :href="$item['route'] ? route($item['route']) : '#'"
-                    :active="Navigation::isActive($item)"
-                    :disabled="empty($item['route'])"
-                >
-                    <x-slot name="icon"><x-sidebar-icon :name="$item['icon'] ?? 'dashboard'" /></x-slot>
-                    {{ $item['label'] }}
-                </x-sidebar-link>
-            @else
-                {{-- Group with children --}}
-                <x-sidebar-group :title="$item['label']" :icon="$item['icon'] ?? null" :open="Navigation::groupActive($item)">
-                    @foreach ($item['children'] as $child)
-                        @continue(! Navigation::canSee($user, $child))
-                        <x-sidebar-link
-                            :href="$child['route'] ? route($child['route']) : '#'"
-                            :active="Navigation::isActive($child)"
-                            :disabled="empty($child['route'])"
-                            child
-                        >
-                            {{ $child['label'] }}
-                        </x-sidebar-link>
-                    @endforeach
-                </x-sidebar-group>
-            @endif
-        @endforeach
-    </nav>
 </aside>

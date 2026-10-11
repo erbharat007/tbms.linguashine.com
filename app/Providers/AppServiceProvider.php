@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
         // Ensure index-backed string columns stay within MySQL's key length
         // limit when using the utf8mb4 charset.
         Schema::defaultStringLength(191);
+
+        // Bootstrap-4 pagination markup (matches the AdminLTE theme).
+        Paginator::useBootstrapFour();
 
         // Locked (primary Administrator) roles bypass all permission checks.
         Gate::before(function (User $user, string $ability) {

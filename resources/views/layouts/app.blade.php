@@ -1,53 +1,64 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'TBMS') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Google Font: Source Sans Pro (AdminLTE default) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
+    <!-- AdminLTE theme (Bootstrap 4 based) -->
+    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
+    <!-- App tweaks -->
+    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/app-custom.css') }}?v={{ @filemtime(public_path('adminlte/dist/css/app-custom.css')) ?: time() }}">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div x-data="{ sidebarOpen: false }" class="min-h-screen bg-gray-100">
-            <!-- Sidebar -->
-            @include('layouts.sidebar')
+    @stack('styles')
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
 
-            <!-- Sidebar backdrop (mobile) -->
-            <div x-show="sidebarOpen"
-                 x-transition.opacity
-                 @click="sidebarOpen = false"
-                 class="fixed inset-0 z-20 bg-gray-900/50 lg:hidden"
-                 style="display: none;"></div>
+    <!-- Top navbar -->
+    @include('layouts.topbar')
 
-            <!-- Main column -->
-            <div class="lg:pl-64">
-                <!-- Topbar -->
-                @include('layouts.topbar')
+    <!-- Sidebar -->
+    @include('layouts.sidebar')
 
-                <!-- Page Heading -->
-                @isset($header)
-                    <header class="bg-white shadow-sm">
-                        <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-                            {{ $header }}
-                        </div>
-                    </header>
-                @endisset
-
-                <!-- Page Content -->
-                <main class="py-8">
-                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <x-flash-message />
-                        {{ $slot }}
-                    </div>
-                </main>
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        {{-- Content header (page heading) --}}
+        @isset($header)
+            <div class="content-header">
+                <div class="container-fluid">
+                    {{ $header }}
+                </div>
             </div>
-        </div>
-    </body>
+        @endisset
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                @include('layouts.partials.flash')
+                {{ $slot }}
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <strong>&copy; {{ date('Y') }} {{ config('app.name', 'TBMS') }}.</strong>
+        <div class="float-right d-none d-sm-inline-block">Translation Business Management System</div>
+    </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- Scripts -->
+<script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+@stack('scripts')
+</body>
 </html>

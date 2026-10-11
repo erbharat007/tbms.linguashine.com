@@ -2,14 +2,12 @@
     <x-slot name="header">
         <x-page-header title="Vendor portal settings" subtitle="Defaults applied to vendor invoices and the public vendor application form.">
             <x-slot name="actions">
-                <a href="{{ route('vendor-portal.edit') }}">
-                    <x-primary-button type="button">Update</x-primary-button>
-                </a>
+                <a href="{{ route('vendor-portal.edit') }}" class="btn btn-primary btn-sm">Update</a>
             </x-slot>
         </x-page-header>
     </x-slot>
 
-    <x-card no-padding>
+    <x-card no-padding class="detail-rows-wide">
         <x-detail-row label="Default payment terms for vendor invoices">
             {{ $settings->default_payment_terms }} days
         </x-detail-row>
@@ -27,22 +25,14 @@
             @endif
         </x-detail-row>
         <x-detail-row label="Vendor application form URL">
-            <div x-data="{ copied: false }" class="flex flex-col gap-2 sm:flex-row sm:items-center">
-                <a href="{{ $settings->application_url }}" target="_blank" rel="noopener"
-                   class="break-all text-sm font-medium text-indigo-600 transition hover:text-indigo-800">
-                    {{ $settings->application_url }}
-                </a>
-                <div class="flex items-center gap-3">
-                    <button type="button"
-                            x-on:click="navigator.clipboard.writeText('{{ $settings->application_url }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                            class="text-xs font-medium text-gray-500 transition hover:text-gray-700">
-                        <span x-show="! copied">Copy</span>
-                        <span x-show="copied" x-cloak class="text-green-600">Copied</span>
-                    </button>
-                    <form method="POST" action="{{ route('vendor-portal.regenerate-token') }}"
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center" style="gap: 0.75rem;">
+                <a href="{{ $settings->application_url }}" target="_blank" rel="noopener" class="text-break">{{ $settings->application_url }}</a>
+                <div class="d-flex align-items-center text-nowrap" style="gap: 0.75rem;">
+                    <button type="button" class="btn btn-link btn-sm p-0 copy-url" data-url="{{ $settings->application_url }}">Copy</button>
+                    <form method="POST" action="{{ route('vendor-portal.regenerate-token') }}" class="d-inline"
                           onsubmit="return confirm('Regenerate the application URL? The current link will stop working.')">
                         @csrf
-                        <button type="submit" class="text-xs font-medium text-gray-500 transition hover:text-gray-700">Regenerate</button>
+                        <button type="submit" class="btn btn-link btn-sm p-0 text-muted">Regenerate</button>
                     </form>
                 </div>
             </div>
@@ -53,53 +43,52 @@
     </x-card>
 
     {{-- Vendor agreement --}}
-    <x-card class="mt-6" no-padding>
-        <div class="flex items-center justify-between border-b border-gray-100 px-4 py-3">
-            <h3 class="text-sm font-semibold text-gray-900">Vendor agreement</h3>
-            <div class="flex items-center gap-4">
-                @if ($settings->hasAgreement())
-                    <a href="{{ route('vendor-agreement.edit') }}" class="text-sm font-medium text-indigo-600 transition hover:text-indigo-800">Update</a>
-                    <x-delete-form :action="route('vendor-agreement.destroy')" message="Delete the vendor agreement?" />
-                @else
-                    <a href="{{ route('vendor-agreement.create') }}">
-                        <x-primary-button type="button">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                            {{ __('New agreement') }}
-                        </x-primary-button>
-                    </a>
-                @endif
-            </div>
-        </div>
+    <x-card title="Vendor agreement" no-padding class="mt-4">
+        <x-slot name="actions">
+            @if ($settings->hasAgreement())
+                <a href="{{ route('vendor-agreement.edit') }}" class="btn btn-outline-secondary btn-sm">Update</a>
+                <x-delete-form :action="route('vendor-agreement.destroy')" message="Delete the vendor agreement?" />
+            @else
+                <a href="{{ route('vendor-agreement.create') }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus mr-1"></i> {{ __('New agreement') }}
+                </a>
+            @endif
+        </x-slot>
 
         @if ($settings->hasAgreement())
-            <div class="px-4 py-4">
-                <p class="text-sm text-gray-500">Vendor agreement must be accepted by the vendors during their registration process.</p>
+            <div class="p-3">
+                <p class="text-muted small">Vendor agreement must be accepted by the vendors during their registration process.</p>
 
-                <dl class="mt-4 divide-y divide-gray-100 rounded-lg border border-gray-100">
-                    <div class="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center">
-                        <dt class="w-48 shrink-0 text-sm text-gray-500">URL</dt>
-                        <dd class="text-sm">
-                            <a href="{{ $settings->agreement_url }}" target="_blank" rel="noopener"
-                               class="break-all font-medium text-indigo-600 transition hover:text-indigo-800">{{ $settings->agreement_url }}</a>
-                        </dd>
-                    </div>
-                    <div class="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center">
-                        <dt class="w-48 shrink-0 text-sm text-gray-500">Last updated at</dt>
-                        <dd class="text-sm text-gray-900">{{ $settings->agreement_updated_at?->format('Y-m-d H:i') ?? '—' }}</dd>
-                    </div>
-                    <div class="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center">
-                        <dt class="w-48 shrink-0 text-sm text-gray-500">Last updated by</dt>
-                        <dd class="text-sm text-gray-900">{{ $settings->agreementUpdatedBy?->name ?? '—' }}</dd>
-                    </div>
-                </dl>
+                <div class="detail-rows-wide border rounded">
+                    <x-detail-row label="URL">
+                        <a href="{{ $settings->agreement_url }}" target="_blank" rel="noopener" class="text-break">{{ $settings->agreement_url }}</a>
+                    </x-detail-row>
+                    <x-detail-row label="Last updated at">{{ $settings->agreement_updated_at?->format('Y-m-d H:i') ?? '—' }}</x-detail-row>
+                    <x-detail-row label="Last updated by">{{ $settings->agreementUpdatedBy?->name ?? '—' }}</x-detail-row>
+                </div>
 
-                <h4 class="mt-6 text-sm font-semibold text-gray-900">Vendor agreement text</h4>
-                <div class="mt-2 whitespace-pre-line text-sm leading-relaxed text-gray-700">{{ $settings->agreement_text }}</div>
+                <h4 class="h6 mt-4">Vendor agreement text</h4>
+                <div class="mt-2 small text-muted" style="white-space: pre-line;">{{ $settings->agreement_text }}</div>
             </div>
         @else
-            <div class="px-4 py-4">
-                <p class="text-sm text-gray-500">Vendors registration is not restricted by acceptance of Vendor agreement.</p>
+            <div class="p-3">
+                <p class="text-muted small mb-0">Vendors registration is not restricted by acceptance of Vendor agreement.</p>
             </div>
         @endif
     </x-card>
+
+    @push('scripts')
+    <script>
+        $(function () {
+            $('.copy-url').on('click', function () {
+                var btn = this;
+                navigator.clipboard.writeText($(btn).data('url')).then(function () {
+                    var original = btn.textContent;
+                    btn.textContent = 'Copied';
+                    setTimeout(function () { btn.textContent = original; }, 2000);
+                });
+            });
+        });
+    </script>
+    @endpush
 </x-app-layout>
