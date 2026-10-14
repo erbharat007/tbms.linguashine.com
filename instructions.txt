@@ -1,3 +1,28 @@
 instructions
 git remote set-url origin git@github.com:erbharat007/tbms.linguashine.com.git
 git push -u origin main
+
+
+
+
+check entire project (tbms.linguashine.com) files and folders and then remove unwanted or unused files and folders from this project 
+but keep build folder as it is (do not touch build folder) and also follow the instructions from the given notes section
+
+notes:- strictly make sure (project: tbms.linguashine.com, tech-stack: Laravel, live server: cpanel, database: MySQL)
+-- donot change working things without any command.
+-- folder stucture must be clean, organized and professional (like Laravel official folder structure)
+   ---- all css, js, images, and related files must arranged in public folder like public/css, public/js, public/images, public/fonts, etc, and also check if any folder is unused and remove it.
+   ---- 
+-- always add files or folders to .gitignore if it is not relevant to be on live or it is for local/test purpose
+-- no harm on functionalies and methods after these changes
+-- it should only create or use previous one 
+-- do not update or modify any working functions and their functionalities
+-- design must be as per this project's design (more userfriendly)
+-- update .htaccess (for localhost) and app-updates/.htaccess (for production) with latest 
+-- complete deployment process with latest updates according to date (date of creation/modification) (which files and folders need to be updated) (update app-updates/deployment_process.txt)
+-- compare local database with  app-updates/app_updates.sql and update if needed according to date (update app-updates/database_updates.sql)
+-- include commented descriptions on each and every functions and methods (for easy understanding) (update/create app-updates/documentation.txt, app-updates/users-guide.txt, app-updates/admin-users-guide.txt, app-updates/developer-guide.txt, app-updates/technician-guide.txt)
+-- move unwanted or unused files and folder in unused_files (in root directory, ignore index.html, .htaccess, inst.txt, includes/logs, app-updates)
+-- create UserManual.pdf file in app-updates/documentation/ folder (instructions for end user) (update app-updates/users-guide.txt and create app-updates/documentation/UserManual.pdf)
+-- create AdminUserManual.pdf file in app-updates/documentation/ folder (instructions for admin) (update app-updates/admin-users-guide.txt and create app-updates/documentation/AdminUserManual.pdf)
+-- design must follow existing design and its style (bootstrap, AdminLTE)

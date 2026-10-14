@@ -55,6 +55,19 @@ return [
             'clients.view' => 'Clients',
             'client-prices.view' => 'Prices',
         ],
+
+        'Vendors' => [
+            'vendors.view' => 'Vendors',
+            'vendor-applications.view' => 'Applications',
+            'vendor-payables.view' => 'Payables',
+            'vendor-invoices.view' => 'Invoices',
+            'vendor-payments.view' => 'Payments',
+            'vendor-contacts.view' => 'Contacts',
+            'vendor-prices.view' => 'Prices',
+            'vendor-tags.view' => 'Tags',
+            'vendor-rating-categories.view' => 'Rating categories',
+        ],
     ],
 
 ];
+

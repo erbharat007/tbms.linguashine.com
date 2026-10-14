@@ -19,7 +19,15 @@ use App\Http\Controllers\ClientPortalSettingController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\VendorAgreementController;
 use App\Http\Controllers\VendorApplicationController;
+use App\Http\Controllers\VendorContactController;
+use App\Http\Controllers\VendorController;
+use App\Http\Controllers\VendorInvoiceController;
+use App\Http\Controllers\VendorPayableController;
+use App\Http\Controllers\VendorPaymentController;
 use App\Http\Controllers\VendorPortalSettingController;
+use App\Http\Controllers\VendorPriceController;
+use App\Http\Controllers\VendorRatingCategoryController;
+use App\Http\Controllers\VendorTagController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
@@ -54,6 +62,59 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->parameters(['client-prices' => 'clientPrice'])
         ->except(['show'])
         ->middleware('screen:client-prices.view');
+
+    // Vendors
+    Route::resource('vendors', VendorController::class)->middleware('screen:vendors.view');
+
+    // Vendor contacts (Vendors > Contacts & Vendor view > Contact persons tab)
+    Route::resource('vendor-contacts', VendorContactController::class)
+        ->parameters(['vendor-contacts' => 'contact'])
+        ->middleware('screen:vendor-contacts.view');
+
+    Route::get('vendors/{vendor}/contacts', [VendorContactController::class, 'vendorContacts'])
+        ->name('vendors.contacts.index')
+        ->middleware('screen:vendors.view');
+
+    // Vendor prices (Vendors > Prices)
+    Route::resource('vendor-prices', VendorPriceController::class)
+        ->parameters(['vendor-prices' => 'vendorPrice'])
+        ->except(['show'])
+        ->middleware('screen:vendor-prices.view');
+
+    // Vendor applications (Vendors > Applications)
+    Route::middleware('screen:vendor-applications.view')->group(function () {
+        Route::get('vendor-applications', [VendorApplicationController::class, 'index'])->name('vendor-applications.index');
+        Route::get('vendor-applications/{vendorApplication}', [VendorApplicationController::class, 'show'])->name('vendor-applications.show');
+        Route::post('vendor-applications/{vendorApplication}/approve', [VendorApplicationController::class, 'approve'])->name('vendor-applications.approve');
+        Route::post('vendor-applications/{vendorApplication}/reject', [VendorApplicationController::class, 'reject'])->name('vendor-applications.reject');
+        Route::delete('vendor-applications/{vendorApplication}', [VendorApplicationController::class, 'destroy'])->name('vendor-applications.destroy');
+    });
+
+    // Vendor payables (Vendors > Payables)
+    Route::resource('vendor-payables', VendorPayableController::class)
+        ->parameters(['vendor-payables' => 'vendorPayable'])
+        ->middleware('screen:vendor-payables.view');
+
+    // Vendor invoices (Vendors > Invoices)
+    Route::resource('vendor-invoices', VendorInvoiceController::class)
+        ->parameters(['vendor-invoices' => 'vendorInvoice'])
+        ->middleware('screen:vendor-invoices.view');
+
+    // Vendor payments (Vendors > Payments)
+    Route::resource('vendor-payments', VendorPaymentController::class)
+        ->parameters(['vendor-payments' => 'vendorPayment'])
+        ->middleware('screen:vendor-payments.view');
+
+    // Vendor tags (Vendors > Tags)
+    Route::resource('vendor-tags', VendorTagController::class)
+        ->parameters(['vendor-tags' => 'vendorTag'])
+        ->middleware('screen:vendor-tags.view');
+
+    // Vendor rating categories (Vendors > Rating categories)
+    Route::resource('vendor-rating-categories', VendorRatingCategoryController::class)
+        ->parameters(['vendor-rating-categories' => 'vendorRatingCategory'])
+        ->middleware('screen:vendor-rating-categories.view');
+
 
     // Settings
     Route::resource('users', UserController::class)->middleware('screen:users.view');

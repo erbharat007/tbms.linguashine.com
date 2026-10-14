@@ -24,3 +24,15 @@ Homestead.yaml
 Thumbs.db
 /adminlte
 /.playwright-mcp
+/unused_files
+/.kiro
+/app-updates
+db_details_er_diagram.sql
+instructions.txt
+inst.txt
+projects_specifications.txt
+includes/logs
+*.bak
+*.sql.gz
+
+

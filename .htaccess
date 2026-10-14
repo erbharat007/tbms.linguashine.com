@@ -1,0 +1,31 @@
+# ===================================================================
+# TBMS Linguashine - Root .htaccess (Localhost / WAMP Environment)
+# Redirects all incoming traffic to the public/ directory securely
+# ===================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Prevent directory listing
+    Options -Indexes
+
+    # Pass Authorization Header to PHP
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Prevent direct access to sensitive configuration, version control, and lock files
+    <FilesMatch "^\.(env|git|editorconfig|gitattributes|gitignore)">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+
+    <FilesMatch "(composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml|artisan)">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+
+    # Rewrite all traffic into the public/ directory
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
