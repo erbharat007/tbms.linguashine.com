@@ -61,17 +61,49 @@
                             <ul class="nav nav-treeview">
                                 @foreach ($item['children'] as $child)
                                     @continue(! \App\Support\Navigation::canSee($user, $child))
-                                    @php($childDisabled = empty($child['route']))
-                                    <li class="nav-item">
-                                        <a href="{{ $childDisabled ? '#' : route($child['route']) }}"
-                                           class="nav-link {{ \App\Support\Navigation::isActive($child) ? 'active' : '' }} {{ $childDisabled ? 'disabled-link' : '' }}">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ $child['label'] }}
-                                                @if ($childDisabled)<span class="badge badge-secondary right">Soon</span>@endif
-                                            </p>
-                                        </a>
-                                    </li>
+
+                                    @if (! empty($child['children']))
+                                        @php($subActive = \App\Support\Navigation::groupActive($child))
+                                        <li class="nav-item {{ $subActive ? 'menu-open' : '' }}">
+                                            <a href="{{ !empty($child['route']) ? route($child['route']) : '#' }}"
+                                               class="nav-link {{ $subActive ? 'active' : '' }}">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    {{ $child['label'] }}
+                                                    <i class="right fas fa-angle-left"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview">
+                                                @foreach ($child['children'] as $grandchild)
+                                                    @continue(! \App\Support\Navigation::canSee($user, $grandchild))
+                                                    @php($grandchildDisabled = empty($grandchild['route']))
+                                                    <li class="nav-item">
+                                                        <a href="{{ $grandchildDisabled ? '#' : route($grandchild['route']) }}"
+                                                           class="nav-link {{ \App\Support\Navigation::isActive($grandchild) ? 'active' : '' }} {{ $grandchildDisabled ? 'disabled-link' : '' }}"
+                                                           style="padding-left: 2.2rem;">
+                                                            <i class="far fa-dot-circle nav-icon" style="font-size: 0.7rem;"></i>
+                                                            <p>
+                                                                {{ $grandchild['label'] }}
+                                                                @if ($grandchildDisabled)<span class="badge badge-secondary right">Soon</span>@endif
+                                                            </p>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @else
+                                        @php($childDisabled = empty($child['route']))
+                                        <li class="nav-item">
+                                            <a href="{{ $childDisabled ? '#' : route($child['route']) }}"
+                                               class="nav-link {{ \App\Support\Navigation::isActive($child) ? 'active' : '' }} {{ $childDisabled ? 'disabled-link' : '' }}">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    {{ $child['label'] }}
+                                                    @if ($childDisabled)<span class="badge badge-secondary right">Soon</span>@endif
+                                                </p>
+                                            </a>
+                                        </li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </li>

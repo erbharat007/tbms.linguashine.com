@@ -9,6 +9,10 @@
         ['key' => 'prices', 'label' => 'Prices', 'route' => route('vendor-prices.index', ['vendor_id' => $vendor->id]), 'enabled' => true],
         ['key' => 'payables', 'label' => 'Payables', 'route' => route('vendor-payables.index', ['vendor_id' => $vendor->id]), 'enabled' => true],
         ['key' => 'invoices', 'label' => 'Invoices', 'route' => route('vendor-invoices.index', ['vendor_id' => $vendor->id]), 'enabled' => true],
+        ['key' => 'payments', 'label' => 'Payments', 'route' => route('vendor-payments.index', ['vendor_id' => $vendor->id]), 'enabled' => true],
+        ['key' => 'payment-methods', 'label' => 'Payment methods', 'route' => route('payment-methods.index'), 'enabled' => true],
+        ['key' => 'services', 'label' => 'Services', 'route' => route('services.index'), 'enabled' => true],
+        ['key' => 'language-pairs', 'label' => 'Language pairs', 'route' => route('language-pairs.index'), 'enabled' => true],
     ];
 @endphp
 

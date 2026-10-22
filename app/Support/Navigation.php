@@ -9,6 +9,7 @@ class Navigation
 {
     /**
      * Whether the user's role grants access to a menu item.
+     * If the item has children, it is visible if at least one child is visible.
      */
     public static function canSee(?User $user, array $item): bool
     {
@@ -16,15 +17,6 @@ class Navigation
             return false;
         }
 
-        return empty($item['permission']) || $user->hasPermission($item['permission']);
-    }
-
-    /**
-     * Whether a menu item should be shown. For groups, it is shown when the
-     * user can see at least one child.
-     */
-    public static function itemVisible(?User $user, array $item): bool
-    {
         if (! empty($item['children'])) {
             foreach ($item['children'] as $child) {
                 if (self::canSee($user, $child)) {
@@ -35,6 +27,14 @@ class Navigation
             return false;
         }
 
+        return empty($item['permission']) || $user->hasPermission($item['permission']);
+    }
+
+    /**
+     * Whether a top-level or group menu item should be shown.
+     */
+    public static function itemVisible(?User $user, array $item): bool
+    {
         return self::canSee($user, $item);
     }
 
@@ -50,12 +50,20 @@ class Navigation
     }
 
     /**
-     * Whether any child of a group is the active route.
+     * Whether any child of a group is the active route (recursive).
      */
     public static function groupActive(array $item): bool
     {
+        if (self::isActive($item)) {
+            return true;
+        }
+
         foreach ($item['children'] ?? [] as $child) {
             if (self::isActive($child)) {
+                return true;
+            }
+
+            if (! empty($child['children']) && self::groupActive($child)) {
                 return true;
             }
         }

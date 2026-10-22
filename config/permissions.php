@@ -26,10 +26,14 @@ return [
         ],
 
         'Settings' => [
+            'account.view' => 'Account',
+            'license.view' => 'License',
             'legal-entities.view' => 'Legal entities',
             'object-codes.view' => 'Object codes',
             'payment-methods.view' => 'Payment methods',
             'taxes.view' => 'Tax Configuration',
+            'cat-log-templates.view' => 'CAT log conversion schemes',
+            'reminders.view' => 'Reminders',
             'client-portal.view' => 'Client portal',
             'vendor-portal.view' => 'Vendor portal',
             'pdf-templates.view' => 'PDF templates',
@@ -37,6 +41,7 @@ return [
         ],
 
         'System Values' => [
+            'system-values.view' => 'System values overview',
             'language-pairs.view' => 'Language Pairs',
             'languages.view' => 'Languages',
             'currencies.view' => 'Currencies',

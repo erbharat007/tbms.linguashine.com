@@ -16,8 +16,9 @@
     <div class="form-group col-md-4">
         <x-input-label for="type" :value="__('Type')" />
         <x-select-input id="type" name="type">
-            <option value="individual" @selected(old('type', $vendor->type) === 'individual')>Individual / Freelancer</option>
-            <option value="company" @selected(old('type', $vendor->type) === 'company')>Company / Agency</option>
+            <option value="freelancer" @selected(in_array(old('type', $vendor->type), ['freelancer', 'individual']))>Freelancer</option>
+            <option value="company" @selected(old('type', $vendor->type) === 'company')>Company</option>
+            <option value="in-house" @selected(old('type', $vendor->type) === 'in-house')>In-house</option>
         </x-select-input>
         <x-input-error :messages="$errors->get('type')" class="mt-1" />
     </div>
@@ -123,6 +124,32 @@
         <x-input-error :messages="$errors->get('website')" class="mt-1" />
     </div>
 
+    <div class="form-group col-md-6">
+        <div class="custom-control custom-checkbox mt-2">
+            <input type="hidden" name="is_assignable" value="0">
+            <input type="checkbox" class="custom-control-input" id="is_assignable" name="is_assignable" value="1"
+                   @checked((bool) old('is_assignable', $vendor->is_assignable ?? true))>
+            <label class="custom-control-label font-weight-bold" for="is_assignable">
+                Assignable to jobs
+            </label>
+        </div>
+        <small class="form-text text-muted">If checked, a vendor can be assigned to a job regardless of whether "Can log in" is set or not.</small>
+        <x-input-error :messages="$errors->get('is_assignable')" class="mt-1" />
+    </div>
+
+    <div class="form-group col-md-6">
+        <div class="custom-control custom-checkbox mt-2">
+            <input type="hidden" name="can_access_finances" value="0">
+            <input type="checkbox" class="custom-control-input" id="can_access_finances" name="can_access_finances" value="1"
+                   @checked((bool) old('can_access_finances', $vendor->can_access_finances ?? true))>
+            <label class="custom-control-label font-weight-bold" for="can_access_finances">
+                Can access finances
+            </label>
+        </div>
+        <small class="form-text text-muted">If checked, a vendor has access to their own payables, invoices, and payments.</small>
+        <x-input-error :messages="$errors->get('can_access_finances')" class="mt-1" />
+    </div>
+
     <div class="form-group col-12">
         <x-input-label :value="__('Tags')" />
         <div class="d-flex flex-wrap" style="gap: 10px;">
@@ -205,5 +232,18 @@
         <x-input-label for="skype" :value="__('Skype / Instant messenger')" />
         <x-text-input id="skype" name="skype" type="text" :value="old('skype', $contact?->skype)" />
         <x-input-error :messages="$errors->get('skype')" class="mt-1" />
+    </div>
+
+    <div class="form-group col-12">
+        <div class="custom-control custom-checkbox mt-2">
+            <input type="hidden" name="can_login" value="0">
+            <input type="checkbox" class="custom-control-input" id="can_login" name="can_login" value="1"
+                   @checked((bool) old('can_login', $contact?->can_login ?? false))>
+            <label class="custom-control-label font-weight-bold" for="can_login">
+                Can log in
+            </label>
+        </div>
+        <small class="form-text text-muted">If checked, the system will send an invitation email with the registration link.</small>
+        <x-input-error :messages="$errors->get('can_login')" class="mt-1" />
     </div>
 </div>

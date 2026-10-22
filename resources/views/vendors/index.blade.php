@@ -2,6 +2,9 @@
     <x-slot name="header">
         <x-page-header title="Vendors" subtitle="Your linguists, translation vendors, and freelancer agencies.">
             <x-slot name="actions">
+                <a href="{{ route('vendors.export', request()->query()) }}" class="btn btn-outline-secondary btn-sm mr-1">
+                    <i class="fas fa-file-excel mr-1 text-success"></i> {{ __('Export to Excel') }}
+                </a>
                 <a href="{{ route('vendors.create') }}" class="btn btn-primary btn-sm">
                     <i class="fas fa-plus mr-1"></i> {{ __('New vendor') }}
                 </a>
@@ -13,7 +16,7 @@
         <div class="card-body border-bottom">
             <form method="GET" class="form-inline flex-wrap" style="gap: 10px;">
                 <div class="input-group">
-                    <input type="text" name="search" value="{{ $search }}" class="form-control" placeholder="Search by name, code, or city" style="min-width: 260px;">
+                    <input type="text" name="search" value="{{ $search }}" class="form-control" placeholder="Search by name, code, or city" style="min-width: 240px;">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
                     </div>
@@ -21,8 +24,9 @@
 
                 <select name="type" class="form-control" onchange="this.form.submit()">
                     <option value="">All types</option>
-                    <option value="individual" @selected($type === 'individual')>Individual</option>
+                    <option value="freelancer" @selected($type === 'freelancer' || $type === 'individual')>Freelancer</option>
                     <option value="company" @selected($type === 'company')>Company</option>
+                    <option value="in-house" @selected($type === 'in-house')>In-house</option>
                 </select>
 
                 <select name="status" class="form-control" onchange="this.form.submit()">
@@ -33,13 +37,25 @@
                     <option value="blocked" @selected($status === 'blocked')>Blocked</option>
                 </select>
 
-                @if (filled($search) || filled($type) || filled($status))
+                <select name="assignable" class="form-control" onchange="this.form.submit()">
+                    <option value="">Assignable: All</option>
+                    <option value="1" @selected($assignable === '1')>Assignable: Yes</option>
+                    <option value="0" @selected($assignable === '0')>Assignable: No</option>
+                </select>
+
+                <select name="can_login" class="form-control" onchange="this.form.submit()">
+                    <option value="">Can log in: All</option>
+                    <option value="1" @selected($canLogin === '1')>Can log in: Yes</option>
+                    <option value="0" @selected($canLogin === '0')>Can log in: No</option>
+                </select>
+
+                @if (filled($search) || filled($type) || filled($status) || filled($assignable) || filled($canLogin))
                     <a href="{{ route('vendors.index') }}" class="text-muted ml-2">Clear</a>
                 @endif
             </form>
         </div>
 
-        <x-table :heads="['Code', 'Name', 'Type', 'Status', 'Country', 'Primary user', 'Tags', 'Created at', 'Actions']">
+        <x-table :heads="['Code', 'Name', 'Type', 'Status', 'Country', 'Primary user', 'Assignable', 'Can log in', 'Tags', 'Created at', 'Actions']">
             @forelse ($vendors as $vendor)
                 <tr>
                     <td class="text-nowrap font-weight-bold text-secondary">
@@ -48,7 +64,7 @@
                     <td>
                         <a href="{{ route('vendors.show', $vendor) }}" class="font-weight-600">{{ $vendor->name }}</a>
                     </td>
-                    <td class="text-nowrap">{{ ucfirst($vendor->type) }}</td>
+                    <td class="text-nowrap">{{ $vendor->type_label }}</td>
                     <td class="text-nowrap">
                         @php
                             $badgeColor = match($vendor->status) {
@@ -71,6 +87,20 @@
                             <span class="text-muted">—</span>
                         @endif
                     </td>
+                    <td class="text-center text-nowrap">
+                        @if ($vendor->is_assignable)
+                            <span class="text-success" title="Assignable to jobs"><i class="fas fa-check-circle"></i></span>
+                        @else
+                            <span class="text-muted" title="Not assignable to jobs"><i class="fas fa-times-circle"></i></span>
+                        @endif
+                    </td>
+                    <td class="text-center text-nowrap">
+                        @if ($vendor->primaryContact?->can_login)
+                            <span class="text-success" title="Can log in"><i class="fas fa-check-circle"></i></span>
+                        @else
+                            <span class="text-muted" title="Cannot log in"><i class="fas fa-times-circle"></i></span>
+                        @endif
+                    </td>
                     <td>
                         <div class="d-flex flex-wrap" style="gap: 4px;">
                             @forelse ($vendor->tags as $t)
@@ -89,7 +119,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="9" class="text-center text-muted py-5">
+                    <td colspan="11" class="text-center text-muted py-5">
                         <p class="font-weight-bold mb-1">No vendors found</p>
                         <p class="small mb-0">Add your first vendor or adjust your search filters.</p>
                     </td>

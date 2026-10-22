@@ -31,7 +31,24 @@ class Vendor extends Model
         'payment_terms',
         'manager_id',
         'note',
+        'is_assignable',
+        'can_access_finances',
     ];
+
+    protected $casts = [
+        'is_assignable' => 'boolean',
+        'can_access_finances' => 'boolean',
+    ];
+
+    public function getTypeLabelAttribute(): string
+    {
+        return match($this->type) {
+            'freelancer', 'individual' => 'Freelancer',
+            'company' => 'Company',
+            'in-house' => 'In-house',
+            default => ucfirst($this->type ?? ''),
+        };
+    }
 
     public function legalEntity(): BelongsTo
     {

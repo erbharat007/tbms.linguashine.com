@@ -26,34 +26,35 @@ return [
 
     ['label' => 'Dashboard', 'route' => 'dashboard', 'permission' => null, 'icon' => 'dashboard'],
 
-    // Team management (our custom screens; Protemos calls this Access control).
-    ['label' => 'Access Control', 'icon' => 'access-control', 'children' => [
-        ['label' => 'Users', 'route' => 'users.index', 'permission' => 'users.view', 'match' => 'users.*'],
-        ['label' => 'Roles', 'route' => 'roles.index', 'permission' => 'roles.view', 'match' => 'roles.*'],
-    ]],
-
     ['label' => 'Settings', 'icon' => 'settings', 'children' => [
-        ['label' => 'Account', 'route' => null, 'permission' => null],
+        ['label' => 'Account', 'route' => 'account.index', 'permission' => 'account.view', 'match' => 'account.*'],
+        ['label' => 'License', 'route' => 'license.index', 'permission' => 'license.view', 'match' => 'license.*'],
         ['label' => 'Legal entities', 'route' => 'legal-entities.index', 'permission' => 'legal-entities.view', 'match' => 'legal-entities.*'],
+        ['label' => 'Access control', 'children' => [
+            ['label' => 'Users', 'route' => 'users.index', 'permission' => 'users.view', 'match' => 'users.*'],
+            ['label' => 'Roles', 'route' => 'roles.index', 'permission' => 'roles.view', 'match' => 'roles.*'],
+        ]],
+        ['label' => 'System values', 'route' => 'system-values.index', 'children' => [
+            ['label' => 'Overview', 'route' => 'system-values.index', 'permission' => 'system-values.view', 'match' => 'system-values.*'],
+            ['label' => 'Language pairs', 'route' => 'language-pairs.index', 'permission' => 'language-pairs.view', 'match' => 'language-pairs.*'],
+            ['label' => 'Services', 'route' => 'services.index', 'permission' => 'services.view', 'match' => 'services.*'],
+            ['label' => 'Specializations', 'route' => 'specializations.index', 'permission' => 'specializations.view', 'match' => 'specializations.*'],
+            ['label' => 'Units', 'route' => 'units.index', 'permission' => 'units.view', 'match' => 'units.*'],
+            ['label' => 'Currencies', 'route' => 'currencies.index', 'permission' => 'currencies.view', 'match' => 'currencies.*'],
+            ['label' => 'Languages', 'route' => 'languages.index', 'permission' => 'languages.view', 'match' => 'languages.*'],
+        ]],
         ['label' => 'Object codes', 'route' => 'object-codes.index', 'permission' => 'object-codes.view', 'match' => 'object-codes.*'],
         ['label' => 'Payment methods', 'route' => 'payment-methods.index', 'permission' => 'payment-methods.view', 'match' => 'payment-methods.*'],
-        ['label' => 'Tax Configuration', 'route' => 'taxes.index', 'permission' => 'taxes.view', 'match' => 'taxes.*'],
-        ['label' => 'CAT log conversion schemes', 'route' => null, 'permission' => null],
-        ['label' => 'Reminders', 'route' => null, 'permission' => null],
+        ['label' => 'Taxes', 'children' => [
+            ['label' => 'Tax Configuration', 'route' => 'taxes.index', 'permission' => 'taxes.view', 'match' => 'taxes.*'],
+            ['label' => 'Default taxes', 'route' => 'default-taxes.index', 'permission' => 'taxes.view', 'match' => 'default-taxes.*'],
+        ]],
+        ['label' => 'CAT log conversion schemes', 'route' => 'cat-log-templates.index', 'permission' => 'cat-log-templates.view', 'match' => 'cat-log-templates.*'],
+        ['label' => 'Reminders', 'route' => 'reminders.index', 'permission' => 'reminders.view', 'match' => 'reminders.*'],
         ['label' => 'SMTP server', 'route' => 'smtp.show', 'permission' => 'smtp.view', 'match' => 'smtp.*'],
         ['label' => 'Client portal', 'route' => 'client-portal.show', 'permission' => 'client-portal.view', 'match' => 'client-portal.*'],
         ['label' => 'Vendor portal', 'route' => 'vendor-portal.show', 'permission' => 'vendor-portal.view', 'match' => 'vendor-portal.*'],
         ['label' => 'PDF templates', 'route' => 'pdf-templates.index', 'permission' => 'pdf-templates.view', 'match' => 'pdf-templates.*'],
-    ]],
-
-    // Reference data (Protemos groups these under "System values").
-    ['label' => 'System Values', 'icon' => 'system-values', 'children' => [
-        ['label' => 'Language Pairs', 'route' => 'language-pairs.index', 'permission' => 'language-pairs.view', 'match' => 'language-pairs.*'],
-        ['label' => 'Languages', 'route' => 'languages.index', 'permission' => 'languages.view', 'match' => 'languages.*'],
-        ['label' => 'Currencies', 'route' => 'currencies.index', 'permission' => 'currencies.view', 'match' => 'currencies.*'],
-        ['label' => 'Services', 'route' => 'services.index', 'permission' => 'services.view', 'match' => 'services.*'],
-        ['label' => 'Specializations', 'route' => 'specializations.index', 'permission' => 'specializations.view', 'match' => 'specializations.*'],
-        ['label' => 'Units', 'route' => 'units.index', 'permission' => 'units.view', 'match' => 'units.*'],
     ]],
 
     // Email templates (Protemos groups these under Settings > Email templates).

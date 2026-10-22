@@ -83,6 +83,7 @@ class DatabaseSeeder extends Seeder
             ClientInvoiceEmailTemplateSeeder::class,
             PdfTemplateSeeder::class,
             TaxSeeder::class,
+            SystemSettingsSeeder::class,
         ]);
     }
 }

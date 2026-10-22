@@ -32,6 +32,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SmtpSettingController;
+use App\Http\Controllers\AccountSettingController;
+use App\Http\Controllers\CatLogTemplateController;
+use App\Http\Controllers\LicenseController;
+use App\Http\Controllers\ReminderSettingController;
+use App\Http\Controllers\SystemValuesController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -64,6 +69,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->middleware('screen:client-prices.view');
 
     // Vendors
+    Route::get('vendors/export', [VendorController::class, 'exportExcel'])
+        ->name('vendors.export')
+        ->middleware('screen:vendors.view');
+    Route::post('vendors/{vendor}/toggle-assignable', [VendorController::class, 'toggleAssignable'])
+        ->name('vendors.toggle-assignable')
+        ->middleware('screen:vendors.view');
+    Route::post('vendors/{vendor}/toggle-finances', [VendorController::class, 'toggleFinances'])
+        ->name('vendors.toggle-finances')
+        ->middleware('screen:vendors.view');
+    Route::post('vendors/{vendor}/toggle-can-login', [VendorController::class, 'toggleCanLogin'])
+        ->name('vendors.toggle-can-login')
+        ->middleware('screen:vendors.view');
+    Route::post('vendors/{vendor}/invite', [VendorController::class, 'invite'])
+        ->name('vendors.invite')
+        ->middleware('screen:vendors.view');
     Route::resource('vendors', VendorController::class)->middleware('screen:vendors.view');
 
     // Vendor contacts (Vendors > Contacts & Vendor view > Contact persons tab)
@@ -231,6 +251,35 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('settings/default-taxes', DefaultTaxController::class)
             ->parameters(['default-taxes' => 'defaultTax'])
             ->except(['show']);
+    });
+
+    // System Values Overview
+    Route::get('settings/system-values', [SystemValuesController::class, 'index'])
+        ->name('system-values.index')->middleware('screen:system-values.view');
+
+    // Account settings
+    Route::middleware('screen:account.view')->group(function () {
+        Route::get('settings/account', [AccountSettingController::class, 'index'])->name('account.index');
+        Route::put('settings/account', [AccountSettingController::class, 'update'])->name('account.update');
+        Route::post('settings/account/regenerate-api-key', [AccountSettingController::class, 'regenerateApiKey'])->name('account.regenerate-api-key');
+    });
+
+    // License
+    Route::middleware('screen:license.view')->group(function () {
+        Route::get('settings/license', [LicenseController::class, 'index'])->name('license.index');
+        Route::put('settings/license', [LicenseController::class, 'update'])->name('license.update');
+    });
+
+    // CAT log conversion schemes
+    Route::middleware('screen:cat-log-templates.view')->group(function () {
+        Route::resource('settings/cat-log-templates', CatLogTemplateController::class)
+            ->parameters(['cat-log-templates' => 'catLogTemplate']);
+    });
+
+    // Reminders
+    Route::middleware('screen:reminders.view')->group(function () {
+        Route::get('settings/reminders', [ReminderSettingController::class, 'index'])->name('reminders.index');
+        Route::put('settings/reminders', [ReminderSettingController::class, 'update'])->name('reminders.update');
     });
 
     Route::patch('units/{unit}/toggle', [UnitController::class, 'toggle'])

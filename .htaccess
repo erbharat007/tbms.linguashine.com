@@ -1,6 +1,7 @@
 # ===================================================================
 # TBMS Linguashine - Root .htaccess (Localhost / WAMP Environment)
 # Redirects all incoming traffic to the public/ directory securely
+# Last Updated: 2026-10-21
 # ===================================================================
 
 <IfModule mod_rewrite.c>
@@ -24,8 +25,10 @@
         Deny from all
     </FilesMatch>
 
+    # Block direct web access to internal application directories
+    RewriteRule ^(app|bootstrap/cache|config|database|resources|routes|storage|tests|unused_files)/ - [F,L,NC]
+
     # Rewrite all traffic into the public/ directory
     RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
-
