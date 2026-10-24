@@ -103,18 +103,43 @@ return [
     ['label' => 'Quotes', 'route' => null, 'permission' => null, 'icon' => 'quotes'],
 
     ['label' => 'Reports', 'icon' => 'reports', 'children' => [
-        ['label' => 'General finances', 'route' => null, 'permission' => null],
-        ['label' => 'Quote report', 'route' => null, 'permission' => null],
-        ['label' => 'Project report', 'route' => null, 'permission' => null],
-        ['label' => 'Job report', 'route' => null, 'permission' => null],
-        ['label' => 'Managers', 'route' => null, 'permission' => null],
-        ['label' => 'Clients', 'route' => null, 'permission' => null],
-        ['label' => 'Vendors', 'route' => null, 'permission' => null],
-        ['label' => 'Language pairs', 'route' => null, 'permission' => null],
-        ['label' => 'Services', 'route' => null, 'permission' => null],
-        ['label' => 'Specializations', 'route' => null, 'permission' => null],
-        ['label' => 'Work amount', 'route' => null, 'permission' => null],
-        ['label' => 'To-do report', 'route' => null, 'permission' => null],
+        ['label' => 'General finances', 'children' => [
+            ['label' => 'General finances by receivables and payables', 'route' => 'reports.general-by-receivables-and-payables', 'permission' => null],
+            ['label' => 'General finances by invoices', 'route' => 'reports.general-by-invoices', 'permission' => null],
+            ['label' => 'General finances by payments', 'route' => 'reports.general-by-payments', 'permission' => null],
+            ['label' => 'Business expenses by category', 'route' => 'reports.expenses-by-category', 'permission' => null],
+        ]],
+        ['label' => 'Quote report', 'route' => 'reports.quote', 'permission' => null],
+        ['label' => 'Project report', 'route' => 'reports.project', 'permission' => null],
+        ['label' => 'Job report', 'route' => 'reports.job', 'permission' => null],
+        ['label' => 'Managers', 'children' => [
+            ['label' => 'Finances by receivables and payables', 'route' => 'reports.manager-finances', 'permission' => null],
+        ]],
+        ['label' => 'Clients', 'children' => [
+            ['label' => 'Finances by receivables and payables', 'route' => 'reports.client-finances', 'permission' => null],
+            ['label' => 'Income by invoices', 'route' => 'reports.client-income-by-invoices', 'permission' => null],
+            ['label' => 'Income by payments', 'route' => 'reports.client-income-by-payments', 'permission' => null],
+            ['label' => 'Average finances', 'route' => 'reports.client-average', 'permission' => null],
+        ]],
+        ['label' => 'Vendors', 'children' => [
+            ['label' => 'Expenses by payables', 'route' => 'reports.vendor-expenses-by-payables', 'permission' => null],
+            ['label' => 'Expenses by invoices', 'route' => 'reports.vendor-expenses-by-invoices', 'permission' => null],
+            ['label' => 'Expenses by payments', 'route' => 'reports.vendor-expenses-by-payments', 'permission' => null],
+        ]],
+        ['label' => 'Language pairs', 'children' => [
+            ['label' => 'Finances by receivables and payables', 'route' => 'reports.lang-finances', 'permission' => null],
+        ]],
+        ['label' => 'Services', 'children' => [
+            ['label' => 'Finances by receivables and payables', 'route' => 'reports.service-finances', 'permission' => null],
+        ]],
+        ['label' => 'Specializations', 'children' => [
+            ['label' => 'Finances by receivables and payables', 'route' => 'reports.spec-finances', 'permission' => null],
+        ]],
+        ['label' => 'Work amount', 'children' => [
+            ['label' => 'Work amount by receivables', 'route' => 'reports.work-amount-by-receivables', 'permission' => null],
+            ['label' => 'Work amount by payables', 'route' => 'reports.work-amount-by-payables', 'permission' => null],
+        ]],
+        ['label' => 'To-do report', 'route' => 'reports.todo', 'permission' => null],
     ]],
 
 ];

@@ -84,6 +84,7 @@ class DatabaseSeeder extends Seeder
             PdfTemplateSeeder::class,
             TaxSeeder::class,
             SystemSettingsSeeder::class,
+            DummyDataSeeder::class,
         ]);
     }
 }

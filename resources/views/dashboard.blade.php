@@ -4,10 +4,10 @@
     </x-slot>
 
     @php($stats = [
-        ['label' => 'Clients', 'value' => '—', 'note' => 'Clients module', 'bg' => 'bg-info', 'icon' => 'fas fa-user-tie'],
-        ['label' => 'Vendors', 'value' => '—', 'note' => 'Milestone 2', 'bg' => 'bg-success', 'icon' => 'fas fa-truck'],
-        ['label' => 'Active Projects', 'value' => '—', 'note' => 'Milestone 3', 'bg' => 'bg-warning', 'icon' => 'fas fa-project-diagram'],
-        ['label' => 'Outstanding', 'value' => '—', 'note' => 'Milestone 5', 'bg' => 'bg-danger', 'icon' => 'fas fa-file-invoice-dollar'],
+        ['label' => 'Active Clients', 'value' => $clientCount, 'note' => 'Clients module', 'bg' => 'bg-info', 'icon' => 'fas fa-user-tie'],
+        ['label' => 'Registered Vendors', 'value' => $vendorCount, 'note' => 'Vendor module', 'bg' => 'bg-success', 'icon' => 'fas fa-truck'],
+        ['label' => 'Payables Due', 'value' => number_format($payableTotal, 2) . ' EUR', 'note' => $payableCount . ' active orders', 'bg' => 'bg-warning', 'icon' => 'fas fa-file-invoice-dollar'],
+        ['label' => 'Supplier Invoices', 'value' => number_format($invoiceTotal, 2) . ' EUR', 'note' => 'Processed billings', 'bg' => 'bg-danger', 'icon' => 'fas fa-receipt'],
     ])
 
     <div class="row">

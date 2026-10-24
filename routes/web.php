@@ -39,6 +39,7 @@ use App\Http\Controllers\ReminderSettingController;
 use App\Http\Controllers\SystemValuesController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -285,6 +286,48 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('units/{unit}/toggle', [UnitController::class, 'toggle'])
         ->name('units.toggle')->middleware('screen:units.view');
     Route::resource('units', UnitController::class)->middleware('screen:units.view');
+
+    // Reports & Business Analytics
+    Route::prefix('reports')->name('reports.')->group(function () {
+        // General finances
+        Route::get('general-by-receivables-and-payables', [ReportController::class, 'generalByReceivablesAndPayables'])->name('general-by-receivables-and-payables');
+        Route::get('general-by-invoices', [ReportController::class, 'generalByInvoices'])->name('general-by-invoices');
+        Route::get('general-by-payments', [ReportController::class, 'generalByPayments'])->name('general-by-payments');
+        Route::get('expenses-by-category', [ReportController::class, 'expensesByCategory'])->name('expenses-by-category');
+
+        // Standalone reports
+        Route::get('quote', [ReportController::class, 'quote'])->name('quote');
+        Route::get('project', [ReportController::class, 'project'])->name('project');
+        Route::get('job', [ReportController::class, 'job'])->name('job');
+        Route::get('todo', [ReportController::class, 'todo'])->name('todo');
+
+        // Managers
+        Route::get('manager-finances', [ReportController::class, 'managerFinances'])->name('manager-finances');
+
+        // Clients
+        Route::get('client-finances', [ReportController::class, 'clientFinances'])->name('client-finances');
+        Route::get('client-income-by-invoices', [ReportController::class, 'clientIncomeByInvoices'])->name('client-income-by-invoices');
+        Route::get('client-income-by-payments', [ReportController::class, 'clientIncomeByPayments'])->name('client-income-by-payments');
+        Route::get('client-average', [ReportController::class, 'clientAverage'])->name('client-average');
+
+        // Vendors
+        Route::get('vendor-expenses-by-payables', [ReportController::class, 'vendorExpensesByPayables'])->name('vendor-expenses-by-payables');
+        Route::get('vendor-expenses-by-invoices', [ReportController::class, 'vendorExpensesByInvoices'])->name('vendor-expenses-by-invoices');
+        Route::get('vendor-expenses-by-payments', [ReportController::class, 'vendorExpensesByPayments'])->name('vendor-expenses-by-payments');
+
+        // Language pairs
+        Route::get('lang-finances', [ReportController::class, 'langFinances'])->name('lang-finances');
+
+        // Services
+        Route::get('service-finances', [ReportController::class, 'serviceFinances'])->name('service-finances');
+
+        // Specializations
+        Route::get('spec-finances', [ReportController::class, 'specFinances'])->name('spec-finances');
+
+        // Work amount
+        Route::get('work-amount-by-receivables', [ReportController::class, 'workAmountByReceivables'])->name('work-amount-by-receivables');
+        Route::get('work-amount-by-payables', [ReportController::class, 'workAmountByPayables'])->name('work-amount-by-payables');
+    });
 });
 
 // Public vendor application form (no auth) — shareable token-based link.

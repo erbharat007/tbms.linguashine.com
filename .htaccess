@@ -16,13 +16,23 @@
 
     # Prevent direct access to sensitive configuration, version control, and lock files
     <FilesMatch "^\.(env|git|editorconfig|gitattributes|gitignore)">
-        Order allow,deny
-        Deny from all
+        <IfModule mod_authz_core.c>
+            Require all denied
+        </IfModule>
+        <IfModule !mod_authz_core.c>
+            Order allow,deny
+            Deny from all
+        </IfModule>
     </FilesMatch>
 
     <FilesMatch "(composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml|artisan)">
-        Order allow,deny
-        Deny from all
+        <IfModule mod_authz_core.c>
+            Require all denied
+        </IfModule>
+        <IfModule !mod_authz_core.c>
+            Order allow,deny
+            Deny from all
+        </IfModule>
     </FilesMatch>
 
     # Block direct web access to internal application directories

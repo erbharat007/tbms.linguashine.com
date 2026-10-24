@@ -66,7 +66,8 @@
                                         @php($subActive = \App\Support\Navigation::groupActive($child))
                                         <li class="nav-item {{ $subActive ? 'menu-open' : '' }}">
                                             <a href="{{ !empty($child['route']) ? route($child['route']) : '#' }}"
-                                               class="nav-link {{ $subActive ? 'active' : '' }}">
+                                               class="nav-link {{ $subActive ? 'active' : '' }}"
+                                               title="{{ $child['label'] }}">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     {{ $child['label'] }}
@@ -80,7 +81,8 @@
                                                     <li class="nav-item">
                                                         <a href="{{ $grandchildDisabled ? '#' : route($grandchild['route']) }}"
                                                            class="nav-link {{ \App\Support\Navigation::isActive($grandchild) ? 'active' : '' }} {{ $grandchildDisabled ? 'disabled-link' : '' }}"
-                                                           style="padding-left: 2.2rem;">
+                                                           style="padding-left: 2.2rem;"
+                                                           title="{{ $grandchild['label'] }}">
                                                             <i class="far fa-dot-circle nav-icon" style="font-size: 0.7rem;"></i>
                                                             <p>
                                                                 {{ $grandchild['label'] }}
@@ -95,7 +97,8 @@
                                         @php($childDisabled = empty($child['route']))
                                         <li class="nav-item">
                                             <a href="{{ $childDisabled ? '#' : route($child['route']) }}"
-                                               class="nav-link {{ \App\Support\Navigation::isActive($child) ? 'active' : '' }} {{ $childDisabled ? 'disabled-link' : '' }}">
+                                               class="nav-link {{ \App\Support\Navigation::isActive($child) ? 'active' : '' }} {{ $childDisabled ? 'disabled-link' : '' }}"
+                                               title="{{ $child['label'] }}">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     {{ $child['label'] }}
