@@ -26,6 +26,7 @@ class ObjectCodeSeeder extends Seeder
             ['object_key' => 'payable', 'label' => 'Payable', 'prefix' => 'PB', 'next_id' => 1],
             ['object_key' => 'client_payment', 'label' => 'Client payment', 'prefix' => 'CP', 'next_id' => 1],
             ['object_key' => 'vendor_payment', 'label' => 'Vendor payment', 'prefix' => 'VP', 'next_id' => 1],
+            ['object_key' => 'tender', 'label' => 'Tender', 'prefix' => 'T', 'next_id' => 1],
         ];
 
         foreach ($objects as $index => $object) {

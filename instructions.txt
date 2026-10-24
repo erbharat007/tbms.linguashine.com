@@ -29,3 +29,5 @@ notes:- strictly make sure (project: tbms.linguashine.com, tech-stack: Laravel, 
 -- create UserManual.pdf file in app-updates/documentation/ folder (instructions for end user) (update app-updates/users-guide.txt and create app-updates/documentation/UserManual.pdf)
 -- create AdminUserManual.pdf file in app-updates/documentation/ folder (instructions for admin) (update app-updates/admin-users-guide.txt and create app-updates/documentation/AdminUserManual.pdf)
 -- design must follow existing design and its style (bootstrap, AdminLTE)
+-- insert/update all promts i have used here according to the date and time file name date_time_prompts_tbms_admin_v1.txt
+    (date_time_prompts_tbms_admin_v1.txt is in app-updates/documentation/prompts folder)

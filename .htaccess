@@ -1,7 +1,7 @@
 # ===================================================================
 # TBMS Linguashine - Root .htaccess (Localhost / WAMP Environment)
 # Redirects all incoming traffic to the public/ directory securely
-# Last Updated: 2026-10-21
+# Last Updated: 2026-10-25
 # ===================================================================
 
 <IfModule mod_rewrite.c>

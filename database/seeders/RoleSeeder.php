@@ -28,6 +28,17 @@ class RoleSeeder extends Seeder
         $pm->permissions()->sync(
             Permission::whereIn('key', [
                 'clients.view',
+                'vendors.view',
+                'projects.view',
+                'projects.create',
+                'project-templates.view',
+                'project-tags.view',
+                'jobs.view',
+                'jobs.create',
+                'job-tenders.view',
+                'job-chain-templates.view',
+                'job-checklists.view',
+                'job-tags.view',
             ])->pluck('id')
         );
 
@@ -39,6 +50,8 @@ class RoleSeeder extends Seeder
         $accountant->permissions()->sync(
             Permission::whereIn('key', [
                 'clients.view',
+                'projects.view',
+                'jobs.view',
             ])->pluck('id')
         );
     }

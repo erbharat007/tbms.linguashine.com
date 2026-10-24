@@ -90,9 +90,20 @@ return [
         ['label' => 'Rating categories', 'route' => 'vendor-rating-categories.index', 'permission' => 'vendor-rating-categories.view', 'match' => 'vendor-rating-categories.*'],
     ]],
 
-    ['label' => 'Projects', 'route' => null, 'permission' => null, 'icon' => 'projects'],
+    ['label' => 'Projects', 'icon' => 'projects', 'children' => [
+        ['label' => 'Projects', 'route' => 'projects.index', 'permission' => 'projects.view', 'match' => 'projects.*'],
+        ['label' => 'New project', 'route' => 'projects.create', 'permission' => 'projects.create'],
+        ['label' => 'Project templates', 'route' => 'project-templates.index', 'permission' => 'project-templates.view', 'match' => 'project-templates.*'],
+        ['label' => 'Tags', 'route' => 'project-tags.index', 'permission' => 'project-tags.view', 'match' => 'project-tags.*'],
+    ]],
 
-    ['label' => 'Jobs', 'route' => null, 'permission' => null, 'icon' => 'jobs'],
+    ['label' => 'Jobs', 'icon' => 'jobs', 'children' => [
+        ['label' => 'Jobs', 'route' => 'jobs.index', 'permission' => 'jobs.view', 'match' => 'jobs.*'],
+        ['label' => 'Tenders', 'route' => 'job-tenders.index', 'permission' => 'job-tenders.view', 'match' => 'job-tenders.*'],
+        ['label' => 'Job chain templates', 'route' => 'job-chain-templates.index', 'permission' => 'job-chain-templates.view', 'match' => 'job-chain-templates.*'],
+        ['label' => 'Checklists', 'route' => 'job-checklists.index', 'permission' => 'job-checklists.view', 'match' => 'job-checklists.*'],
+        ['label' => 'Tags', 'route' => 'job-tags.index', 'permission' => 'job-tags.view', 'match' => 'job-tags.*'],
+    ]],
 
     ['label' => 'To-dos', 'route' => null, 'permission' => null, 'icon' => 'todos'],
 

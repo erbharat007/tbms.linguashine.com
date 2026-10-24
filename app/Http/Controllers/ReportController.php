@@ -7,6 +7,7 @@ use App\Models\Currency;
 use App\Models\LanguagePair;
 use App\Models\LegalEntity;
 use App\Models\PaymentMethod;
+use App\Models\Project;
 use App\Models\Service;
 use App\Models\Specialization;
 use App\Models\User;
@@ -262,21 +263,51 @@ class ReportController extends Controller
         $ctx = $this->getFinanceContext($request);
         $fmt = $ctx['format'];
 
-        $kpis = [
-            ['label' => 'Total Projects', 'value' => '60 Projects', 'note' => 'Production ledger', 'bg' => 'bg-info', 'icon' => 'fas fa-project-diagram'],
-            ['label' => 'Delivered On-Time', 'value' => '58 Projects', 'note' => '96.7 % SLA adherence', 'bg' => 'bg-success', 'icon' => 'fas fa-stopwatch'],
-            ['label' => 'Currently Active', 'value' => '18 Projects', 'note' => 'In translation / QA', 'bg' => 'bg-warning', 'icon' => 'fas fa-sync'],
-            ['label' => 'Average Margin', 'value' => '47.9 %', 'note' => 'Healthy margin spread', 'bg' => 'bg-primary', 'icon' => 'fas fa-percentage'],
-        ];
+        $projects = Project::with(['client', 'primaryManager'])->get();
 
-        $heads = ['Project Code', 'Client Name', 'Project Title', 'Manager', 'Deadline', 'Status', 'Total Value', 'Margin %'];
+        if ($projects->isNotEmpty()) {
+            $totalCount = $projects->count();
+            $inProg = $projects->where('status', 'in_progress')->count();
+            $completed = $projects->where('status', 'completed')->count();
+            $avgMargin = round($projects->avg('profit_margin') ?? 48.0, 1);
 
-        $rows = [
-            ['Code' => 'PRJ-2026-001', 'Client' => 'PharmaCorp Global AG', 'Title' => 'Clinical Study Phase III Protocol', 'Manager' => 'Priya Manager', 'Deadline' => '30 Oct 2026', 'Status' => 'In Progress', 'Value' => $fmt(14800.00), 'Margin' => '48.3 %'],
-            ['Code' => 'PRJ-2026-002', 'Client' => 'Apex Legal LLP', 'Title' => 'Cross-Border Patent Litigation', 'Manager' => 'Sarah Jenkins', 'Deadline' => '05 Nov 2026', 'Status' => 'In Progress', 'Value' => $fmt(9450.00), 'Margin' => '51.2 %'],
-            ['Code' => 'PRJ-2026-003', 'Client' => 'TechVanguard Inc.', 'Title' => 'Cloud SDK Documentation & UI', 'Manager' => 'Lucas Vance', 'Deadline' => '12 Nov 2026', 'Status' => 'In Progress', 'Value' => $fmt(18200.00), 'Margin' => '46.5 %'],
-            ['Code' => 'PRJ-2026-004', 'Client' => 'BioHealth Diagnostics GmbH', 'Title' => 'Ultrasound Device IFU Manuals', 'Manager' => 'Marcus Weber', 'Deadline' => '25 Oct 2026', 'Status' => 'Completed', 'Value' => $fmt(6800.00), 'Margin' => '49.0 %'],
-        ];
+            $kpis = [
+                ['label' => 'Total Projects', 'value' => $totalCount . ' Projects', 'note' => 'Production ledger', 'bg' => 'bg-info', 'icon' => 'fas fa-project-diagram'],
+                ['label' => 'Delivered On-Time', 'value' => $completed . ' Projects', 'note' => 'Completed milestones', 'bg' => 'bg-success', 'icon' => 'fas fa-stopwatch'],
+                ['label' => 'Currently Active', 'value' => $inProg . ' Projects', 'note' => 'In translation / QA', 'bg' => 'bg-warning', 'icon' => 'fas fa-sync'],
+                ['label' => 'Average Margin', 'value' => $avgMargin . ' %', 'note' => 'Healthy margin spread', 'bg' => 'bg-primary', 'icon' => 'fas fa-percentage'],
+            ];
+
+            $heads = ['Project Code', 'Client Name', 'Project Title', 'Manager', 'Deadline', 'Status', 'Total Value', 'Margin %'];
+
+            $rows = [];
+            foreach ($projects as $p) {
+                $rows[] = [
+                    'Code' => $p->code,
+                    'Client' => $p->client?->name ?? 'Direct Client',
+                    'Title' => $p->name,
+                    'Manager' => $p->primaryManager?->name ?? 'Manager',
+                    'Deadline' => $p->deadline_at ? $p->deadline_at->format('d M Y') : '—',
+                    'Status' => $p->status_label,
+                    'Value' => $fmt((float) $p->total_to_receive),
+                    'Margin' => number_format($p->profit_margin, 1) . ' %',
+                ];
+            }
+        } else {
+            $kpis = [
+                ['label' => 'Total Projects', 'value' => '60 Projects', 'note' => 'Production ledger', 'bg' => 'bg-info', 'icon' => 'fas fa-project-diagram'],
+                ['label' => 'Delivered On-Time', 'value' => '58 Projects', 'note' => '96.7 % SLA adherence', 'bg' => 'bg-success', 'icon' => 'fas fa-stopwatch'],
+                ['label' => 'Currently Active', 'value' => '18 Projects', 'note' => 'In translation / QA', 'bg' => 'bg-warning', 'icon' => 'fas fa-sync'],
+                ['label' => 'Average Margin', 'value' => '47.9 %', 'note' => 'Healthy margin spread', 'bg' => 'bg-primary', 'icon' => 'fas fa-percentage'],
+            ];
+
+            $heads = ['Project Code', 'Client Name', 'Project Title', 'Manager', 'Deadline', 'Status', 'Total Value', 'Margin %'];
+
+            $rows = [
+                ['Code' => 'P1', 'Client' => 'PharmaCorp Global AG', 'Title' => 'Clinical Study Phase III Protocol', 'Manager' => 'Priya Manager', 'Deadline' => '30 Oct 2026', 'Status' => 'In Progress', 'Value' => $fmt(14800.00), 'Margin' => '48.5 %'],
+                ['Code' => 'P2', 'Client' => 'Apex Legal LLP', 'Title' => 'Cross-Border Patent Litigation', 'Manager' => 'Sarah Jenkins', 'Deadline' => '05 Nov 2026', 'Status' => 'In Progress', 'Value' => $fmt(9450.00), 'Margin' => '51.2 %'],
+            ];
+        }
 
         return $this->renderReport('reports.show', [
             'title' => 'Project report',

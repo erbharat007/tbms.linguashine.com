@@ -17,6 +17,14 @@ use App\Models\LegalEntity;
 use App\Models\MultiQuoteEmailTemplate;
 use App\Models\PaymentMethod;
 use App\Models\QuoteEmailTemplate;
+use App\Models\Project;
+use App\Models\ProjectJob;
+use App\Models\JobTender;
+use App\Models\JobChainTemplate;
+use App\Models\JobChecklist;
+use App\Models\JobTag;
+use App\Models\ProjectTag;
+use App\Models\ProjectTemplate;
 use App\Models\Role;
 use App\Models\Service;
 use App\Models\SmtpSetting;
@@ -852,5 +860,673 @@ class DummyDataSeeder extends Seeder
                 );
             }
         }
+
+        // -------------------------------------------------------------
+        // 12. SEED PROJECT TAGS, TEMPLATES & PROJECTS
+        // -------------------------------------------------------------
+        $tagNames = [
+            'VIP Client',
+            'Rush / Express',
+            'Clinical Study',
+            'Patent Litigation',
+            'Software Localization',
+            'Certified / Sworn',
+            'Annual Financials',
+        ];
+
+        $projectTags = [];
+        foreach ($tagNames as $tn) {
+            $projectTags[$tn] = ProjectTag::firstOrCreate(['name' => $tn]);
+        }
+
+        $allClients = Client::all();
+        $pharmaClient = $allClients->firstWhere('name', 'PharmaCorp Global AG') ?? $allClients->first();
+        $apexClient = $allClients->firstWhere('name', 'Apex Legal LLP') ?? $allClients->first();
+        $techClient = $allClients->firstWhere('name', 'TechVanguard Inc.') ?? $allClients->first();
+        $bioClient = $allClients->firstWhere('name', 'BioHealth Diagnostics GmbH') ?? $allClients->first();
+        $mediaClient = $allClients->firstWhere('name', 'Nippon Media Holdings') ?? $allClients->first();
+        $nordicClient = $allClients->firstWhere('name', 'Nordic Energy Solutions') ?? $allClients->first();
+        $financeClient = $allClients->firstWhere('name', 'EuroFinance SA') ?? $allClients->first();
+        $academicClient = $allClients->firstWhere('name', 'Dr. Elena Rostova') ?? $allClients->first();
+
+        $medSpec = Specialization::where('name', 'Medical')->first();
+        $legalSpec = Specialization::where('name', 'Legal')->first();
+        $itSpec = Specialization::where('name', 'Information technology')->first();
+        $finSpec = Specialization::where('name', 'Financial')->first();
+        $mktSpec = Specialization::where('name', 'Marketing')->first();
+
+        $pmPriya = User::where('name', 'Priya Manager')->first() ?? $manager;
+        $pmSarah = User::where('name', 'Sarah Jenkins')->first() ?? $manager;
+        $pmLucas = User::where('name', 'Lucas Vance')->first() ?? $manager;
+        $pmMarcus = User::where('name', 'Marcus Weber')->first() ?? $manager;
+
+        // Templates
+        $templateSpecs = [
+            [
+                'name' => 'Clinical Trial Protocol Phase III Template',
+                'client_id' => $pharmaClient?->id,
+                'specialization_id' => $medSpec?->id,
+                'primary_manager_id' => $pmPriya?->id,
+                'description' => 'Standard regulatory clinical study documentation (EMA/FDA ICH-GCP).',
+                'internal_note' => 'Strict terminology check against medical glossaries.',
+            ],
+            [
+                'name' => 'Patent Litigation & Sworn Translation Template',
+                'client_id' => $apexClient?->id,
+                'specialization_id' => $legalSpec?->id,
+                'primary_manager_id' => $pmSarah?->id,
+                'description' => 'Court evidence translation with signed Affidavit / Certificate of Accuracy.',
+                'internal_note' => 'Deliver PDF stamped copy and editable clean Word transcript.',
+            ],
+            [
+                'name' => 'Cloud SDK & Developer Portal API Localization',
+                'client_id' => $techClient?->id,
+                'specialization_id' => $itSpec?->id,
+                'primary_manager_id' => $pmLucas?->id,
+                'description' => 'Continuous Git localization of Markdown developer documentation and JSON strings.',
+                'internal_note' => 'Ensure code tags and API parameter names remain untranslated.',
+            ],
+        ];
+
+        foreach ($templateSpecs as $ts) {
+            $tmpl = ProjectTemplate::firstOrCreate(
+                ['name' => $ts['name']],
+                [
+                    'client_id' => $ts['client_id'],
+                    'specialization_id' => $ts['specialization_id'],
+                    'primary_manager_id' => $ts['primary_manager_id'],
+                    'description' => $ts['description'],
+                    'internal_note' => $ts['internal_note'],
+                    'created_by' => $manager?->id,
+                ]
+            );
+
+            if ($allLangPairs->isNotEmpty()) {
+                $tmpl->languagePairs()->sync($allLangPairs->take(2)->pluck('id'));
+            }
+        }
+
+        // Projects
+        $projectSpecs = [
+            [
+                'code' => 'P1',
+                'name' => 'Clinical Trial Protocol Phase III',
+                'client_id' => $pharmaClient?->id,
+                'contact' => $pharmaClient?->contacts->first(),
+                'specialization_id' => $medSpec?->id,
+                'primary_manager_id' => $pmPriya?->id,
+                'secondary_manager_id' => $pmSarah?->id,
+                'start_at' => now()->subDays(4),
+                'deadline_at' => now()->addDays(6),
+                'status' => 'in_progress',
+                'description' => 'Localization of clinical study protocol, patient information sheets, and informed consent forms.',
+                'internal_note' => 'High priority clinical project. Dual-linguist review required.',
+                'total_to_receive' => 14800.00,
+                'total_to_pay' => 7622.00,
+                'tags' => ['VIP Client', 'Clinical Study'],
+                'pairs' => $allLangPairs->take(1),
+            ],
+            [
+                'code' => 'P2',
+                'name' => 'Cross-Border Patent Litigation Claims',
+                'client_id' => $apexClient?->id,
+                'contact' => $apexClient?->contacts->first(),
+                'specialization_id' => $legalSpec?->id,
+                'primary_manager_id' => $pmSarah?->id,
+                'secondary_manager_id' => $pmPriya?->id,
+                'start_at' => now()->subDays(6),
+                'deadline_at' => now()->addDays(8),
+                'status' => 'in_progress',
+                'description' => 'Translation of patent claims and expert witness testimonies for High Court litigation.',
+                'internal_note' => 'Strict sworn certification needed with physical delivery.',
+                'total_to_receive' => 9450.00,
+                'total_to_pay' => 4611.60,
+                'tags' => ['Patent Litigation', 'Certified / Sworn'],
+                'pairs' => $allLangPairs->skip(1)->take(1),
+            ],
+            [
+                'code' => 'P3',
+                'name' => 'Cloud SDK Documentation & UI Strings',
+                'client_id' => $techClient?->id,
+                'contact' => $techClient?->contacts->first(),
+                'specialization_id' => $itSpec?->id,
+                'primary_manager_id' => $pmLucas?->id,
+                'secondary_manager_id' => $pmMarcus?->id,
+                'start_at' => now()->subDays(2),
+                'deadline_at' => now()->addDays(12),
+                'status' => 'in_progress',
+                'description' => 'Complete UI and developer reference localization into Japanese and German.',
+                'internal_note' => 'Automated GitHub webhook delivery configured.',
+                'total_to_receive' => 18200.00,
+                'total_to_pay' => 9737.00,
+                'tags' => ['Software Localization', 'VIP Client'],
+                'pairs' => $allLangPairs->take(2),
+            ],
+            [
+                'code' => 'P4',
+                'name' => 'Medical Ultrasound IFU Manuals',
+                'client_id' => $bioClient?->id,
+                'contact' => $bioClient?->contacts->first(),
+                'specialization_id' => $medSpec?->id,
+                'primary_manager_id' => $pmMarcus?->id,
+                'secondary_manager_id' => null,
+                'start_at' => now()->subDays(15),
+                'deadline_at' => now()->subDays(2),
+                'status' => 'completed',
+                'description' => 'Diagnostic ultrasound device operating instructions and regulatory safety warnings.',
+                'internal_note' => 'Passed CE mark compliance audit.',
+                'total_to_receive' => 6800.00,
+                'total_to_pay' => 3468.00,
+                'tags' => ['Clinical Study'],
+                'pairs' => $allLangPairs->take(1),
+            ],
+            [
+                'code' => 'P5',
+                'name' => 'Anime Script Dubbing & Subtitling',
+                'client_id' => $mediaClient?->id,
+                'contact' => $mediaClient?->contacts->first(),
+                'specialization_id' => $mktSpec?->id,
+                'primary_manager_id' => $pmPriya?->id,
+                'secondary_manager_id' => null,
+                'start_at' => now()->subDays(3),
+                'deadline_at' => now()->addDays(5),
+                'status' => 'in_progress',
+                'description' => 'Subtitling and dialogue adaptation for international streaming release.',
+                'internal_note' => 'Character limit: 37 chars per line.',
+                'total_to_receive' => 8500.00,
+                'total_to_pay' => 4165.00,
+                'tags' => ['Rush / Express'],
+                'pairs' => $allLangPairs->take(1),
+            ],
+            [
+                'code' => 'P6',
+                'name' => 'Renewable Energy ESG Sustainability Report',
+                'client_id' => $nordicClient?->id,
+                'contact' => $nordicClient?->contacts->first(),
+                'specialization_id' => null,
+                'primary_manager_id' => $pmLucas?->id,
+                'secondary_manager_id' => null,
+                'start_at' => now()->subDays(20),
+                'deadline_at' => now()->subDays(5),
+                'status' => 'completed',
+                'description' => 'Annual corporate carbon disclosure and biodiversity assessment.',
+                'internal_note' => 'Published on corporate investor portal.',
+                'total_to_receive' => 12500.00,
+                'total_to_pay' => 6500.00,
+                'tags' => ['Annual Financials'],
+                'pairs' => $allLangPairs->take(1),
+            ],
+            [
+                'code' => 'P7',
+                'name' => 'Mutual Fund Prospectus & KIID',
+                'client_id' => $financeClient?->id,
+                'contact' => $financeClient?->contacts->first(),
+                'specialization_id' => $finSpec?->id,
+                'primary_manager_id' => $pmPriya?->id,
+                'secondary_manager_id' => $pmSarah?->id,
+                'start_at' => now()->subDays(5),
+                'deadline_at' => now()->addDays(9),
+                'status' => 'in_progress',
+                'description' => 'UCITS Key Investor Information Document updates for European distribution.',
+                'internal_note' => 'Strict CSSF Luxembourg financial terminology.',
+                'total_to_receive' => 11350.00,
+                'total_to_pay' => 5675.00,
+                'tags' => ['VIP Client', 'Annual Financials'],
+                'pairs' => $allLangPairs->take(1),
+            ],
+            [
+                'code' => 'P8',
+                'name' => 'Academic Neuroscience Research Treatise',
+                'client_id' => $academicClient?->id,
+                'contact' => $academicClient?->contacts->first(),
+                'specialization_id' => null,
+                'primary_manager_id' => $pmSarah?->id,
+                'secondary_manager_id' => null,
+                'start_at' => now()->subDays(1),
+                'deadline_at' => now()->addDays(14),
+                'status' => 'draft',
+                'description' => 'Monograph manuscript for publication in international peer-reviewed journal.',
+                'internal_note' => 'Author self-funded research paper.',
+                'total_to_receive' => 4200.00,
+                'total_to_pay' => 2184.00,
+                'tags' => [],
+                'pairs' => $allLangPairs->take(1),
+            ],
+        ];
+
+        foreach ($projectSpecs as $ps) {
+            $proj = Project::firstOrCreate(
+                ['code' => $ps['code']],
+                [
+                    'name' => $ps['name'],
+                    'client_id' => $ps['client_id'],
+                    'client_contact_id' => $ps['contact']?->id,
+                    'legal_entity_id' => $defaultLegalEntity?->id,
+                    'specialization_id' => $ps['specialization_id'],
+                    'primary_manager_id' => $ps['primary_manager_id'],
+                    'secondary_manager_id' => $ps['secondary_manager_id'],
+                    'start_at' => $ps['start_at'],
+                    'deadline_at' => $ps['deadline_at'],
+                    'status' => $ps['status'],
+                    'description' => $ps['description'],
+                    'internal_note' => $ps['internal_note'],
+                    'total_to_receive' => $ps['total_to_receive'],
+                    'total_to_pay' => $ps['total_to_pay'],
+                    'currency_id' => $defaultCurrency?->id,
+                    'created_by' => $manager?->id,
+                ]
+            );
+
+            $proj->recalculateFinances();
+            $proj->save();
+
+            if (!empty($ps['pairs'])) {
+                $proj->languagePairs()->sync($ps['pairs']->pluck('id'));
+            }
+
+            if (!empty($ps['tags'])) {
+                $tagIds = [];
+                foreach ($ps['tags'] as $tagName) {
+                    if (isset($projectTags[$tagName])) {
+                        $tagIds[] = $projectTags[$tagName]->id;
+                    }
+                }
+                $proj->tags()->sync($tagIds);
+            }
+        }
+
+        // -------------------------------------------------------------
+        // 13. JOBS MODULE SEEDING (Jobs, Tenders, Templates, Checklists, Tags)
+        // -------------------------------------------------------------
+        $jobTagsData = [
+            ['name' => 'Urgent', 'color' => '#dc3545', 'description' => 'Fast turnaround required'],
+            ['name' => 'VIP Client', 'color' => '#ffc107', 'description' => 'Senior linguist required'],
+            ['name' => 'Medical Certified', 'color' => '#28a745', 'description' => 'Certified medical specialist only'],
+            ['name' => 'CAT Tool', 'color' => '#17a2b8', 'description' => 'Trados / memoQ required'],
+            ['name' => 'DTP Required', 'color' => '#6f42c1', 'description' => 'Desktop publishing layout check needed'],
+        ];
+
+        $seededJobTags = [];
+        foreach ($jobTagsData as $jtd) {
+            $seededJobTags[$jtd['name']] = JobTag::updateOrCreate(['name' => $jtd['name']], $jtd);
+        }
+
+        $chk1 = JobChecklist::updateOrCreate(
+            ['name' => 'ISO 17100 Translation QA Standard'],
+            [
+                'is_enabled' => true,
+                'note_for_vendor' => 'Please verify all QA items prior to file delivery.',
+                'items' => [
+                    ['text' => 'Automated spellcheck and grammar verification completed', 'is_required' => true],
+                    ['text' => 'Client termbase and approved terminology followed strictly', 'is_required' => true],
+                    ['text' => 'Formatting, tags, placeholders and numbers verified against source', 'is_required' => true],
+                    ['text' => 'Raw machine translation prohibited without thorough human post-editing', 'is_required' => true],
+                ],
+                'created_by' => $manager?->id,
+                'updated_by' => $manager?->id,
+            ]
+        );
+
+        $chk2 = JobChecklist::updateOrCreate(
+            ['name' => 'Post-Editing Quality Checklist (MTPE)'],
+            [
+                'is_enabled' => true,
+                'note_for_vendor' => 'Ensure natural fluency, idiomatic accuracy, and client voice.',
+                'items' => [
+                    ['text' => 'Check adequacy and semantic accuracy of machine translation', 'is_required' => true],
+                    ['text' => 'Correct unnatural phrasing, syntax errors, and tone inconsistencies', 'is_required' => true],
+                    ['text' => 'Verify dates, numbers, currency symbols, and proper nouns', 'is_required' => true],
+                ],
+                'created_by' => $manager?->id,
+                'updated_by' => $manager?->id,
+            ]
+        );
+
+        $srvTranslation = Service::where('name', 'like', '%Translation%')->first() ?? Service::first();
+        $srvProofreading = Service::where('name', 'like', '%Proofreading%')->first() ?? Service::skip(1)->first() ?? $srvTranslation;
+        $srvDtp = Service::where('name', 'like', '%Desktop%')->orWhere('name', 'like', '%DTP%')->first() ?? Service::skip(2)->first() ?? $srvTranslation;
+
+        JobChainTemplate::updateOrCreate(
+            ['name' => 'Standard TEP (Translation -> Proofreading)'],
+            [
+                'description' => 'Two-step quality workflow for high-visibility client deliverables.',
+                'steps' => [
+                    ['service_id' => $srvTranslation?->id],
+                    ['service_id' => $srvProofreading?->id],
+                ],
+                'created_by' => $manager?->id,
+            ]
+        );
+
+        JobChainTemplate::updateOrCreate(
+            ['name' => 'Translation & Desktop Publishing (DTP)'],
+            [
+                'description' => 'For brochures, PDF manuals, and marketing graphics.',
+                'steps' => [
+                    ['service_id' => $srvTranslation?->id],
+                    ['service_id' => $srvDtp?->id],
+                ],
+                'created_by' => $manager?->id,
+            ]
+        );
+
+        // Seed 12 Realistic Jobs across projects
+        $allProjects = Project::with(['languagePairs', 'currency'])->get()->keyBy('code');
+        $allVendors = Vendor::all();
+        $wordUnit = Unit::where('name', 'like', '%Word%')->first() ?? Unit::first();
+        $hourUnit = Unit::where('name', 'like', '%Hour%')->first() ?? Unit::first();
+        $allPairs = LanguagePair::all();
+
+        $jobsSeedData = [
+            [
+                'code' => 'J1',
+                'name' => 'Clinical Trial Protocol Translation (DE->EN)',
+                'project_code' => 'P1',
+                'service_id' => $srvTranslation?->id,
+                'vendor_index' => 0,
+                'status' => 'completed',
+                'started_at' => now()->subDays(6),
+                'deadline_at' => now()->subDays(2),
+                'completed_at' => now()->subDays(2),
+                'work_amount' => 4500.00,
+                'price_per_unit' => 0.08,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => $chk1->id,
+                'tags' => ['Medical Certified', 'VIP Client'],
+                'instructions' => 'Follow EMA medical terminology glossary strictly.',
+            ],
+            [
+                'code' => 'J2',
+                'name' => 'Bilingual Medical Proofreading & Reconciliation',
+                'project_code' => 'P1',
+                'service_id' => $srvProofreading?->id,
+                'vendor_index' => 1,
+                'status' => 'in_progress',
+                'started_at' => now()->subDays(2),
+                'deadline_at' => now()->addDays(2),
+                'completed_at' => null,
+                'work_amount' => 4500.00,
+                'price_per_unit' => 0.035,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => $chk1->id,
+                'tags' => ['Medical Certified', 'Urgent'],
+                'instructions' => 'Ensure complete consistency with J1 translation.',
+            ],
+            [
+                'code' => 'J3',
+                'name' => 'Automotive Maintenance Manual Translation (EN->FR)',
+                'project_code' => 'P2',
+                'service_id' => $srvTranslation?->id,
+                'vendor_index' => 2,
+                'status' => 'in_progress',
+                'started_at' => now()->subDays(4),
+                'deadline_at' => now()->addDays(3),
+                'completed_at' => null,
+                'work_amount' => 12500.00,
+                'price_per_unit' => 0.065,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => $chk2->id,
+                'tags' => ['CAT Tool', 'VIP Client'],
+                'instructions' => 'memoQ package uploaded in project files tab.',
+            ],
+            [
+                'code' => 'J4',
+                'name' => 'Technical InDesign DTP Formatting (FR)',
+                'project_code' => 'P2',
+                'service_id' => $srvDtp?->id,
+                'vendor_index' => 3,
+                'status' => 'offered',
+                'started_at' => null,
+                'deadline_at' => now()->addDays(5),
+                'completed_at' => null,
+                'work_amount' => 24.00,
+                'price_per_unit' => 25.00,
+                'unit_id' => $hourUnit?->id,
+                'checklist_id' => null,
+                'tags' => ['DTP Required'],
+                'instructions' => 'Check text expansion in callout boxes.',
+            ],
+            [
+                'code' => 'J5',
+                'name' => 'E-Commerce Website Content Localization (EN->ES)',
+                'project_code' => 'P3',
+                'service_id' => $srvTranslation?->id,
+                'vendor_index' => 0,
+                'status' => 'completed',
+                'started_at' => now()->subDays(8),
+                'deadline_at' => now()->subDays(4),
+                'completed_at' => now()->subDays(4),
+                'work_amount' => 8200.00,
+                'price_per_unit' => 0.055,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => $chk2->id,
+                'tags' => ['CAT Tool'],
+                'instructions' => 'SEO tags included in xliff file.',
+            ],
+            [
+                'code' => 'J6',
+                'name' => 'Spanish Proofreading & Tone Verification',
+                'project_code' => 'P3',
+                'service_id' => $srvProofreading?->id,
+                'vendor_index' => 1,
+                'status' => 'completed',
+                'started_at' => now()->subDays(4),
+                'deadline_at' => now()->subDays(1),
+                'completed_at' => now()->subDays(1),
+                'work_amount' => 8200.00,
+                'price_per_unit' => 0.025,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => null,
+                'tags' => ['VIP Client'],
+                'instructions' => 'Target audience is Latin American marketplace.',
+            ],
+            [
+                'code' => 'J7',
+                'name' => 'Financial Audit Report Translation (FR->DE)',
+                'project_code' => 'P4',
+                'service_id' => $srvTranslation?->id,
+                'vendor_index' => 2,
+                'status' => 'in_progress',
+                'started_at' => now()->subDays(1),
+                'deadline_at' => now()->addDays(4),
+                'completed_at' => null,
+                'work_amount' => 6100.00,
+                'price_per_unit' => 0.075,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => $chk1->id,
+                'tags' => ['Urgent'],
+                'instructions' => 'IFRS accounting terms apply.',
+            ],
+            [
+                'code' => 'J8',
+                'name' => 'Financial Statements Proofreading (DE)',
+                'project_code' => 'P4',
+                'service_id' => $srvProofreading?->id,
+                'vendor_index' => null,
+                'status' => 'draft',
+                'started_at' => null,
+                'deadline_at' => now()->addDays(6),
+                'completed_at' => null,
+                'work_amount' => 6100.00,
+                'price_per_unit' => 0.03,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => null,
+                'tags' => ['Urgent'],
+                'instructions' => 'Will start once translation completes.',
+            ],
+            [
+                'code' => 'J9',
+                'name' => 'Mobile App UI Strings Localization (EN->JA)',
+                'project_code' => 'P5',
+                'service_id' => $srvTranslation?->id,
+                'vendor_index' => 3,
+                'status' => 'in_progress',
+                'started_at' => now()->subDays(3),
+                'deadline_at' => now()->addDays(1),
+                'completed_at' => null,
+                'work_amount' => 3500.00,
+                'price_per_unit' => 0.09,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => $chk2->id,
+                'tags' => ['CAT Tool', 'VIP Client'],
+                'instructions' => 'Mind string character limits in iOS buttons.',
+            ],
+            [
+                'code' => 'J10',
+                'name' => 'Japanese Linguistic LQA Testing',
+                'project_code' => 'P5',
+                'service_id' => $srvProofreading?->id,
+                'vendor_index' => null,
+                'status' => 'draft',
+                'started_at' => null,
+                'deadline_at' => now()->addDays(4),
+                'completed_at' => null,
+                'work_amount' => 10.00,
+                'price_per_unit' => 35.00,
+                'unit_id' => $hourUnit?->id,
+                'checklist_id' => null,
+                'tags' => ['VIP Client'],
+                'instructions' => 'On-device test build will be provided.',
+            ],
+            [
+                'code' => 'J11',
+                'name' => 'Patent Application Legal Translation (EN->ZH)',
+                'project_code' => 'P1',
+                'service_id' => $srvTranslation?->id,
+                'vendor_index' => 0,
+                'status' => 'offered',
+                'started_at' => null,
+                'deadline_at' => now()->addDays(7),
+                'completed_at' => null,
+                'work_amount' => 7800.00,
+                'price_per_unit' => 0.085,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => $chk1->id,
+                'tags' => ['Urgent'],
+                'instructions' => 'Certified patent translation format.',
+            ],
+            [
+                'code' => 'J12',
+                'name' => 'Legacy Software Help File Archive (Cancelled)',
+                'project_code' => 'P3',
+                'service_id' => $srvTranslation?->id,
+                'vendor_index' => 1,
+                'status' => 'cancelled',
+                'started_at' => now()->subDays(15),
+                'deadline_at' => now()->subDays(10),
+                'completed_at' => null,
+                'work_amount' => 2000.00,
+                'price_per_unit' => 0.05,
+                'unit_id' => $wordUnit?->id,
+                'checklist_id' => null,
+                'tags' => [],
+                'instructions' => 'Project scope cancelled by client.',
+            ],
+        ];
+
+        $seededJobs = [];
+        foreach ($jobsSeedData as $jsd) {
+            $parentProj = $allProjects[$jsd['project_code']] ?? Project::first();
+            $vendor = ($jsd['vendor_index'] !== null && isset($allVendors[$jsd['vendor_index']])) ? $allVendors[$jsd['vendor_index']] : null;
+            $pair = $parentProj->languagePairs->first() ?? $allPairs->first();
+            $payables = round($jsd['work_amount'] * $jsd['price_per_unit'], 2);
+
+            $job = ProjectJob::updateOrCreate(
+                ['code' => $jsd['code']],
+                [
+                    'name' => $jsd['name'],
+                    'project_id' => $parentProj->id,
+                    'service_id' => $jsd['service_id'],
+                    'language_pair_id' => $pair?->id ?? 1,
+                    'vendor_id' => $vendor?->id,
+                    'status' => $jsd['status'],
+                    'started_at' => $jsd['started_at'],
+                    'deadline_at' => $jsd['deadline_at'],
+                    'completed_at' => $jsd['completed_at'],
+                    'unit_id' => $jsd['unit_id'],
+                    'work_amount' => $jsd['work_amount'],
+                    'price_per_unit' => $jsd['price_per_unit'],
+                    'payables' => $payables,
+                    'currency_id' => $parentProj->currency_id ?? $defaultCurrency?->id,
+                    'primary_manager_id' => $parentProj->primary_manager_id ?? $manager?->id,
+                    'checklist_id' => $jsd['checklist_id'],
+                    'instructions' => $jsd['instructions'],
+                    'created_by' => $manager?->id,
+                ]
+            );
+
+            if (!empty($jsd['tags'])) {
+                $tagIds = [];
+                foreach ($jsd['tags'] as $tagName) {
+                    if (isset($seededJobTags[$tagName])) {
+                        $tagIds[] = $seededJobTags[$tagName]->id;
+                    }
+                }
+                $job->tags()->sync($tagIds);
+            }
+
+            $seededJobs[$jsd['code']] = $job;
+        }
+
+        // Recalculate finances on all projects that have jobs
+        foreach ($allProjects as $proj) {
+            $totalPayables = ProjectJob::where('project_id', $proj->id)
+                ->where('status', '!=', 'cancelled')
+                ->sum('payables');
+            $proj->total_to_pay = $totalPayables;
+            $proj->recalculateFinances();
+            $proj->save();
+        }
+
+        // Seed 3 Tenders linked to unassigned or offered jobs
+        if (isset($seededJobs['J4'])) {
+            JobTender::updateOrCreate(
+                ['code' => 'T1'],
+                [
+                    'project_job_id' => $seededJobs['J4']->id,
+                    'type' => 'manager_selection_fixed',
+                    'status' => 'active',
+                    'started_at' => now()->subDay(),
+                    'deadline_at' => now()->addDays(2),
+                    'participating_vendors_count' => 3,
+                    'notes' => 'Seeking experienced InDesign desktop publishing specialists.',
+                    'created_by' => $manager?->id,
+                ]
+            );
+        }
+
+        if (isset($seededJobs['J8'])) {
+            JobTender::updateOrCreate(
+                ['code' => 'T2'],
+                [
+                    'project_job_id' => $seededJobs['J8']->id,
+                    'type' => 'first_claimer',
+                    'status' => 'active',
+                    'started_at' => now()->subHours(8),
+                    'deadline_at' => now()->addDays(3),
+                    'participating_vendors_count' => 1,
+                    'notes' => 'Native German financial linguist required.',
+                    'created_by' => $manager?->id,
+                ]
+            );
+        }
+
+        if (isset($seededJobs['J10'])) {
+            JobTender::updateOrCreate(
+                ['code' => 'T3'],
+                [
+                    'project_job_id' => $seededJobs['J10']->id,
+                    'type' => 'manager_selection_negotiable',
+                    'status' => 'active',
+                    'started_at' => now()->subHours(12),
+                    'deadline_at' => now()->addDays(4),
+                    'participating_vendors_count' => 4,
+                    'notes' => 'Hourly rate negotiable for experienced mobile app game testers.',
+                    'created_by' => $manager?->id,
+                ]
+            );
+        }
     }
 }
+
+

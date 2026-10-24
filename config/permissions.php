@@ -72,6 +72,22 @@ return [
             'vendor-tags.view' => 'Tags',
             'vendor-rating-categories.view' => 'Rating categories',
         ],
+
+        'Projects' => [
+            'projects.view' => 'Projects',
+            'projects.create' => 'New project',
+            'project-templates.view' => 'Project templates',
+            'project-tags.view' => 'Tags',
+        ],
+
+        'Jobs' => [
+            'jobs.view' => 'Jobs',
+            'jobs.create' => 'New job',
+            'job-tenders.view' => 'Tenders',
+            'job-chain-templates.view' => 'Job chain templates',
+            'job-checklists.view' => 'Checklists',
+            'job-tags.view' => 'Tags',
+        ],
     ],
 
 ];

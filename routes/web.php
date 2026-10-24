@@ -40,6 +40,14 @@ use App\Http\Controllers\SystemValuesController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectTemplateController;
+use App\Http\Controllers\ProjectTagController;
+use App\Http\Controllers\JobController;
+use App\Http\Controllers\JobTenderController;
+use App\Http\Controllers\JobChainTemplateController;
+use App\Http\Controllers\JobChecklistController;
+use App\Http\Controllers\JobTagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -135,6 +143,69 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('vendor-rating-categories', VendorRatingCategoryController::class)
         ->parameters(['vendor-rating-categories' => 'vendorRatingCategory'])
         ->middleware('screen:vendor-rating-categories.view');
+
+    // Projects
+    Route::get('projects/export', [ProjectController::class, 'exportExcel'])
+        ->name('projects.export')
+        ->middleware('screen:projects.view');
+    Route::post('projects/{project}/complete', [ProjectController::class, 'complete'])
+        ->name('projects.complete')
+        ->middleware('screen:projects.view');
+    Route::post('projects/{project}/cancel', [ProjectController::class, 'cancel'])
+        ->name('projects.cancel')
+        ->middleware('screen:projects.view');
+    Route::post('projects/{project}/clone', [ProjectController::class, 'clone'])
+        ->name('projects.clone')
+        ->middleware('screen:projects.create');
+    Route::post('projects/{project}/save-as-template', [ProjectController::class, 'saveAsTemplate'])
+        ->name('projects.save-as-template')
+        ->middleware('screen:projects.view');
+    Route::get('clients/{client}/contacts-json', [ProjectController::class, 'clientContactsJson'])
+        ->name('clients.contacts-json');
+
+    Route::resource('projects', ProjectController::class)
+        ->middleware('screen:projects.view');
+
+    // Project Templates
+    Route::resource('project-templates', ProjectTemplateController::class)
+        ->parameters(['project-templates' => 'projectTemplate'])
+        ->middleware('screen:project-templates.view');
+
+    // Project Tags
+    Route::resource('project-tags', ProjectTagController::class)
+        ->parameters(['project-tags' => 'projectTag'])
+        ->middleware('screen:project-tags.view');
+
+    // Jobs subsystem
+    Route::post('jobs/bulk-action', [JobController::class, 'bulkAction'])
+        ->name('jobs.bulk-action')
+        ->middleware('screen:jobs.view');
+    Route::post('jobs/{job}/status', [JobController::class, 'updateStatus'])
+        ->name('jobs.update-status')
+        ->middleware('screen:jobs.view');
+    Route::resource('jobs', JobController::class)
+        ->middleware('screen:jobs.view');
+
+    // Job Tenders
+    Route::resource('job-tenders', JobTenderController::class)
+        ->parameters(['job-tenders' => 'jobTender'])
+        ->middleware('screen:job-tenders.view');
+
+    // Job Chain Templates
+    Route::resource('job-chain-templates', JobChainTemplateController::class)
+        ->parameters(['job-chain-templates' => 'jobChainTemplate'])
+        ->middleware('screen:job-chain-templates.view');
+
+    // Job Checklists
+    Route::resource('job-checklists', JobChecklistController::class)
+        ->parameters(['job-checklists' => 'jobChecklist'])
+        ->middleware('screen:job-checklists.view');
+
+    // Job Tags
+    Route::resource('job-tags', JobTagController::class)
+        ->parameters(['job-tags' => 'jobTag'])
+        ->middleware('screen:job-tags.view');
+
 
 
     // Settings
